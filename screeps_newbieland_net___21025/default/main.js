@@ -112,22 +112,22 @@ for(let tower of towers) {
         Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE,MOVE, MOVE], 'hauler'+Game.time,  {memory: {role: 'hauler'}})
  }
     else if (defenders.length < 1) {
-    Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE], 'DEF'+Game.time, {
+    Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, ATTACK, ATTACK,RANGED_ATTACK, MOVE,MOVE, MOVE, MOVE, MOVE], 'DEF'+Game.time, {
         memory: { role: 'defender', targetRoom: 'W12N19' }
     });
 }
     else if (healers.length < 1) {
-    Game.spawns['Spawn1'].spawnCreep([HEAL,HEAL,HEAL,RANGED_ATTACK, MOVE,MOVE, MOVE], 'Medic'+Game.time, {
+    Game.spawns['Spawn1'].spawnCreep([HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,RANGED_ATTACK, MOVE,MOVE, MOVE], 'Medic'+Game.time, {
         memory: { role: 'healer', targetRoom: 'W12N19' }
     });
 }
     else if (defenders2.length < 1) {
-    Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, MOVE, MOVE], 'DEF'+Game.time, {
+    Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH, ATTACK, ATTACK,RANGED_ATTACK, MOVE,MOVE, MOVE, MOVE, MOVE], 'DEF'+Game.time, {
         memory: { role: 'defender', targetRoom: 'W13N19' }
     });
 }
     else if (healers2.length < 1) {
-    Game.spawns['Spawn1'].spawnCreep([HEAL,HEAL,HEAL,RANGED_ATTACK, MOVE,MOVE, MOVE], 'Medic'+Game.time, {
+    Game.spawns['Spawn1'].spawnCreep([HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,RANGED_ATTACK, MOVE,MOVE, MOVE], 'Medic'+Game.time, {
         memory: { role: 'healer', targetRoom: 'W13N19' }
     });
 }
