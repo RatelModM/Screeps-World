@@ -55,7 +55,7 @@ var roleRefiller = {
             
             // Пріоритет 1: Вежі (тільки свої)
             var tower = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                filter: (s) => s.structureType == STRUCTURE_TOWER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                filter: (s) => s.structureType == STRUCTURE_TOWER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 150
             });
 
             if(tower) {
