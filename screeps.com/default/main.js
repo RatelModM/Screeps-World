@@ -93,7 +93,7 @@ for(let tower of towers) {
     }
 }
     // 3. Автоматичне створення кріпів
-    if(harvesters.length < 5) {
+    if(harvesters.length < 9) {
         Game.spawns['Spawn1'].spawnCreep([WORK,WORK, CARRY, MOVE], 'H' + Game.time, {memory: {role: 'harvester'}});
     } 
     else if(SpawnHaulers.length < 0) { 
@@ -190,7 +190,7 @@ for(let tower of towers) {
     else if(repairers.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE,WORK, CARRY, MOVE], 'repairer'+Game.time, {memory: {role: 'repairer'}});
     }
-    if(builders.length <0) {
+    if(builders.length <5) {
         Game.spawns['Spawn1'].spawnCreep([WORK,WORK, CARRY, MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
     }
     else if(remoteBuilders.length < 0) {

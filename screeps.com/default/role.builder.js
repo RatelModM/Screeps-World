@@ -2,15 +2,7 @@ var roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep) {
         // 1. ЖОРСТКА ПЕРЕВІРКА КІМНАТИ 
-        const homeRoomName = 'W72S17'; 
-
-        if (creep.room.name !== homeRoomName) {
-            //повернення
-            creep.moveTo(new RoomPosition(20, 12, homeRoomName), {visualizePathStyle: {stroke: '#ff0000'}});
-            creep.say('🏠');
-            return; 
-        }
-        
+    
         // Якщо кріп будував, але енергія закінчилася
         if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.building = false;
