@@ -4,12 +4,10 @@ var roleUpgrader = {
         // Якщо кріп зараз прокачує контролер, але енергія закінчилася — перемикаємо на збір
         if(creep.memory.upgrading && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.upgrading = false;
-            creep.say('🔄');
         }
         // Якщо кріп збирає ресурси і його інвентар заповнений — перемикаємо на прокачку
         if(!creep.memory.upgrading && creep.store.getFreeCapacity() == 0) {
             creep.memory.upgrading = true;
-            creep.say('⚡');
         }
 
         // --- ЛОГІКА ПРОКАЧКИ ---

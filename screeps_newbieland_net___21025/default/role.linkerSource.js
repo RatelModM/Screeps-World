@@ -13,16 +13,9 @@ var roleLinkerSource = {
         } 
         // Якщо кріп має енергію — віддаємо в лінк
         else {
-        if (link && link.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
             if (creep.transfer(link, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(link);
             }
-        }
-        else { 
-            if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(creep.room.controller);
-                }
-             }
         }
     }
 };

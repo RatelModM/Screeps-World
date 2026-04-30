@@ -150,7 +150,7 @@ for(let tower of towers) {
 }
    
      else if (LinkerStorage1.length <1){
-    Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], 'SourceStorage1', {
+    Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY, CARRY, CARRY, CARRY, CARRY, MOVE], 'SourceStorage1', {
     memory: { 
         role: 'linkerStorage', 
         linkId: '69ee7b1e6919ad003ce84f4e' 
@@ -221,7 +221,7 @@ for(let tower of towers) {
             repairing: false
         }});
     }
-    else if (remoteHaulers.length < 4) {
+    else if (remoteHaulers.length < 3) {
     Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'R_Hauler1_' + Game.time, {
         memory: {
             role: 'remoteHauler',
