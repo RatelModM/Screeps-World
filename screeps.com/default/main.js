@@ -93,19 +93,19 @@ for(let tower of towers) {
     }
 }
     // 3. Автоматичне створення кріпів
-    if(harvesters.length < 6) {
-        Game.spawns['Spawn1'].spawnCreep([WORK,CARRY, MOVE], 'H' + Game.time, {memory: {role: 'harvester'}});
+    if(harvesters.length < 5) {
+        Game.spawns['Spawn1'].spawnCreep([WORK,WORK, CARRY, MOVE], 'H' + Game.time, {memory: {role: 'harvester'}});
     } 
     else if(SpawnHaulers.length < 0) { 
         Game.spawns['Spawn1'].spawnCreep([ CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'Spawnhauler'+Game.time,  {memory: {role: 'spawnhauler'}})
     }
-    else if(miner.length < 2) {
+    else if(miner.length < 0) {
         if(minersOnSource.length < 0) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE], 'Miner1_' + Game.time, {memory: { role: 'miner', targetSourceId: '695e9c0db48f5100290aa58b' }});
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, MOVE], 'Miner1_' + Game.time, {memory: { role: 'miner', targetSourceId: '5836b6f18b8b9619519ef9a2' }});
         }
         else {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE], 'Miner2_' + Game.time, {
-            memory: { role: 'miner', targetSourceId: '695e9c0db48f5100290aa58d' }});
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, MOVE], 'Miner1_2_' + Game.time, {
+            memory: { role: 'miner', targetSourceId: '5836b6f18b8b9619519ef9a3' }});
         }
     }
     else if(haulers.length <0) { 
@@ -169,11 +169,11 @@ for(let tower of towers) {
         memory: { role: 'remoteMiner', targetRoom: targetRoom2, sourceId: '695e9c0db48f5100290aa587' }
     });
 }
-    else if(upgraders.length < 0) {
-        Game.spawns['Spawn1'].spawnCreep([ WORK, WORK, WORK,WORK, CARRY,WORK, WORK, WORK,WORK, CARRY, MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader'}});
+    if(upgraders.length < 0) {
+        Game.spawns['Spawn1'].spawnCreep([ WORK, CARRY, MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader'}});
     } 
     
-       else if(reserver.length < 0) {
+    else if(reserver.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([CLAIM, MOVE, MOVE, MOVE], 'Reserver1_'+ Game.time, {
         memory: {
             role: 'reserver',
@@ -190,8 +190,8 @@ for(let tower of towers) {
     else if(repairers.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE,WORK, CARRY, MOVE], 'repairer'+Game.time, {memory: {role: 'repairer'}});
     }
-    else if(builders.length <0) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
+    if(builders.length <0) {
+        Game.spawns['Spawn1'].spawnCreep([WORK,WORK, CARRY, MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
     }
     else if(remoteBuilders.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([WORK,WORK,WORK,CARRY,CARRY, CARRY, CARRY,MOVE,MOVE,MOVE,MOVE,], 'RemoteBuilder_' + Game.time, {

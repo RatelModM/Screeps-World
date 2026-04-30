@@ -1,16 +1,38 @@
 var roleHarvester = {
     /** @param {Creep} creep **/
     run: function(creep) {
+        // Перемикання станів
+        if(creep.memory.working && creep.store.getUsedCapacity() == 0) {
+            creep.memory.working = false;
+        }
+        if(!creep.memory.working && creep.store.getFreeCapacity() == 0) {
+            creep.memory.working = true;
+        }
+
         // Стан 1: Збір енергії
-        if(creep.store.getFreeCapacity() > 0) {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[1], {visualizePathStyle: {stroke: '#ffaa00'}});
+        if(!creep.memory.working) {
+            // 1. Шукаємо енергію, що лежить на землі
+            var droppedEnergy = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+                filter: (resource) => resource.resourceType == RESOURCE_ENERGY && resource.amount > 20
+            });
+
+            if(droppedEnergy) {
+                if(creep.pickup(droppedEnergy) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(droppedEnergy, {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
+            } 
+            // 2. Якщо на землі порожньо — шукаємо джерело (копаємо)
+            else {
+                var source = creep.pos.findClosestByRange(FIND_SOURCES);
+                if(source) {
+                    if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+                    }
+                }
             }
         }
         // Стан 2: Віддача енергії
         else {
-            // Шукаємо будівлі, які треба заправити (Spawn, Extensions)
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
@@ -20,15 +42,12 @@ var roleHarvester = {
             });
 
             if(targets.length > 0) {
-                // Якщо є будівлі, несемо енергію їм
                 if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
-            } 
-            else {
-                // ЛОГІКА ДОПОМОГИ: Якщо все заповнено, йдемо до контролера
+            } else {
                 if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#00ff00'}}); // Зелена лінія
+                    creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#00ff00'}});
                 }
             }
         }
