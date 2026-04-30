@@ -32,9 +32,9 @@ module.exports.loop = function () {
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
     var defenders = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W12N19");
-    var defenders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W11N19");
+    var defenders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W13N19");
     var healers = _.filter(Game.creeps, (creep) => creep.memory.role == 'healer'&& creep.memory.targetRoom =="W12N19");
-    var healers2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'healer'&& creep.memory.targetRoom == "W11N19");
+    var healers2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'healer'&& creep.memory.targetRoom == "W13N19");
     var refillers = _.filter(Game.creeps, (creep) => creep.memory.role == 'refiller');
     var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
     var miner = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
@@ -126,12 +126,12 @@ for(let tower of towers) {
 }
     else if (defenders2.length < 1) {
     Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH,TOUGH, TOUGH, MOVE , MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK ], 'DEF_2_'+Game.time, {
-        memory: { role: 'defender', targetRoom: 'W11N19' }
+        memory: { role: 'defender', targetRoom: 'W13N19' }
     });
 }
     else if (healers2.length < 1) {
     Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, MOVE, MOVE, MOVE,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL ], 'Medic_2_'+Game.time, {
-        memory: { role: 'healer', targetRoom: 'W11N19' }
+        memory: { role: 'healer', targetRoom: 'W13N19' }
     });
 }
      else if (LinkerSource1.length <1){
