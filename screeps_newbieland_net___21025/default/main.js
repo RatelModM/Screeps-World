@@ -124,7 +124,7 @@ for(let tower of towers) {
         memory: { role: 'healer', targetRoom: 'W12N19' }
     });
 }
-    else if (defenders2.length < 1) {
+    else if (defenders2.length < 3) {
     Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH,TOUGH, TOUGH, MOVE , MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK ], 'DEF_2_'+Game.time, {
         memory: { role: 'defender', targetRoom: 'W13N19' }
     });
@@ -169,7 +169,7 @@ for(let tower of towers) {
         memory: { role: 'remoteMiner', targetRoom: targetRoom2, sourceId: '695e9c0db48f5100290aa587' }
     });
 }
-    else if(upgraders.length < 2) {
+    else if(upgraders.length < 1) {
         Game.spawns['Spawn1'].spawnCreep([ WORK, WORK, WORK,WORK, CARRY,WORK, WORK, WORK,WORK, CARRY, MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader'}});
     } 
     

@@ -51,11 +51,11 @@ var roleBuilder = {
                     creep.moveTo(container, { maxRooms: 1, visualizePathStyle: {stroke: '#ffaa00'} });
                 }
             } else {
-                var source = creep.pos.findClosestByRange(FIND_SOURCES);
+                var source = creep.room.find(FIND_SOURCES);
                 if(source) { 
-                    if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    if(creep.harvest(source[1]) == ERR_NOT_IN_RANGE) {
                         // ДОДАНО maxRooms: 1
-                        creep.moveTo(source, { maxRooms: 1, visualizePathStyle: {stroke: '#ff0000'} });
+                        creep.moveTo(source[1], { maxRooms: 1, visualizePathStyle: {stroke: '#ff0000'} });
                     }
                 }
             }

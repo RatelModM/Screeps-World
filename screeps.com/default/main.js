@@ -93,7 +93,7 @@ for(let tower of towers) {
     }
 }
     // 3. Автоматичне створення кріпів
-    if(harvesters.length < 9) {
+    if(harvesters.length < 12) {
         Game.spawns['Spawn1'].spawnCreep([WORK,WORK, CARRY, MOVE], 'H' + Game.time, {memory: {role: 'harvester'}});
     } 
     else if(SpawnHaulers.length < 0) { 
