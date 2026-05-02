@@ -8,8 +8,8 @@ var roleMiner = require ('role.miner');
 var roleHauler = require('role.hauler');
 var roleRemoteBuilder = require('role.remoteBuilder');
 var roleRemoteRepairer = require('role.remoteRepairer');
-var targetRoom = 'W12N19';
-var targetRoom2 = 'W13N19';
+var targetRoom = 'W29S28';
+var targetRoom2 = 'W28S28';
 var roleReserver = require('role.reserver')
 var roleSpawnHauler = require('role.spawnhauler');
 var roleRemoteMiner = require('role.remoteMiner');
@@ -40,7 +40,7 @@ module.exports.loop = function () {
     var miner = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
     var towers = _.filter(Game.structures, s => s.structureType == STRUCTURE_TOWER);
     var haulers = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler');
-    var minersOnSource = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.targetSourceId == '695e9c0db48f5100290aa58b');
+    var minersOnSource = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.targetSourceId == '55db3116efa8e3fe66e047c9');
     var remoteBuilders = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteBuilder' && creep.memory.targetRoom == targetRoom);
     var remoteRepairer = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteRepairer' && creep.memory.targetRoom == targetRoom);
     var remoteRepairer2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteRepairer' && creep.memory.targetRoom == targetRoom2);
@@ -93,25 +93,25 @@ for(let tower of towers) {
     }
 }
     // 3. Автоматичне створення кріпів
-    if(harvesters.length < 12) {
-        Game.spawns['Spawn1'].spawnCreep([WORK,WORK, CARRY, MOVE], 'H' + Game.time, {memory: {role: 'harvester'}});
+    if(harvesters.length <7) {
+        Game.spawns['Spawn1'].spawnCreep([WORK,WORK, CARRY, CARRY, CARRY,MOVE, MOVE], 'H' + Game.time, {memory: {role: 'harvester'}});
     } 
     else if(SpawnHaulers.length < 0) { 
         Game.spawns['Spawn1'].spawnCreep([ CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'Spawnhauler'+Game.time,  {memory: {role: 'spawnhauler'}})
     }
-    else if(miner.length < 0) {
-        if(minersOnSource.length < 0) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, MOVE], 'Miner1_' + Game.time, {memory: { role: 'miner', targetSourceId: '5836b6f18b8b9619519ef9a2' }});
+    else if(miner.length < 2) {
+        if(minersOnSource.length < 1) {
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, MOVE], 'Miner1_' + Game.time, {memory: { role: 'miner', targetSourceId: '55db3116efa8e3fe66e047c9' }});
         }
         else {
         Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, MOVE], 'Miner1_2_' + Game.time, {
-            memory: { role: 'miner', targetSourceId: '5836b6f18b8b9619519ef9a3' }});
+            memory: { role: 'miner', targetSourceId: '55db3116efa8e3fe66e047cb' }});
         }
     }
     else if(haulers.length <0) { 
         Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE,MOVE, MOVE], 'hauler'+Game.time,  {memory: {role: 'hauler'}})
  }
-    else if(refillers.length < 0) {
+    else if(refillers.length < 1) {
         Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'refiller'+Game.time, {memory: {role: 'refiller'}});
     }
     else if (defenders.length < 0) {
@@ -190,8 +190,8 @@ for(let tower of towers) {
     else if(repairers.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE,WORK, CARRY, MOVE], 'repairer'+Game.time, {memory: {role: 'repairer'}});
     }
-    if(builders.length <5) {
-        Game.spawns['Spawn1'].spawnCreep([WORK,WORK, CARRY, MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
+    if(builders.length <6) {
+        Game.spawns['Spawn1'].spawnCreep([WORK,WORK, CARRY, CARRY,MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
     }
     else if(remoteBuilders.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([WORK,WORK,WORK,CARRY,CARRY, CARRY, CARRY,MOVE,MOVE,MOVE,MOVE,], 'RemoteBuilder_' + Game.time, {
@@ -203,12 +203,12 @@ for(let tower of towers) {
         }});
     }
      
-    else if(remoteRepairer.length < 0) {
-        Game.spawns['Spawn1'].spawnCreep([WORK,WORK, WORK, CARRY,CARRY,CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'RemoteRepairer1_'+ Game.time, {
+    else if(remoteRepairer.length <1) {
+        Game.spawns['Spawn1'].spawnCreep([WORK, CARRY,CARRY, MOVE, MOVE], 'RemoteRepairer1_'+ Game.time, {
         memory: {
             role: 'remoteRepairer',
             targetRoom: targetRoom,
-            homeRoom: 'W11N19', // Твоя основна кімната
+            homeRoom: 'W29S28', // Твоя основна кімната
             repairing: false
         }});
     }

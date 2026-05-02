@@ -2,7 +2,10 @@ var roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep) {
         // 1. ЖОРСТКА ПЕРЕВІРКА КІМНАТИ 
-    
+         if (creep.memory.targetRoom && creep.room.name !== creep.memory.targetRoom) {
+            creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom2), {reusePath: 50});
+            
+        }
         // Якщо кріп будував, але енергія закінчилася
         if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.building = false;

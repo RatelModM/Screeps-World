@@ -169,7 +169,7 @@ for(let tower of towers) {
         memory: { role: 'remoteMiner', targetRoom: targetRoom2, sourceId: '695e9c0db48f5100290aa587' }
     });
 }
-    else if(upgraders.length < 1) {
+    else if(upgraders.length < 2) {
         Game.spawns['Spawn1'].spawnCreep([ WORK, WORK, WORK,WORK, CARRY,WORK, WORK, WORK,WORK, CARRY, MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader'}});
     } 
     
