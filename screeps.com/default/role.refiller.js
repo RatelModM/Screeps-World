@@ -77,7 +77,7 @@ var roleRefiller = {
                 } else {
                     // ПАРКОВКА: якщо все заповнено, відходимо, щоб не блокувати дорогу
                     if(Game.spawns['Spawn1']) {
-                        creep.moveTo(Game.spawns['Spawn1'].pos.x - 12, Game.spawns['Spawn1'].pos.y + 2);
+                        creep.moveTo(Game.spawns['Spawn1'].pos.x + 2, Game.spawns['Spawn1'].pos.y + 1);
                     }
                 }
             }

@@ -14,7 +14,7 @@ var roleRemoteHauler = {
         if (creep.memory.delivering) {
     // 1. ПЕРЕВІРКА КІМНАТИ
     if (creep.room.name !== creep.memory.homeRoom) {
-        creep.moveTo(new RoomPosition(25, 25, creep.memory.homeRoom), {reusePath: 20});
+        creep.moveTo(new RoomPosition(25, 25, creep.memory.homeRoom), {reusePath: 50});
         return; // Виходимо, поки не дійдемо додому
     }
 

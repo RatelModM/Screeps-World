@@ -76,7 +76,7 @@ for(let tower of towers) {
         var defensiveRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (s) => {
                     return (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART) && 
-                           s.hits < 30000;}
+                           s.hits < 40000;}
             });
             if(defensiveRepair) {
                 tower.repair(defensiveRepair);
@@ -169,7 +169,7 @@ for(let tower of towers) {
         memory: { role: 'remoteMiner', targetRoom: targetRoom2, sourceId: '695e9c0db48f5100290aa587' }
     });
 }
-    else if(upgraders.length < 2) {
+    else if(upgraders.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([ WORK, WORK, WORK,WORK, CARRY,WORK, WORK, WORK,WORK, CARRY, MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader'}});
     } 
     
@@ -190,7 +190,7 @@ for(let tower of towers) {
     else if(repairers.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE,WORK, CARRY, MOVE], 'repairer'+Game.time, {memory: {role: 'repairer'}});
     }
-    else if(builders.length <0) {
+    else if(builders.length <1) {
         Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
     }
     else if(remoteBuilders.length < 0) {

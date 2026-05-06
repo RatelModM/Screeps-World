@@ -25,7 +25,7 @@ var roleDefender = {
 
         // 4. АТАКА
         if (target) {
-            creep.say('⚔️ ', true);
+            creep.say('⚔️go away', true);
             if (creep.attack(target) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ff0000'}});
             }
