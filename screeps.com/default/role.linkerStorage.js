@@ -36,7 +36,7 @@ var roleLinkerStorage = {
         
         else {
              if(Game.spawns['Spawn1']) {
-                        creep.moveTo(Game.spawns['Spawn1'].pos.x + 2, Game.spawns['Spawn1'].pos.y + 1);
+                        creep.moveTo(Game.spawns['Spawn1'].pos.x + 1, Game.spawns['Spawn1'].pos.y + 3);
                     }
         }
     }

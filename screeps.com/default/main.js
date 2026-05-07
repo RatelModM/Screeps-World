@@ -109,8 +109,8 @@ for(let tower of towers) {
             memory: { role: 'miner', targetSourceId: '55db3116efa8e3fe66e047cb' }});
         }
     }
-    else if(haulers.length <5) { 
-        Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE,MOVE, MOVE], 'hauler'+Game.time,  {memory: {role: 'hauler'}})
+    else if(haulers.length <4) { 
+        Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE,MOVE, MOVE], 'hauler'+Game.time,  {memory: {role: 'hauler'}})
  }
     else if(refillers.length < 1) {
         Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'refiller'+Game.time, {memory: {role: 'refiller'}});
@@ -145,7 +145,7 @@ for(let tower of towers) {
 }); 
     }
     else if(remoteMiners1.length < 1) {
-    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner1_' + Game.time, {
+    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner1W28S28_' + Game.time, {
         memory: { role: 'remoteMiner', targetRoom: targetRoom, sourceId: '55db3133efa8e3fe66e04894' }
     });
 }
@@ -161,22 +161,22 @@ for(let tower of towers) {
 
 
     else if(remoteMiners2.length < 1) {
-    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner2_' + Game.time, {
+    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner2W28S28_' + Game.time, {
         memory: { role: 'remoteMiner', targetRoom: targetRoom, sourceId: '55db3133efa8e3fe66e04892' }
     });
 }
     else if(remoteMiners3.length <1) {
-    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMinerW29S273_' + Game.time, {
+    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner3W29S27_' + Game.time, {
         memory: { role: 'remoteMiner', targetRoom: "W29S27", sourceId: '55db3116efa8e3fe66e047c5' }
     });
 }
 
     else if(remoteMiners4.length <1) {
-    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMinerW29S274_' + Game.time, {
+    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner4W29S27_' + Game.time, {
         memory: { role: 'remoteMiner', targetRoom: "W29S27", sourceId: '55db3116efa8e3fe66e047c6' }
     });
 }
-    if(upgraders.length < 1) {
+    if(upgraders.length < 3) {
         Game.spawns['Spawn1'].spawnCreep([ WORK, WORK, WORK, WORK, WORK,WORK, CARRY,CARRY,MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader'}});
     } 
     
@@ -200,7 +200,7 @@ for(let tower of towers) {
     if(builders.length <1) {
         Game.spawns['Spawn1'].spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK, CARRY, CARRY,CARRY, CARRY,MOVE,MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
     }
-    else if(remoteBuilders.length < 2) {
+    else if(remoteBuilders.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([WORK,WORK,WORK,CARRY,CARRY, CARRY, CARRY,MOVE,MOVE,MOVE,MOVE,], 'RemoteBuilder_' + Game.time, {
         memory: {
             role: 'remoteBuilder',
@@ -229,7 +229,7 @@ for(let tower of towers) {
         }});
     }
     else if (remoteHaulers.length < 4) {
-    Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'R_HaulerW28S28' + Game.time, {
+    Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'R_HaulerW28S28' + Game.time, {
         memory: {
             role: 'remoteHauler',
             homeRoom: 'W29S28',
@@ -244,8 +244,8 @@ for(let tower of towers) {
         }
          });
       }
-    else if (remoteHaulers2.length < 4) {
-    Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'R_HaulerW29S27_' + Game.time, {
+    else if (remoteHaulers2.length < 5) {
+    Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'R_HaulerW29S27_' + Game.time, {
         memory: {
             role: 'remoteHauler',
             homeRoom: 'W29S28',
@@ -254,8 +254,7 @@ for(let tower of towers) {
             containerIds: [
             '69fc5953ac156a78bd67a636', // Контейнер 2
             '69fc825bf4382a11335ad746',  // Контейнер 1
-             
-            ],
+                         ],
             delivering: false
         }
          });
