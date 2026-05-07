@@ -22,7 +22,7 @@ var roleUpgrader = {
             var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (s) => {     
                     return (s.structureType == STRUCTURE_STORAGE || s.structureType == STRUCTURE_CONTAINER) && 
-                           s.store[RESOURCE_ENERGY] > 1000; 
+                           s.store[RESOURCE_ENERGY] > 100; 
                 }
             });
 

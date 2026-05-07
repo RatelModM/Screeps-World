@@ -5,7 +5,7 @@ var roleHauler = {
         if(creep.store.getUsedCapacity() == 0) {
             // Шукаємо контейнер, де є енергія
             var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 500
+                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 1500
             });
 
             if(container) {
