@@ -17,6 +17,7 @@ var roleRemoteHauler = require('role.remoteHauler');
 var roleLinkerSource = require('role.linkerSource');
 var roleLinkerStorage = require('role.linkerStorage');
 var roleHealer = require('role.healer');
+var roleClaimer = require('role.claimer');
 
 module.exports.loop = function () {
     // 1. Очищення пам'яті
@@ -29,8 +30,10 @@ module.exports.loop = function () {
 
     // 2. Рахуємо наявні зміні
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+    var harvesters2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester'&& creep.memory.targetRoom == "W11N18");
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+    var builders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder'&& creep.memory.targetRoom == "W11N18");
     var defenders = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W12N19");
     var defenders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W13N19");
     var healers = _.filter(Game.creeps, (creep) => creep.memory.role == 'healer'&& creep.memory.targetRoom =="W12N19");
@@ -41,7 +44,7 @@ module.exports.loop = function () {
     var towers = _.filter(Game.structures, s => s.structureType == STRUCTURE_TOWER);
     var haulers = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler');
     var minersOnSource = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.targetSourceId == '695e9c0db48f5100290aa58b');
-    var remoteBuilders = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteBuilder' && creep.memory.targetRoom == targetRoom);
+    var remoteBuilders = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteBuilder');
     var remoteRepairer = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteRepairer' && creep.memory.targetRoom == targetRoom);
     var remoteRepairer2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteRepairer' && creep.memory.targetRoom == targetRoom2);
     var reserver = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.targetRoom == 'W12N19');
@@ -50,11 +53,14 @@ module.exports.loop = function () {
     var remoteMiners1 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '695e9c0db48f5100290aa589');
     var remoteMiners2 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '695e9c0db48f5100290aa586');
     var remoteMiners3 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '695e9c0db48f5100290aa587');
+    var remoteMiners4 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '695e9c0db48f5100290aa64f');
+    var remoteMiners5 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '695e9c0db48f5100290aa64e');
     var remoteHaulers=_.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHauler'&& creep.memory.targetRoom == targetRoom);
     var remoteHaulers2=_.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHauler'&& creep.memory.targetRoom == targetRoom2);
     var LinkerSource1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'linkerSource');
     var LinkerStorage1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'linkerStorage');
-    
+    var Claimer = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer');
+
     // логіка вежі
 for(let tower of towers) {    
     // 1.1 Пріоритет №1: Атака ворогів
@@ -96,8 +102,11 @@ for(let tower of towers) {
     if(harvesters.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,CARRY, MOVE], 'H' + Game.time, {memory: {role: 'harvester'}});
     } 
+    if(harvesters2.length < 0) {
+        Game.spawns['Spawn2'].spawnCreep([WORK,CARRY,CARRY, MOVE], 'H' + Game.time, {memory: {role: 'harvester'}});
+    } 
     else if(SpawnHaulers.length < 1) { 
-        Game.spawns['Spawn1'].spawnCreep([ CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'Spawnhauler'+Game.time,  {memory: {role: 'spawnhauler'}})
+        Game.spawns['Spawn1'].spawnCreep([ CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, MOVE, MOVE, MOVE], 'Spawnhauler'+Game.time,  {memory: {role: 'spawnhauler'}})
     }
     else if(miner.length < 2) {
         if(minersOnSource.length < 1) {
@@ -111,7 +120,7 @@ for(let tower of towers) {
     else if(haulers.length <3) { 
         Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE,MOVE, MOVE], 'hauler'+Game.time,  {memory: {role: 'hauler'}})
  }
-    else if(refillers.length < 3) {
+    else if(refillers.length < 2) {
         Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'refiller'+Game.time, {memory: {role: 'refiller'}});
     }
     else if (defenders.length < 2) {
@@ -124,7 +133,7 @@ for(let tower of towers) {
         memory: { role: 'healer', targetRoom: 'W12N19' }
     });
 }
-    else if (defenders2.length < 3) {
+    else if (defenders2.length < 2) {
     Game.spawns['Spawn1'].spawnCreep([TOUGH, TOUGH, TOUGH,TOUGH, TOUGH, MOVE , MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK ], 'DEF_2_'+Game.time, {
         memory: { role: 'defender', targetRoom: 'W13N19' }
     });
@@ -134,7 +143,7 @@ for(let tower of towers) {
         memory: { role: 'healer', targetRoom: 'W13N19' }
     });
 }
-     else if (LinkerSource1.length <1){
+     else if (LinkerSource1.length <0){
     Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY,CARRY, CARRY, MOVE], 'SourceLinker1_', {
     memory: { 
         role: 'linkerSource', 
@@ -169,6 +178,16 @@ for(let tower of towers) {
         memory: { role: 'remoteMiner', targetRoom: targetRoom2, sourceId: '695e9c0db48f5100290aa587' }
     });
 }
+    else if(remoteMiners4.length <1) {
+    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner4_' + Game.time, {
+        memory: { role: 'remoteMiner', targetRoom: "W11N18", sourceId: '695e9c0db48f5100290aa64f' }
+    });
+}
+ else if(remoteMiners5.length <1) {
+    Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner4_' + Game.time, {
+        memory: { role: 'remoteMiner', targetRoom: "W11N18", sourceId: '695e9c0db48f5100290aa64e' }
+    });
+}
     else if(upgraders.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([ WORK, WORK, WORK,WORK, CARRY,WORK, WORK, WORK,WORK, CARRY, MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader'}});
     } 
@@ -191,13 +210,16 @@ for(let tower of towers) {
         Game.spawns['Spawn1'].spawnCreep([WORK, CARRY, MOVE,WORK, CARRY, MOVE], 'repairer'+Game.time, {memory: {role: 'repairer'}});
     }
     else if(builders.length <1) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY,MOVE, MOVE, MOVE, MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
+    }
+    else if(builders2.length <0) {
+        Game.spawns['Spawn2'].spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {memory: {role: 'builder',targetRoom: 'W11N18'}});
     }
     else if(remoteBuilders.length < 0) {
-        Game.spawns['Spawn1'].spawnCreep([WORK,WORK,WORK,CARRY,CARRY, CARRY, CARRY,MOVE,MOVE,MOVE,MOVE,], 'RemoteBuilder_' + Game.time, {
+        Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY,CARRY, CARRY,CARRY,CARRY, CARRY,MOVE,MOVE,MOVE,MOVE,], 'RemoteBuilder_' + Game.time, {
         memory: {
             role: 'remoteBuilder',
-            targetRoom: targetRoom,
+            targetRoom: 'W11N18',
             homeRoom: 'W11N19', // Твоя основна кімната
             building: false
         }});
@@ -221,12 +243,12 @@ for(let tower of towers) {
             repairing: false
         }});
     }
-    else if (remoteHaulers.length < 3) {
-    Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'R_Hauler1_' + Game.time, {
+    else if (remoteHaulers.length < 2) {
+    Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'R_HaulerW12N19_' + Game.time, {
         memory: {
             role: 'remoteHauler',
             homeRoom: 'W11N19',
-            deliveryId: '69ee68dd2f9ec40037e43c83',
+            deliveryId: '69ee860b93ea720048d06645',
             targetRoom: 'W12N19', //  віддалена кімната для пошуку
             containerIds: [
                 '69ec809dc86dcf00481e2ea6', // Контейнер 1
@@ -236,12 +258,12 @@ for(let tower of towers) {
         }
          });
       }
-    else if (remoteHaulers2.length < 7) {
-    Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'R_Hauler2_' + Game.time, {
+    else if (remoteHaulers2.length < 4) {
+    Game.spawns['Spawn1'].spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'R_HaulerW13N19_' + Game.time, {
         memory: {
             role: 'remoteHauler',
             homeRoom: 'W11N19',
-            deliveryId: '69ee68dd2f9ec40037e43c83',
+            deliveryId: '69ee860b93ea720048d06645',
             targetRoom: 'W13N19', // "Основна" віддалена кімната для пошуку
             containerIds: [
             '69ef43b420fbc10048a0d52a', // Контейнер 2
@@ -251,6 +273,13 @@ for(let tower of towers) {
         }
          });
       }
+      else if(Claimer.length < 0) {
+        Game.spawns['Spawn1'].spawnCreep([CLAIM, MOVE, MOVE, MOVE], 'Claimer_'+ Game.time, {
+        memory: {
+            role: 'claimer',
+            targetRoom: 'W11N18',
+       }});
+    }
         // 4. Запуск логіки (тепер він поза умовами спавну і працює завжди)
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
@@ -305,6 +334,9 @@ for(let tower of towers) {
         }
         if(creep.memory.role == 'healer') {
             roleHealer.run(creep);
+        }
+        if(creep.memory.role == 'claimer') {
+            roleClaimer.run(creep);
         }
     }
 };

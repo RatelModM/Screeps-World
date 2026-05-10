@@ -6,7 +6,7 @@ var roleRefiller = {
         // Якщо розвозив і став ПОВНІСТЮ порожній — йде заправлятися
         if(!creep.memory.refilling && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.refilling = true;
-            creep.say('🔄 Refill');
+            creep.say('🔄');
         }
 
         // Якщо заправлявся — перевіряємо, чи час йти працювати
@@ -19,7 +19,7 @@ var roleRefiller = {
               (creep.store[RESOURCE_ENERGY] > 0 && !dropped && (!storage || storage.store[RESOURCE_ENERGY] == 0))) {
                 
                 creep.memory.refilling = false;
-                creep.say('📦 Delivery');
+                creep.say('📦 ');
             }
         }
 

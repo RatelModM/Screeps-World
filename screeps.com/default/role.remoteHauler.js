@@ -4,11 +4,11 @@ var roleRemoteHauler = {
         if (creep.memory.delivering && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.delivering = false;
             creep.memory.lastRelay = Game.time; // Запобіжник для Relay
-            creep.say('🔄 Збір');
+            creep.say('🔄');
         }
         if (!creep.memory.delivering && creep.store.getFreeCapacity() == 0) {
             creep.memory.delivering = true;
-            creep.say('🚚 Додому');
+            creep.say('🚚');
         }
 
         // 2. ЛОГІКА ДОСТАВКИ (ДОДОМУ)
@@ -28,7 +28,7 @@ var roleRemoteHauler = {
                         receiver.memory.delivering = true;
                         creep.memory.lastRelay = Game.time;
                         receiver.memory.lastRelay = Game.time;
-                        creep.say('🤝 Relay');
+                        creep.say('🤝');
                         return; // Завершуємо тік, щоб наступного він розвернувся за енергією
                     }
                 }
@@ -73,7 +73,7 @@ var roleRemoteHauler = {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#00ff00'}});
                 }
             } else {
-                creep.say('💤 Full'); // Всі склади забиті
+                creep.say('💤'); // Всі склади забиті
             }
         }
         // 3. ЛОГІКА ЗБОРУ (В ЦІЛЬОВІЙ КІМНАТІ)
@@ -91,7 +91,7 @@ var roleRemoteHauler = {
             for (let id of containerIds) {
                 let obj = Game.getObjectById(id);
                 // Беремо тільки ті, що існують і мають енергію
-                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) > 1000) {
+                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) > 1300) {
                     candidates.push(obj);
                 }
             }
@@ -128,7 +128,7 @@ var roleRemoteHauler = {
                         creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}});
                     }
                 } else {
-                    creep.say('💤 Чекаю');
+                    creep.say('💤');
                     // Відпочиваємо біля точки (25,25), щоб не заважати майнерам
                     if (!creep.pos.isNearTo(25, 25)) {
                         creep.moveTo(25, 25, {range: 3});

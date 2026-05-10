@@ -25,7 +25,7 @@ var roleHauler = {
                         receiver.memory.delivering = true;
                         creep.memory.lastRelay = Game.time;
                         receiver.memory.lastRelay = Game.time;
-                        creep.say('🤝 Relay');
+                        creep.say('🤝');
                         // ВАЖЛИВО: не перериваємо код через return, 
                         // щоб кріп одразу почав рухатися до контейнера!
                     }
@@ -51,7 +51,7 @@ var roleHauler = {
         // 3. ЛОГІКА ЗАПРАВКИ (Порожній)
         else {
             var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 1550
+                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 1250
             });
 
             if (container) {

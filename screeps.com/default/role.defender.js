@@ -22,14 +22,21 @@ var roleDefender = {
         if (!target) {
             target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         }
-
+        // Пріоритет 3: Invader Core, якщо кімната пуста від ворожих кріпів
+        if (!target) {
+            target = creep.room.find(FIND_STRUCTURES, {
+                filter: (s) => s.structureType == STRUCTURE_INVADER_CORE
+            })[0];
+        }
         // 4. АТАКА
         if (target) {
             creep.say('⚔️go away', true);
             if (creep.attack(target) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ff0000'}});
             }
-        } else {
+        } 
+        
+        else {
             // Якщо ворогів немає — йдемо в центр кімнати або на пост
             creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom));
         }

@@ -3,7 +3,7 @@ var roleRemoteMiner = {
         // 1. Якщо ми не в цільовій кімнаті — йдемо туди
         if (creep.room.name !== creep.memory.targetRoom) {
             creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {
-                reusePath: 50, 
+                reusePath: 20, 
                 visualizePathStyle: {stroke: '#ffaa00'}
             });
         } 

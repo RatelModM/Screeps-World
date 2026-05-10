@@ -26,8 +26,8 @@ var roleRemoteBuilder = {
         // 2. ЛОГІКА ДІЙ
         if(creep.memory.building) {
             // ПЕРЕВІРКА КІМНАТИ: якщо ми не в цільовій кімнаті — йдемо до неї
-            if(creep.room.name != 'W12N19') {
-                const exitDir = creep.room.findExitTo('W12N19');
+            if(creep.room.name != creep.memory.targetRoom) {
+                const exitDir = creep.room.findExitTo(creep.memory.targetRoom);
                 const exit = creep.pos.findClosestByPath(exitDir);
                 creep.moveTo(exit, {visualizePathStyle: {stroke: '#ffffff'}});
             } else {
@@ -42,8 +42,8 @@ var roleRemoteBuilder = {
         } 
         else {
             /// ПОВЕРНЕННЯ ЗА ЕНЕРГІЄЮ
-            if(creep.room.name !== 'W12N19') {
-                creep.moveTo(new RoomPosition(25, 25, 'W13N19'), {
+            if(creep.room.name !== creep.memory.targetRoom) {
+                creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom ), {
                     reusePath: 50, 
                     visualizePathStyle: {stroke: '#ffaa00'}
                 });

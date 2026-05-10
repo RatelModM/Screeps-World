@@ -9,12 +9,12 @@ var roleBuilder = {
         // Якщо кріп будував, але енергія закінчилася
         if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.building = false;
-            creep.say('До збору🧱');
+            creep.say('🧱');
         }
         // Якщо кріп збирав енергію і заповнився
         if(!creep.memory.building && creep.store.getFreeCapacity() == 0) {
             creep.memory.building = true;
-            creep.say('я на 🏗');
+            creep.say('🏗');
         }
 
         if(creep.memory.building) {
