@@ -48,10 +48,13 @@ var roleRepairer = {
                 }
             } else {
                 // Якщо сховища немає, збираємо з джерела
-                var sources = creep.room.find(FIND_SOURCES);
-                if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources[0]);
-                }
+                var source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+                    if (source) {
+                        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source, {reusePath: 20, visualizePathStyle: {stroke: '#ffaa00'}});
+                        }
+                    }
+                    
             }
         }
     }

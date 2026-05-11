@@ -2,7 +2,7 @@ var roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep) {
         // 1. ЖОРСТКА ПЕРЕВІРКА КІМНАТИ 
-        const homeRoomName = 'W11N19'; 
+        const homeRoomName = creep.memory.targetRoom; 
 
         if (creep.room.name !== homeRoomName) {
             //повернення
