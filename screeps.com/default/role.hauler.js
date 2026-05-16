@@ -13,7 +13,7 @@ var roleHauler = {
         if (creep.memory.delivering) {
             
             // --- ПОВЕРНЕННЯ МЕХАНІКИ RELAY (З ЗАХИСТОМ ВІД ЗАМИКАННЯ) ---
-            // Передаємо тільки якщо ми не робили цього щойно (пауза 2 тіки)
+            // Передаємо тільки якщо ми не робили цього щойно (пауза)
             if (!creep.memory.lastRelay || Game.time > creep.memory.lastRelay + 4) {
                 let receiver = creep.pos.findInRange(FIND_MY_CREEPS, 1, {
                     filter: (c) => c.memory.role == 'hauler' && !c.memory.delivering
@@ -51,7 +51,7 @@ var roleHauler = {
         // 3. ЛОГІКА ЗАПРАВКИ (Порожній)
         else {
             var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 1250
+                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 100
             });
 
             if (container) {

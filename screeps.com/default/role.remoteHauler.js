@@ -16,7 +16,7 @@ var roleRemoteHauler = {
             
             // --- НОВА МЕХАНІКА: RELAY (ЕСТАФЕТА) ---
             // Працює навіть між кімнатами на довгих маршрутах!
-            if (!creep.memory.lastRelay || Game.time > creep.memory.lastRelay + 3) {
+            if (!creep.memory.lastRelay || Game.time > creep.memory.lastRelay + 6) {
                 // Шукаємо порожнього колегу такої ж ролі в радіусі 1
                 let receiver = creep.pos.findInRange(FIND_MY_CREEPS, 1, {
                     filter: (c) => c.memory.role == creep.memory.role && !c.memory.delivering
@@ -87,11 +87,12 @@ var roleRemoteHauler = {
             // КРОК 2: ПОШУК КАНДИДАТІВ З ПАМ'ЯТІ
             let containerIds = creep.memory.containerIds || [];
             let candidates = [];
-
+            let target = Game.getObjectById(creep.memory.pickupTargetId);   
+            
             for (let id of containerIds) {
                 let obj = Game.getObjectById(id);
                 // Беремо тільки ті, що існують і мають енергію
-                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) > 1300) {
+                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) >= 1000 && obj.store.getUsedCapacity(RESOURCE_ENERGY) <= 2000) {
                     candidates.push(obj);
                 }
             }

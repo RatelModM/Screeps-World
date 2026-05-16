@@ -32,7 +32,7 @@ module.exports.loop = function () {
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
     var harvesters2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester'&& creep.memory.targetRoom == "W11N18");
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-    var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+    var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder'&& creep.memory.targetRoom == "W11N19");
     var builders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder'&& creep.memory.targetRoom == "W11N18");
     var defenders = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W12N19");
     var defenders2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W13N19");
@@ -85,7 +85,7 @@ for(let tower of towers) {
         var defensiveRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (s) => {
                     return (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART) && 
-                           s.hits < 40000;}
+                           s.hits < 100000;}
             });
             if(defensiveRepair) {
                 tower.repair(defensiveRepair);
@@ -194,7 +194,7 @@ for(let tower of towers) {
         memory: { role: 'remoteMiner', targetRoom: "W11N18", sourceId: '695e9c0db48f5100290aa64e' }
     });
 }
-    else if(upgraders.length < 2) {
+    else if(upgraders.length < 1) {
         s1.spawnCreep([ WORK, WORK, WORK,WORK, CARRY,WORK, WORK, WORK,WORK, CARRY, MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader'}});
     } 
     
@@ -215,8 +215,8 @@ for(let tower of towers) {
     else if(repairers.length < 0) {
         s1.spawnCreep([WORK, CARRY, MOVE,WORK, CARRY, MOVE], 'repairer'+Game.time, {memory: {role: 'repairer',targetRoom : "W11N19"}});
     }
-    else if(builders.length <1) {
-        s1.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY,MOVE, MOVE, MOVE, MOVE], 'builder' + Game.time, {memory: {role: 'builder'}});
+    else if(builders.length <0) {
+        s1.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY,MOVE, MOVE, MOVE, MOVE], 'builder' + Game.time, {memory: {role: 'builder',targetRoom: 'W11N19'}});
     }
     else if(builders2.length <0) {
         Game.spawns['Spawn2'].spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {memory: {role: 'builder',targetRoom: 'W11N18'}});
@@ -225,7 +225,7 @@ for(let tower of towers) {
       s1.spawnCreep([WORK,WORK,CARRY,CARRY, CARRY,CARRY,CARRY, CARRY,MOVE,MOVE,MOVE,MOVE,], 'RemoteBuilder_' + Game.time, {
         memory: {
             role: 'remoteBuilder',
-            targetRoom: 'W11N18',
+            targetRoom: 'W13N19',
             homeRoom: 'W11N19', // Твоя основна кімната
             building: false
         }});
@@ -291,16 +291,16 @@ for(let tower of towers) {
 // --- СПАВНЕР 2 (Друга база / Експансія) ---
     let s2 = Game.spawns['Spawn2'];
     if(s2 && !s2.spawning) { // Перевіряємо, чи існує Spawn2 і чи він вільний
-        if (harvesters2.length < 6) {
-        s2.spawnCreep([WORK,CARRY,CARRY, MOVE, MOVE], 'H2_' + Game.time, {memory: {role: 'harvester', targetRoom: 'W11N18'}});
+        if (harvesters2.length < 4) {
+        s2.spawnCreep([WORK,CARRY,CARRY,CARRY,CARRY, MOVE, MOVE], 'H2_' + Game.time, {memory: {role: 'harvester', targetRoom: 'W11N18'}});
     } 
-    else if(builders2.length <4) {
-        s2.spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], 'builder_S2' + Game.time, {memory: {role: 'builder',targetRoom: 'W11N18'}});
+    else if(builders2.length <6) {
+        s2.spawnCreep([WORK,WORK, CARRY, CARRY,WORK,CARRY, MOVE, MOVE], 'builder_S2' + Game.time, {memory: {role: 'builder',targetRoom: 'W11N18'}});
     }
-    else if(repairers2.length < 2) {
+    else if(repairers2.length < 0) {
         s2.spawnCreep([WORK, CARRY, MOVE,WORK, CARRY, MOVE], 'repairer_2'+Game.time, {memory: {role: 'repairer',targetRoom: 'W11N18'}});
     }
-    else if(refillers2.length < 0) {
+    else if(refillers2.length < 2) {
         s2.spawnCreep([CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'refiller_2'+Game.time, {memory: {role: 'refiller',targetRoom: 'W11N18'}});
     }
 }

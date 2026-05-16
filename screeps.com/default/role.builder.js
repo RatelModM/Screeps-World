@@ -2,19 +2,24 @@ var roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep) {
         // 1. ЖОРСТКА ПЕРЕВІРКА КІМНАТИ 
-         if (creep.memory.targetRoom && creep.room.name !== creep.memory.targetRoom) {
-            creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom2), {reusePath: 50});
-            
+        const homeRoomName = creep.memory.targetRoom; 
+
+        if (creep.room.name !== homeRoomName) {
+            //повернення
+            creep.moveTo(new RoomPosition(20, 12, homeRoomName), {visualizePathStyle: {stroke: '#ff0000'}});
+            creep.say('🏠');
+            return; 
         }
+        
         // Якщо кріп будував, але енергія закінчилася
         if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.building = false;
-            creep.say('🧱');
+            creep.say('До збору🧱');
         }
         // Якщо кріп збирав енергію і заповнився
         if(!creep.memory.building && creep.store.getFreeCapacity() == 0) {
             creep.memory.building = true;
-            creep.say('🏗');
+            creep.say('я на 🏗');
         }
 
         if(creep.memory.building) {
@@ -31,26 +36,36 @@ var roleBuilder = {
                 }
             }
         }
-        else { 
-            // ЗБІР ЕНЕРГІЇ
-            var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (s) => {     
-                    return (s.structureType == STRUCTURE_STORAGE || s.structureType == STRUCTURE_CONTAINER) && 
-                           s.store[RESOURCE_ENERGY] > 1000; 
-                }
+        else {
+            // Пріоритет 1: Збір викинутої енергії
+            let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+                filter: (r) => r.resourceType == RESOURCE_ENERGY && r.amount > 50
             });
 
-            if(container) {
-                if(creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    // ДОДАНО maxRooms: 1
-                    creep.moveTo(container, { maxRooms: 1, visualizePathStyle: {stroke: '#ffaa00'} });
+            if (dropped) {
+                if (creep.pickup(dropped) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
-            } else {
-                var source = creep.room.find(FIND_SOURCES);
-                if(source) { 
-                    if(creep.harvest(source[0]) == ERR_NOT_IN_RANGE) {
-                        // ДОДАНО maxRooms: 1
-                        creep.moveTo(source[0], { maxRooms: 1, visualizePathStyle: {stroke: '#ff0000'} });
+            } 
+            else {
+                // Пріоритет 2: Збір з контейнерів
+                let container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) &&
+                                    s.store[RESOURCE_ENERGY] > 450
+                });
+
+                if (container) {
+                    if (creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
+                    }
+                }
+                // Пріоритет 3: Копання (якщо є WORK)
+                else if (creep.getActiveBodyparts(WORK) > 0) {
+                    let source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+                    if (source) {
+                        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+                        }
                     }
                 }
             }
