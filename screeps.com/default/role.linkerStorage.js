@@ -32,12 +32,24 @@ var roleLinkerStorage = {
         } 
         
         
-        // ПРИОРИТЕТ 2: Линк ПУСТОЙ -> ждем
+        // ПРИОРИТЕТ 2: Линк ПУСТОЙ -> Апгрейдим
         
         else {
-             if(Game.spawns['Spawn1']) {
-                        creep.moveTo(Game.spawns['Spawn1'].pos.x + 1, Game.spawns['Spawn1'].pos.y + 3);
-                    }
+            
+            // Если крип пустой — берем энергию из хранилища (Storage)
+            if (creep.store.getUsedCapacity() == 0) {
+                if (creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    // Идем к storage
+                    creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffaa00'}});
+                }
+            } 
+            // Если энергия есть — идем качать controller
+            else {
+                if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                    // Идем к controller
+                    creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#00ff00'}});
+                }
+            }
         }
     }
 };

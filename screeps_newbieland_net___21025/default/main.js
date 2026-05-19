@@ -198,7 +198,7 @@ for(let tower of towers) {
         s1.spawnCreep([ WORK, WORK, WORK,WORK, CARRY,WORK, WORK, WORK,WORK, CARRY, MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader'}});
     } 
     
-       else if(reserver.length < 1) {
+       else if(reserver.length < 0) {
         s1.spawnCreep([CLAIM, MOVE, MOVE, MOVE], 'Reserver1_'+ Game.time, {
         memory: {
             role: 'reserver',

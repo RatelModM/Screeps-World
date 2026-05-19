@@ -21,7 +21,7 @@ var roleRepairer = {
             // Пріоритет 2: Якщо все ціле, чинимо стіни та рампарти (але не до нескінченності)
             if(targets.length == 0) {
                 targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: (s) => (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART) && s.hits < 20000 // Ліміт 50к, 
+                    filter: (s) => (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART) && s.hits < 40000 // Ліміт 50к, 
                 });
             }
 
