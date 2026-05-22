@@ -5,18 +5,31 @@ var roleLinkerSource = {
 
         if (!container || !link) return;
 
-        // Якщо кріп порожній — беремо з контейнера
-        if (creep.store.getUsedCapacity() === 0) {
+        // Перемикаємо режими: якщо повний — починаємо віддавати
+        if (!creep.memory.transferring && creep.store.getFreeCapacity() === 0) {
+            creep.memory.transferring = true;
+            
+        }
+        // Якщо повністю порожній — починаємо брати
+        if (creep.memory.transferring && creep.store.getUsedCapacity() === 0) {
+            creep.memory.transferring = false;
+            
+        }
+
+        // Логіка дій залежно від режиму
+        if (!creep.memory.transferring) {
+            // Беремо з контейнера, поки не заповнимося
             if (creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(container);
+                creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         } 
-        // Якщо кріп має енергію — віддаємо в лінк
         else {
+            // Віддаємо в лінк, поки не спустошимося
             if (creep.transfer(link, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(link);
+                creep.moveTo(link, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         }
     }
 };
+
 module.exports = roleLinkerSource;
