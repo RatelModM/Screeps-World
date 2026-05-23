@@ -1,15 +1,19 @@
 var roleRemoteHauler = {
     run: function(creep) {
         
-        // --- АНТИ-ЗАСТРЯГАТОР ---
+        // --- АНТИ-ЗАСТРЯГАТОР & ОЧИЩЕННЯ ШЛЯХУ ---
         if (creep.memory.lastRoom && creep.room.name !== creep.memory.lastRoom) {
-            delete creep.memory._move; 
+            delete creep.memory._move; // Скидаємо старий кеш шляху з іншої кімнати
         }
         creep.memory.lastRoom = creep.room.name;
 
+        // РОЗУМНЕ ШТОВХАННЯ НА ПЕРЕХОДАХ: робимо чіткий 1 крок всередину кімнати
         if (creep.pos.x === 0 || creep.pos.x === 49 || creep.pos.y === 0 || creep.pos.y === 49) {
-            creep.moveTo(new RoomPosition(25, 25, creep.room.name));
-            return; 
+            let stepX = creep.pos.x === 0 ? 1 : (creep.pos.x === 49 ? 48 : creep.pos.x);
+            let stepY = creep.pos.y === 0 ? 1 : (creep.pos.y === 49 ? 48 : creep.pos.y);
+            
+            creep.moveTo(stepX, stepY, { maxRooms: 1 });
+            return; // Перериваємо тік, щоб кріп гарантовано злетів з порталу
         }
 
         // 1. ПЕРЕМИКАННЯ СТАНІВ
@@ -47,7 +51,6 @@ var roleRemoteHauler = {
             // 1. ПЕРЕВІРКА КІМНАТИ (Йдемо додому)
             if (creep.room.name !== creep.memory.homeRoom) {
                 let exitDir = creep.room.findExitTo(creep.memory.homeRoom);
-                // ФІКС: Шукаємо найближчий ВИХІД ПО ШЛЯХУ (в обхід стін/скель)
                 let exitTile = creep.pos.findClosestByPath(exitDir); 
                 
                 if (exitTile) {
@@ -70,7 +73,7 @@ var roleRemoteHauler = {
             if (!target) {
                 target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
-                                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                                   s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 });
             }
 
@@ -87,7 +90,6 @@ var roleRemoteHauler = {
             // КРОК 1: ПЕРЕВІРКА КІМНАТИ (Йдемо в шахту)
             if (creep.room.name !== creep.memory.targetRoom) {
                 let exitDir = creep.room.findExitTo(creep.memory.targetRoom);
-                // ФІКС: Шукаємо найближчий ВИХІД ПО ШЛЯХУ (в обхід стін/скель)
                 let exitTile = creep.pos.findClosestByPath(exitDir); 
                 
                 if (exitTile) {
