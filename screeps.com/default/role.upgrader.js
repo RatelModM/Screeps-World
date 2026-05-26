@@ -26,21 +26,21 @@ var roleUpgrader = {
             // Пріоритет 1: Конкретний лінк за ID з пам'яті кріпа
             if (creep.memory.linkId) {
                 let specificLink = Game.getObjectById(creep.memory.linkId);
-                if (specificLink && specificLink.store[RESOURCE_ENERGY] > 0) {
+                if (specificLink && specificLink.store[RESOURCE_ENERGY] > 100) {
                     target = specificLink;
                 }
             }
 
-            // Пріоритет 2: Головне сховище кімнати (Storage)
-            if (!target && creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 0) {
-                target = creep.room.storage;
-            }
-
-            // Пріоритет 3: Найближчий контейнер (ФІКС: знижено планку до > 100)
+            // Пріоритет 2: Найближчий контейнер (ФІКС: знижено планку до > 100)
             if (!target) {
                 target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 100
+                    filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 500
                 });
+            }
+
+            // Пріоритет 3: Головне сховище кімнати (Storage)
+            if (!target && creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 0) {
+                target = creep.room.storage;
             }
 
             // Якщо знайшли будь-яке джерело з пріоритетів — йдемо до нього

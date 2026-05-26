@@ -50,7 +50,7 @@ var roleBuilder = {
         else {
             // Пріоритет 1: Збір викинутої енергії (ідеально, бо вона зникає з часом)
             let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                filter: (r) => r.resourceType == RESOURCE_ENERGY && r.amount > 50
+                filter: (r) => r.resourceType == RESOURCE_ENERGY && r.amount > 500
             });
 
             if (dropped) {
@@ -60,7 +60,7 @@ var roleBuilder = {
             } 
             else {
                 // Пріоритет 2: Збір зі СХОВИЩА (Storage) — тепер окремо і в першу чергу
-                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 200) {
+                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 0) {
                     if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(creep.room.storage, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 10});
                     }

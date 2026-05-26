@@ -48,7 +48,7 @@ var roleRemoteHauler = {
                 }
             }
 
-            // 1. ПЕРЕВІРКА КІМНАТИ (Йдемо додому)
+            // ПЕРЕВІРКА КІМНАТИ (Йдемо додому)
             if (creep.room.name !== creep.memory.homeRoom) {
                 let exitDir = creep.room.findExitTo(creep.memory.homeRoom);
                 let exitTile = creep.pos.findClosestByPath(exitDir); 
@@ -59,32 +59,35 @@ var roleRemoteHauler = {
                 return; 
             }
 
-            // 2. ВИБІР ЦІЛІ ВДОМА
+            // --- ОНОВЛЕНИЙ ВИБІР ЦІЛІ ВДОМА ---
             let target = null;
+            
+            // Якщо в пам'яті жорстко прописана ціль (наприклад, лінк або конкретний склад) і там є місце
             if (creep.memory.deliveryId) {
                 let deliveryTarget = Game.getObjectById(creep.memory.deliveryId);
                 if (deliveryTarget && deliveryTarget.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                     target = deliveryTarget;
                 }
             }
-            if (!target && creep.room.storage && creep.room.storage.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-                target = creep.room.storage;
-            }
+            
+            // Якщо головної цілі немає або вона забита — шукаємо КХ чи КОНТЕЙНЕР, який ближче!
             if (!target) {
                 target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
+                    filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) &&
                                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 });
             }
-
+            
+            // Віддаємо енергію знайденому об'єкту
             if (target) {
                 if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 5});
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 20});
                 }
             } else {
                 creep.say('💤'); 
             }
         }
+        
         // 3. ЛОГІКА ЗБОРУ (В ЦІЛЬОВІЙ КІМНАТІ)
         else {
             // КРОК 1: ПЕРЕВІРКА КІМНАТИ (Йдемо в шахту)
@@ -125,7 +128,7 @@ var roleRemoteHauler = {
             } 
             else {
                 let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 100
+                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 700
                 });
 
                 if (dropped) {

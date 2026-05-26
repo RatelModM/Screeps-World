@@ -52,8 +52,8 @@ var roleHauler = {
         else {
             var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (s) =>{
-            return (s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 600) ||
-                   (s.structureType == STRUCTURE_LINK && s.store[RESOURCE_ENERGY] > 0);
+            return (s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 1700) /*||
+                   (s.structureType == STRUCTURE_LINK && s.store[RESOURCE_ENERGY] > 790)*/;
         }
     });
 
