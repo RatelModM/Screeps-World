@@ -1,6 +1,12 @@
 var roleRemoteHauler = {
     run: function(creep) {
         
+        // --- АВТОМАТИЧНЕ САМОЛІКУВАННЯ ---
+        // Якщо у кріпа є модуль HEAL і він поранений — лікує себе щотику
+        if (creep.hits < creep.hitsMax) {
+            creep.heal(creep);
+        }
+        
         // --- АНТИ-ЗАСТРЯГАТОР & ОЧИЩЕННЯ ШЛЯХУ ---
         if (creep.memory.lastRoom && creep.room.name !== creep.memory.lastRoom) {
             delete creep.memory._move; // Скидаємо старий кеш шляху з іншої кімнати
@@ -19,7 +25,6 @@ var roleRemoteHauler = {
         // 1. ПЕРЕМИКАННЯ СТАНІВ
         if (creep.memory.delivering && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.delivering = false;
-            creep.memory.lastRelay = Game.time; 
             creep.say('🔄');
         }
         if (!creep.memory.delivering && creep.store.getFreeCapacity() == 0) {
@@ -29,24 +34,6 @@ var roleRemoteHauler = {
 
         // 2. ЛОГІКА ДОСТАВКИ (ДОДОМУ)
         if (creep.memory.delivering) {
-            
-            // --- МЕХАНІКА: RELAY (ЕСТАФЕТА) ---
-            if (!creep.memory.lastRelay || Game.time > creep.memory.lastRelay + 6) {
-                let receiver = creep.pos.findInRange(FIND_MY_CREEPS, 1, {
-                    filter: (c) => c.memory.role == creep.memory.role && !c.memory.delivering
-                })[0];
-
-                if (receiver) {
-                    if (creep.transfer(receiver, RESOURCE_ENERGY) == OK) {
-                        creep.memory.delivering = false;
-                        receiver.memory.delivering = true;
-                        creep.memory.lastRelay = Game.time;
-                        receiver.memory.lastRelay = Game.time;
-                        creep.say('🤝');
-                        return; 
-                    }
-                }
-            }
 
             // ПЕРЕВІРКА КІМНАТИ (Йдемо додому)
             if (creep.room.name !== creep.memory.homeRoom) {
@@ -59,10 +46,10 @@ var roleRemoteHauler = {
                 return; 
             }
 
-            // --- ОНОВЛЕНИЙ ВИБІР ЦІЛІ ВДОМА ---
+            // --- ВИБІР ЦІЛІ ВДОМА ---
             let target = null;
             
-            // Якщо в пам'яті жорстко прописана ціль (наприклад, лінк або конкретний склад) і там є місце
+            // Якщо в пам'яті жорстко прописана ціль і там є місце
             if (creep.memory.deliveryId) {
                 let deliveryTarget = Game.getObjectById(creep.memory.deliveryId);
                 if (deliveryTarget && deliveryTarget.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
@@ -70,7 +57,7 @@ var roleRemoteHauler = {
                 }
             }
             
-            // Якщо головної цілі немає або вона забита — шукаємо КХ чи КОНТЕЙНЕР, який ближче!
+            // Якщо головної цілі немає або вона забита — шукаємо Сховище або Контейнер
             if (!target) {
                 target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) &&
@@ -86,7 +73,7 @@ var roleRemoteHauler = {
             } else {
                 creep.say('💤'); 
             }
-        }
+        } 
         
         // 3. ЛОГІКА ЗБОРУ (В ЦІЛЬОВІЙ КІМНАТІ)
         else {
@@ -112,7 +99,7 @@ var roleRemoteHauler = {
                 }
             }
 
-            // КРОК 3: СКЛАДНЕ СОРТУВАННЯ
+            // КРОК 3: СОРТУВАННЯ ТА ЗАБРАННЯ ЕНЕРГІЇ
             if (candidates.length > 0) {
                 candidates.sort((a, b) => {
                     let energyA = a.store.getUsedCapacity(RESOURCE_ENERGY);
@@ -127,6 +114,7 @@ var roleRemoteHauler = {
                 }
             } 
             else {
+                // Якщо контейнери порожні, шукаємо підняту (dropped) енергію
                 let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
                     filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 700
                 });
@@ -136,6 +124,7 @@ var roleRemoteHauler = {
                         creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 5});
                     }
                 } else {
+                    // Якщо роботи немає — стаємо ближче до центру кімнати, щоб не блокувати виходи
                     creep.say('💤');
                     if (!creep.pos.isNearTo(25, 25)) {
                         creep.moveTo(25, 25, {range: 3});

@@ -60,9 +60,9 @@ var roleBuilder = {
             } 
             else {
                 // Пріоритет 2: Збір зі СХОВИЩА (Storage) — тепер окремо і в першу чергу
-                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 0) {
+                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 10000) {
                     if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(creep.room.storage, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 10});
+                        creep.moveTo(creep.room.storage, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 20});
                     }
                 }
                 // Пріоритет 3: Збір з контейнерів (якщо Сховища немає або воно порожнє)

@@ -39,7 +39,7 @@ var roleUpgrader = {
             }
 
             // Пріоритет 3: Головне сховище кімнати (Storage)
-            if (!target && creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 0) {
+            else if (!target && creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 10000) {
                 target = creep.room.storage;
             }
 

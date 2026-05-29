@@ -18,13 +18,13 @@ var roleRemoteMiner = {
         if (creep.memory.linkId) {
             link = Game.getObjectById(creep.memory.linkId);
         } else {
-            // Якщо забули вказати linkId в спавнері, шукаємо лінк в радіусі 2 клітин від джерела
+            // Шукаємо лінк в радіусі 2 клітин від джерела
             link = source.pos.findInRange(FIND_STRUCTURES, 2, {
                 filter: (s) => s.structureType == STRUCTURE_LINK
             })[0];
         }
 
-        // Шукаємо контейнер (про всяк випадок, якщо він там теж стоїть)
+        // Шукаємо контейнер поруч із джерелом (в радіусі 1 клітини)
         let container = source.pos.findInRange(FIND_STRUCTURES, 1, {
             filter: (s) => s.structureType == STRUCTURE_CONTAINER
         })[0];
@@ -40,14 +40,26 @@ var roleRemoteMiner = {
         } else {
             // Ми на місці! Видобуваємо енергію кожен тік
             creep.harvest(source);
-            creep.say('⛏️');
 
-            // Одночасно перевіряємо: якщо є лінк і в кріпа є енергія в кишені
-            if (link && creep.store[RESOURCE_ENERGY] > 0) {
-                // Перевіряємо, чи в лінку є куди заливати енергію
-                if (link.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+            // --- ФУНКЦІЯ РЕМОНТУ ТА СКИДАННЯ ЕНЕРГІЇ ---
+            if (creep.store[RESOURCE_ENERGY] > 0) {
+                
+                // Варіант А: Якщо є лінк — заливаємо туди в першу чергу
+                if (link && link.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                     creep.transfer(link, RESOURCE_ENERGY);
+                    
+                } 
+                // Варіант Б: Якщо лінка немає/повний, але контейнер потребує ремонту (менше 80% HP)
+                else if (container && container.hits < container.hitsMax * 0.8) {
+                    creep.repair(container);
+                    creep.say('🛠️');
+                } 
+                // Варіант В: Все працює і все ціле, просто копаємо (енергія падає на землю/в контейнер)
+                else {
+                    creep.say('⛏️');
                 }
+            } else {
+                creep.say('⛏️');
             }
         }
     }
