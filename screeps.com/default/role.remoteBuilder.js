@@ -8,19 +8,16 @@ var roleRemoteBuilder = {
             creep.moveTo(new RoomPosition(targetX, targetY, creep.room.name), {
                 visualizePathStyle: {stroke: '#00ff00', lineStyle: 'dashed'}
             });
-            creep.say('➡️ Штовх!');
-            return; // Зупиняємо інший код на цей тік
+                       return; // Зупиняємо інший код на цей тік
         }
 
         // --- 2. ПЕРЕМИКАННЯ СТАНІВ ---
         if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.building = false;
-            creep.say('🔄 Енергія');
-        }
+                  }
         if(!creep.memory.building && creep.store.getFreeCapacity() == 0) {
             creep.memory.building = true;
-            creep.say('🏗 На об’єкт');
-        }
+            }
 
         // --- 3. ЛОГІКА ДІЙ (Має енергію) ---
         if(creep.memory.building) {

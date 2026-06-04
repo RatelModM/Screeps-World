@@ -34,7 +34,7 @@ var roleUpgrader = {
             // Пріоритет 2: Найближчий контейнер (ФІКС: знижено планку до > 100)
             if (!target) {
                 target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 500
+                    filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 1000
                 });
             }
 
