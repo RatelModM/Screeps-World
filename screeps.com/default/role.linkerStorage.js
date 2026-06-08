@@ -44,7 +44,7 @@ var roleLinkerStorage = {
 
         // 1. ЛОГІКА СКИНУ ЕНЕРГІЇ (Кріп повний енергії)
         if (creep.store[RESOURCE_ENERGY] > 0 && (link.store[RESOURCE_ENERGY] === 0 || creep.store.getFreeCapacity() === 0)) {
-            if (storage.store[RESOURCE_ENERGY] > 695000 && factory.store[RESOURCE_ENERGY] < 40000) {
+            if (storage.store[RESOURCE_ENERGY] > 500000 && factory.store[RESOURCE_ENERGY] < 20000) {
                 if (creep.transfer(factory, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ff00'}});
             } else {
                 if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
@@ -71,7 +71,7 @@ var roleLinkerStorage = {
             }
 
             // Крок 3: Якщо іншої роботи немає — заправляємо фабрику енергією зі сховища
-            if (storage.store[RESOURCE_ENERGY] > 700000 && factory.store[RESOURCE_ENERGY] < 40000) {
+            if (storage.store[RESOURCE_ENERGY] > 500000 && factory.store[RESOURCE_ENERGY] < 25000) {
                 if (creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }

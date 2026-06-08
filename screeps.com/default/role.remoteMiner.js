@@ -41,24 +41,20 @@ var roleRemoteMiner = {
             // Ми на місці! Видобуваємо енергію кожен тік
             creep.harvest(source);
 
-            // --- ФУНКЦІЯ РЕМОНТУ ТА СКИДАННЯ ЕНЕРГІЇ ---
-            if (creep.store[RESOURCE_ENERGY] > 0) {
-                
-                // Варіант А: Якщо є лінк — заливаємо туди в першу чергу
-                if (link && link.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-                    creep.transfer(link, RESOURCE_ENERGY);
-                    
-                } 
-                // Варіант Б: Якщо лінка немає/повний, але контейнер потребує ремонту (менше 80% HP)
-                else if (container && container.hits < container.hitsMax * 0.8) {
-                    creep.repair(container);
-                    creep.say('🛠️');
-                } 
-                // Варіант В: Все працює і все ціле, просто копаємо (енергія падає на землю/в контейнер)
-                else {
-                    creep.say('⛏️');
-                }
-            } else {
+            // --- ОНОВЛЕНА ФУНКЦІЯ РЕМОНТУ ТА СКИДАННЯ ---
+            
+            // Варіант А: Скидаємо в лінк ТІЛЬКИ тоді, коли кріп ПОВНІСТЮ заповнений
+            if (creep.store.getFreeCapacity() === 0 && link && link.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                creep.transfer(link, RESOURCE_ENERGY);
+              
+            } 
+            // Варіант Б: Якщо кріп НЕ повний, але контейнер потребує ремонту (менше 80% HP)
+            else if (container && container.hits < container.hitsMax * 0.8 && creep.store[RESOURCE_ENERGY] > 0) {
+                creep.repair(container);
+                creep.say('🛠️');
+            } 
+            // Варіант В: Кріп просто копає (енергія з часом заповнить кріпа, а надлишок впаде в контейнер)
+            else {
                 creep.say('⛏️');
             }
         }

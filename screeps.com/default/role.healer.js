@@ -50,7 +50,7 @@ var roleHealer = {
             });
 
             if (defender) {
-                creep.say('👣');
+               
                 if (!creep.pos.isNearTo(defender)) {
                     creep.moveTo(defender, {range: 1});
                 }

@@ -62,7 +62,7 @@ var roleRemoteBuilder = {
                 
                 // 1. Спочатку підбираємо те, що впало (Dropped)
                 let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 50
+                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 500
                 });
                 
                 if(dropped) {

@@ -28,7 +28,7 @@ var industry = {
         }
 
         // ПРІОРИТЕТ 2: Якщо мінералів немає, плавимо надлишки енергії в батарейки
-        if (factory.store[RESOURCE_ENERGY] >= 600 && factory.store.getFreeCapacity(RESOURCE_BATTERY) > 100) {
+        if (factory.store[RESOURCE_ENERGY] >= 3000 && factory.store.getFreeCapacity(RESOURCE_BATTERY) > 500) {
             let result = factory.produce(RESOURCE_BATTERY);
             if (result == OK) {
                 factory.room.visual.text('🏭🔋 Battery', factory.pos.x, factory.pos.y, {size: 0.4, opacity: 0.8});

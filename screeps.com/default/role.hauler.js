@@ -27,7 +27,7 @@ var roleHauler = {
                 
                 // Шукаємо фабрику, яка має вільне місце під цей конкретний мінерал
                 var factory = creep.room.find(FIND_MY_STRUCTURES, {
-                    filter: (s) => s.structureType == STRUCTURE_FACTORY && s.store.getFreeCapacity(mineralType) > 0
+                    filter: (s) => s.structureType == STRUCTURE_FACTORY && s.store.getFreeCapacity(mineralType) > 5000
                 })[0];
                 
                 if (factory) {
@@ -71,7 +71,7 @@ var roleHauler = {
         else {
             // ОСНОВНА РОБОТА: Шукаємо повні контейнери з енергією (> 1200)
             var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 1200
+                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 700
             });
 
             if (container) {
