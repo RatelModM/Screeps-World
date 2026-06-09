@@ -1,78 +1,118 @@
+const limits = require('limits');
+
 var roleLinkerStorage = {
     run: function(creep) {
         let link = Game.getObjectById(creep.memory.linkId);
         let storage = creep.room.storage;
         let terminal = creep.room.terminal;
-
+        
         let factory = creep.room.find(FIND_MY_STRUCTURES, {
             filter: (s) => s.structureType == STRUCTURE_FACTORY
         })[0];
 
         if (!link || !storage) return;
 
-        // Список усього, що фабрика виробляє і що треба відносити в термінал
-        const PRODUCTS = [RESOURCE_BATTERY, RESOURCE_OXIDANT, RESOURCE_PURIFIER, RESOURCE_KEANIUM_BAR];
-
         // =========================================================================
-        // ВАРІАНТ А: КІМНАТА БЕЗ ФАБРИКИ
+        // ЕТАП 1: КРІП ЩОСЬ НЕСЕ (Логіка розвантаження)
         // =========================================================================
-        if (!factory) {
-            if (creep.store[RESOURCE_ENERGY] > 0) {
-                if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
-            } 
-            else if (creep.store.getFreeCapacity() > 0 && link.store[RESOURCE_ENERGY] > 0) {
-                if (creep.withdraw(link, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.moveTo(link, {visualizePathStyle: {stroke: '#ffaa00'}});
+        if (creep.store.getUsedCapacity() > 0) {
+            for (let resourceType in creep.store) {
+                if (creep.store[resourceType] > 0) {
+                    
+                    // А. Якщо несемо ЕНЕРГІЮ
+                    if (resourceType === RESOURCE_ENERGY) {
+                        let factoryEnergyTarget = limits.get(STRUCTURE_FACTORY, RESOURCE_ENERGY).target;
+                        
+                        if (factory && factory.store[RESOURCE_ENERGY] < factoryEnergyTarget) {
+                            if (creep.transfer(factory, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ff00'}});
+                            }
+                        } else {
+                            if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
+                            }
+                        }
+                    } 
+                    // Б. Якщо несемо МІНЕРАЛИ або КОМПОНЕНТИ
+                    else {
+                        if (factory) {
+                            let target = limits.get(STRUCTURE_FACTORY, resourceType).target;
+                            if (factory.store[resourceType] < target) {
+                                if (creep.transfer(factory, resourceType) == ERR_NOT_IN_RANGE) {
+                                    creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ff00'}});
+                                }
+                                return;
+                            }
+                        }
+                        if (terminal && terminal.store.getFreeCapacity() > 0) {
+                            if (creep.transfer(terminal, resourceType) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ff00ff'}});
+                            }
+                        } else {
+                            if (creep.transfer(storage, resourceType) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
+                            }
+                        }
+                    }
+                    return; 
+                }
             }
-            return;
         }
 
         // =========================================================================
-        // ВАРІАНТ Б: КІМНАТА З ФАБРИКОЮ
+        // ЕТАП 2: КРІП ПОРОЖНІЙ (Пошук роботи згідно з пріоритетами)
         // =========================================================================
         
-        // 0. ПРІОРИТЕТ ПОНАД УСЕ: Очищення торби кріпа від будь-яких готових продуктів фабрики
-        for (let product of PRODUCTS) {
-            if (creep.store[product] > 0) {
-                if (terminal && terminal.store.getFreeCapacity() > 0) {
-                    if (creep.transfer(terminal, product) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(terminal, {visualizePathStyle: {stroke: '#00ffff'}});
+        // ПРІОРИТЕТ 1: Збирати енергію з лінку
+        if (link.store[RESOURCE_ENERGY] > 0) {
+            if (creep.withdraw(link, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(link, {visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+            return; 
+        }
+
+        // ПРІОРИТЕТ 2: ЕВАКУАЦІЯ ГОТОВИХ ПРОДУКТІВ ТА НАДЛИШКІВ З ФАБРИКИ
+        if (factory) {
+            for (let resourceType in factory.store) {
+                if (factory.store[resourceType] > 0) {
+                    let maxAllowed = limits.get(STRUCTURE_FACTORY, resourceType).max;
+                    
+                    // Якщо ресурсу більше, ніж дозволено (наприклад, продуктів там > 0, а ліміт max: 0)
+                    if (factory.store[resourceType] > maxAllowed) {
+                        if (terminal && terminal.store.getFreeCapacity() > 0) {
+                            if (creep.withdraw(factory, resourceType) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ffff'}});
+                            }
+                            return; // Завдання знайдено, йдемо забирати продукт
+                        }
                     }
                 }
-                return;
             }
         }
 
-        // 1. ЛОГІКА СКИНУ ЕНЕРГІЇ (Кріп повний енергії)
-        if (creep.store[RESOURCE_ENERGY] > 0 && (link.store[RESOURCE_ENERGY] === 0 || creep.store.getFreeCapacity() === 0)) {
-            if (storage.store[RESOURCE_ENERGY] > 500000 && factory.store[RESOURCE_ENERGY] < 20000) {
-                if (creep.transfer(factory, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ff00'}});
-            } else {
-                if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
-            }
-            return;
-        } 
-        
-        // 2. ЛОГІКА НАБОРУ РЕСУРСІВ (Кріп пустий і шукає роботу)
-        if (creep.store.getFreeCapacity() > 0) {
-            // Крок 1: Очищаємо лінк
-            if (link.store[RESOURCE_ENERGY] > 0) {
-                if (creep.withdraw(link, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.moveTo(link, {visualizePathStyle: {stroke: '#ffaa00'}});
-                return;
-            }
-            
-            // Крок 2: Перевіряємо фабрику на наявність ГОТОВИХ продуктів для евакуації в Термінал
-            for (let product of PRODUCTS) {
-                if (factory.store[product] > 0 && terminal && terminal.store.getFreeCapacity() > 0) {
-                    if (creep.withdraw(factory, product) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ffff'}});
+        // ПРІОРИТЕТ 3: Наповнення фабрики компонентами за лімітами
+        if (factory && limits.factory) {
+            for (let resourceType in limits.factory) {
+                let target = limits.get(STRUCTURE_FACTORY, resourceType).target;
+                
+                if (factory.store[resourceType] < target) {
+                    
+                    // Крок А: Шукаємо в ТЕРМІНАЛІ
+                    if (terminal && terminal.store[resourceType] > 0) {
+                        if (creep.withdraw(terminal, resourceType) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(terminal, {visualizePathStyle: {stroke: '#00ffff'}});
+                        }
+                        return; 
                     }
-                    return;
+                    
+                    // Крок Б: Шукаємо в СХОВИЩІ
+                    if (storage.store[resourceType] > 0) {
+                        if (creep.withdraw(storage, resourceType) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(storage, {visualizePathStyle: {stroke: '#00ffff'}});
+                        }
+                        return; 
+                    }
                 }
-            }
-
-            // Крок 3: Якщо іншої роботи немає — заправляємо фабрику енергією зі сховища
-            if (storage.store[RESOURCE_ENERGY] > 500000 && factory.store[RESOURCE_ENERGY] < 25000) {
-                if (creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
     }
