@@ -20,19 +20,29 @@ var roleLinkerStorage = {
                 if (creep.store[resourceType] > 0) {
                     
                     // А. Якщо несемо ЕНЕРГІЮ
-                    if (resourceType === RESOURCE_ENERGY) {
-                        let factoryEnergyTarget = limits.get(STRUCTURE_FACTORY, RESOURCE_ENERGY).target;
-                        
-                        if (factory && factory.store[RESOURCE_ENERGY] < factoryEnergyTarget) {
-                            if (creep.transfer(factory, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                                creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ff00'}});
-                            }
-                        } else {
-                            if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                                creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
-                            }
-                        }
-                    } 
+    if (resourceType === RESOURCE_ENERGY) {
+    let storageEnergyTarget = limits.get(STRUCTURE_STORAGE, RESOURCE_ENERGY).target;
+    let factoryEnergyTarget = limits.get(STRUCTURE_FACTORY, RESOURCE_ENERGY).target;
+    
+    // 1. ПЕРШИЙ ПРІОРИТЕТ: Наповнюємо Сховище до ліміту target
+    if (storage && storage.store[RESOURCE_ENERGY] < storageEnergyTarget) {
+        if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
+        }
+    } 
+    // 2. ДРУГИЙ ПРІОРИТЕТ: Якщо Сховище повне, годуємо Фабрику
+    else if (factory && factory.store[RESOURCE_ENERGY] < factoryEnergyTarget) {
+        if (creep.transfer(factory, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ff00'}});
+        }
+    } 
+    // 3. РЕЗЕРВ: Якщо і Сховище, і Фабрика виконали свої плани — просто скидаємо в Сховище далі
+    else {
+        if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
+        }
+    }
+}
                     // Б. Якщо несемо МІНЕРАЛИ або КОМПОНЕНТИ
                     else {
                         if (factory) {
@@ -106,7 +116,7 @@ var roleLinkerStorage = {
                     }
                     
                     // Крок Б: Шукаємо в СХОВИЩІ
-                    if (storage.store[resourceType] > 0) {
+                    if (storage.store[resourceType] > 375000) {
                         if (creep.withdraw(storage, resourceType) == ERR_NOT_IN_RANGE) {
                             creep.moveTo(storage, {visualizePathStyle: {stroke: '#00ffff'}});
                         }
