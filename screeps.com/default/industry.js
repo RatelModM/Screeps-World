@@ -12,7 +12,8 @@ var industry = {
         const mineralRecipes = [
             { ingredient: RESOURCE_OXYGEN, product: RESOURCE_OXIDANT },
             { ingredient: RESOURCE_CATALYST, product: RESOURCE_PURIFIER },
-            { ingredient: RESOURCE_KEANIUM, product: RESOURCE_KEANIUM_BAR }
+            { ingredient: RESOURCE_KEANIUM, product: RESOURCE_KEANIUM_BAR },
+            { ingredient: RESOURCE_LEMERGIUM, product: RESOURCE_LEMERGIUM_BAR }
         ];
 
         for (let recipe of mineralRecipes) {
@@ -28,7 +29,7 @@ var industry = {
         }
 
         // ПРІОРИТЕТ 2: Якщо мінералів немає, плавимо надлишки енергії в батарейки
-        if (factory.store[RESOURCE_ENERGY] >= 10000 && factory.store.getFreeCapacity(RESOURCE_BATTERY) > 500) {
+        if (factory.store[RESOURCE_ENERGY] >= 11000 && factory.store.getFreeCapacity(RESOURCE_BATTERY) > 500) {
             let result = factory.produce(RESOURCE_BATTERY);
             if (result == OK) {
                 factory.room.visual.text('🔋', factory.pos.x, factory.pos.y, {size: 0.4, opacity: 0.8});

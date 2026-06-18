@@ -281,7 +281,7 @@ for(let tower of towers) {
         if (harvesters2.length < 1) {
         s2.spawnCreep([WORK,CARRY,CARRY,CARRY,CARRY, MOVE, MOVE], 'H2_' + Game.time, {memory: {role: 'harvester', targetRoom: 'W11N18'}});
     } 
-    else if(builders2.length <1) {
+    else if(builders2.length <10) {
         s2.spawnCreep([WORK,WORK, CARRY, CARRY,WORK,WORK, CARRY, CARRY,WORK,CARRY,MOVE, MOVE, MOVE, MOVE], 'builder_S2' + Game.time, {memory: {role: 'builder',targetRoom: 'W11N18'}});
     }
     else if(repairers2.length < 0) {

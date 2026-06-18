@@ -31,18 +31,18 @@ var roleUpgrader = {
                 }
             }
 
+           
+
+            // Пріоритет 3: Головне сховище кімнати (Storage)
+            if (!target && creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 10000) {
+                target = creep.room.storage;
+            }
             // Пріоритет 2: Найближчий контейнер (ФІКС: знижено планку до > 100)
-            if (!target) {
+            else  if (!target) {
                 target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 1000
                 });
             }
-
-            // Пріоритет 3: Головне сховище кімнати (Storage)
-            else if (!target && creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 10000) {
-                target = creep.room.storage;
-            }
-
             // Якщо знайшли будь-яке джерело з пріоритетів — йдемо до нього
             if (target) {
                 if (creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

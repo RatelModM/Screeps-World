@@ -3,9 +3,15 @@ const limits = {
     // ГОЛОВНИЙ СКЛАД (Storage)
     // =========================================================================
     storage: {
-        energy: { target: 375000, max: 600000 }
+        energy: { target: 375000, max: 800000 }
     },
-
+ //  (Storage)
+    // =========================================================================
+    terminal: {
+        energy: { target: 50000, max: 55000 },
+        
+     
+    },
     // =========================================================================
     // ЗАВОД (Factory)
     // =========================================================================
@@ -29,14 +35,14 @@ const limits = {
         // ---------------------------------------------------------------------
         // 2. СТИСНУТІ БАРИ ТА ОЧИЩЕНІ КОМПОНЕНТИ
         // ---------------------------------------------------------------------
-        reductant:      { target: 0,     max: 0 },
-        oxidant:        { target: 0,     max: 0 },
-        utrium_bar:     { target: 0,     max: 0 },
-        lemerium_bar:   { target: 0,     max: 0 },
-        keanium_bar:    { target: 0,     max: 0 },
-        zynthium_bar:   { target: 0,     max: 0 },
-        purifier:       { target: 0,     max: 0 },
-        ghodium_melt:   { target: 0,     max: 0 },
+        reductant:      { target: 0,     max: 100 },
+        oxidant:        { target: 0,     max: 100 },
+        utrium_bar:     { target: 0,     max: 100 },
+        lemergium_bar:   { target: 0,    max: 100 },
+        keanium_bar:    { target: 0,     max: 100 },
+        zynthium_bar:   { target: 0,     max: 100 },
+        purifier:       { target: 0,     max: 100},
+        ghodium_melt:   { target: 0,     max: 100 },
 
         // ---------------------------------------------------------------------
         // 3. СПЕЦІАЛЬНА СИРОВИНА (З депозит-джерел)
