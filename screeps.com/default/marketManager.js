@@ -8,7 +8,7 @@ var marketManager = {
         SELL_THRESHOLDS: {
             [RESOURCE_BATTERY]: 30000,       // Батареї продаємо тільки якщо їх більше 30к
             [RESOURCE_LEMERGIUM_BAR]: 5000,  // Бари продаємо, якщо накопичилось більше 6к
-            // [RESOURCE_KEANIUM_BAR]: 10000,
+            [RESOURCE_KEANIUM_BAR]: 10000,
             // [RESOURCE_OXIDANT]: 20000,
             // [RESOURCE_PURIFIER]: 3000,
             
@@ -26,20 +26,25 @@ var marketManager = {
             [RESOURCE_BATTERY]: 300,
             // [RESOURCE_OXIDANT]: 2200.5,
             // [RESOURCE_PURIFIER]: 4500.05,
-            // [RESOURCE_KEANIUM_BAR]: 800.05,
+            [RESOURCE_KEANIUM_BAR]: 700,
             
             
             // Захист дефіцитних ресурсів (ціна продажу обов'язково вища за ціну закупівлі)
-            [RESOURCE_LEMERGIUM]: 880,       
-            [RESOURCE_LEMERGIUM_BAR]: 3700   
+            [RESOURCE_LEMERGIUM]: 950,       
+            // [RESOURCE_LEMERGIUM_BAR]: 3700   
         },
 
         // НАЛАШТУВАННЯ ДЛЯ ЗАКУПІВЛІ (Миттєва скупка та пасивні BUY-ордери)
         BUY_CONFIG: {
             [RESOURCE_LEMERGIUM]: {
-                maxAmount: 10000,     // Нам потрібно 10к для фабрики
+                maxAmount: 20000,     // Нам потрібно 10к для фабрики
                 maxPrice: 550,        // Купуємо не дорожче ніж 650
                 sellThreshold: 5000  // Продаємо лише якщо накопичилось більше 25к (захист від зациклення)
+            },
+            [RESOURCE_KEANIUM]: {
+                maxAmount: 20000,     // Нам потрібно 10к для фабрики
+                maxPrice: 60,        // Купуємо не дорожче ніж 650
+                sellThreshold: 21000  // Продаємо лише якщо накопичилось більше 25к (захист від зациклення)
             },
             // [RESOURCE_LEMERGIUM_BAR]: {
             //     maxAmount: 2000,  
