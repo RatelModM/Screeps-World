@@ -381,13 +381,13 @@ for(let tower of towers) {
         //         repairing: false
         //     }});
         // }
-        else if (remoteHaulers1_1.length <2 ) {
+        else if (remoteHaulers1_1.length <1) {
         s1.spawnCreep([CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,MOVE,MOVE, MOVE, MOVE,MOVE,MOVE, MOVE,
                           MOVE,MOVE, MOVE, MOVE,MOVE,MOVE, MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE,HEAL], 'R_HaulerW28S28' + Game.time, {
             memory: {
                 role: 'remoteHauler',
-                homeRoom: 'W28S29',
-                deliveryId: '6a2e9f151026034d79672bc7',
+                homeRoom: 'W29S28',
+                deliveryId: '6a2fa1f5a9c1c077f350c3f7',
                 targetRoom: 'W28S28', //  віддалена кімната для пошуку
                 containerIds: [
                     '6a25d5c447f9fc70c6ab36fc', // Контейнер 1
@@ -643,7 +643,7 @@ for(let tower of towers) {
             memory: { role: 'healer', targetRoom: 'W26S29' }
         });
         }
-         else if (remoteHaulers2_2.length < 2 ) {
+         else if (remoteHaulers2_2.length < 1 ) {
         s2_1.spawnCreep([CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
                           MOVE,MOVE, MOVE, MOVE,MOVE,MOVE, MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE,HEAL], 'R_HaulerW26S29' + Game.time, {
             memory: {
@@ -840,7 +840,7 @@ for(let tower of towers) {
         });
     }
         
-        else if(reservers3_1.length < 1) {
+        else if(reservers3_1.length < 0) {
             s3.spawnCreep([CLAIM,CLAIM, MOVE, MOVE, MOVE], 'ReserverW27S26_'+ Game.time, {
             memory: {
                 role: 'reserver',
