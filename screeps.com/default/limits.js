@@ -3,7 +3,7 @@ const limits = {
     // ГОЛОВНИЙ СКЛАД (Storage)
     // =========================================================================
     storage: {
-        energy: { target: 375000, max: 800000 }
+        energy: { target: 375000, max: 400000 }
     },
  //  (Storage)
     // =========================================================================
@@ -26,7 +26,7 @@ const limits = {
         H:              { target: 3000,  max: 5000 }, // RESOURCE_HYDROGEN
         O:              { target: 3000,  max: 5000 }, // RESOURCE_OXYGEN
         U:              { target: 3000,  max: 5000 }, // RESOURCE_UTRIUM
-        L:              { target: 3000,  max: 5000 }, // RESOURCE_LEMERIUM
+        L:              { target: 0,  max: 0 }, // RESOURCE_LEMERIUM
         K:              { target: 3000,  max: 5000 }, // RESOURCE_KEANIUM
         Z:              { target: 3000,  max: 5000 }, // RESOURCE_ZYNTHIUM
         X:              { target: 3000,  max: 5000 }, // RESOURCE_CATALYST

@@ -7,7 +7,7 @@ var marketManager = {
         
         SELL_THRESHOLDS: {
             [RESOURCE_BATTERY]: 30000,       // Батареї продаємо тільки якщо їх більше 30к
-            [RESOURCE_LEMERGIUM_BAR]: 10000,  // Бари продаємо, якщо накопичилось більше 6к
+            [RESOURCE_LEMERGIUM_BAR]: 1000,  // Бари продаємо, якщо накопичилось більше 6к
             // [RESOURCE_KEANIUM_BAR]: 10000,
             // [RESOURCE_OXIDANT]: 20000,
             // [RESOURCE_PURIFIER]: 3000,
@@ -30,7 +30,7 @@ var marketManager = {
             
             
             // Захист дефіцитних ресурсів (ціна продажу обов'язково вища за ціну закупівлі)
-            [RESOURCE_LEMERGIUM]: 800,       
+            [RESOURCE_LEMERGIUM]: 880,       
             [RESOURCE_LEMERGIUM_BAR]: 3900   
         },
 
@@ -133,8 +133,9 @@ var marketManager = {
             let amount = terminalStore[resourceType];
             
             // Визначаємо індивідуальний поріг надлишків для ресурсу
-            let buySettings = this.config.BUY_CONFIG[resourceType];
-            let surplusLimit = buySettings ? buySettings.sellThreshold : this.config.SURPLUS_THRESHOLD;
+            let surplusLimit = this.config.SELL_THRESHOLDS[resourceType] !== undefined 
+              ? this.config.SELL_THRESHOLDS[resourceType] 
+              : (this.config.BUY_CONFIG[resourceType] ? this.config.BUY_CONFIG[resourceType].sellThreshold : this.config.SURPLUS_THRESHOLD);
 
             if (amount >= surplusLimit) {
                 let orders = Game.market.getAllOrders({type: ORDER_BUY, resourceType: resourceType});
@@ -213,9 +214,9 @@ var marketManager = {
 
             let amount = terminalStore[resourceType];
             
-            let buySettings = this.config.BUY_CONFIG[resourceType];
-            let surplusLimit = buySettings ? buySettings.sellThreshold : this.config.SURPLUS_THRESHOLD;
-
+            let surplusLimit = this.config.SELL_THRESHOLDS[resourceType] !== undefined 
+              ? this.config.SELL_THRESHOLDS[resourceType] 
+              : (this.config.BUY_CONFIG[resourceType] ? this.config.BUY_CONFIG[resourceType].sellThreshold : this.config.SURPLUS_THRESHOLD);
             if (amount >= surplusLimit) {
                 let existingSellOrder = myOrders.find(o => o.resourceType === resourceType && o.type === ORDER_SELL);
                 
