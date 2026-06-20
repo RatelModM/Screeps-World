@@ -27,7 +27,7 @@ var marketManager = {
             // [RESOURCE_OXIDANT]: 2200.5,
             // [RESOURCE_PURIFIER]: 4500.05,
             [RESOURCE_KEANIUM_BAR]: 700,
-            
+            [RESOURCE_KEANIUM]: 80,
             
             // Захист дефіцитних ресурсів (ціна продажу обов'язково вища за ціну закупівлі)
             [RESOURCE_LEMERGIUM]: 950,       

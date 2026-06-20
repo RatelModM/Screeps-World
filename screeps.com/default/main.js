@@ -5,16 +5,12 @@ var roleDefender = require('role.defender');
 var roleMiner = require ('role.miner');
 var roleHauler = require('role.hauler');
 var roleRemoteBuilder = require('role.remoteBuilder');
-var targetRoom = 'W28S28';
-var targetRoom2 = 'W29S27';
 var roleReserver = require('role.reserver')
 var roleSpawnHauler = require('role.spawnhauler');
 var roleRemoteMiner = require('role.remoteMiner');
 var roleRemoteMinerHauler = require('role.remoteMinerHauler');
 var roleRemoteHauler = require('role.remoteHauler');
-var roleLinkerSource = require('role.linkerSource');
 var roleLinkerStorage = require('role.linkerStorage');
-var roleHealer = require('role.healer');
 var roleClaimer = require('role.claimer');
 var roleMineralMiner = require('role.mineralMIner');
 var industry = require ('industry')
@@ -31,6 +27,7 @@ module.exports.loop = function () {
     }
 
     // 2. Рахуємо наявні зміні
+
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester'&& creep.memory.targetRoom == "W29S28");
     var harvesters2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester'&& creep.memory.targetRoom == "W27S29");
     var harvesters3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester'&& creep.memory.targetRoom == "W27S27");
@@ -51,8 +48,6 @@ module.exports.loop = function () {
     var defenderS1_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W28S28");
     var defenderS2_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W29S29");
     var defenderS2_2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W26S29");
-    var defenderS1_2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W29S27");
-    var defenderS3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W27S27");
     var defenderS3_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W27S28");
     var defenderS3_2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W27S26");
     var defenderS4_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W28S27");
@@ -83,7 +78,7 @@ module.exports.loop = function () {
     var reservers2_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.targetRoom == 'W27S28');
     var reservers2_2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.targetRoom == 'W26S29');
     var reservers3_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.targetRoom == 'W27S26');
-    var reservers3_2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.targetRoom == 'W28S27');
+    var reservers4_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.targetRoom == 'W28S27');
     var reservers5_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'reserver' && creep.memory.targetRoom == 'W29S29');
 
     var SpawnHaulerS1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'spawnhauler'&& creep.memory.targetRoom == "W29S28");
@@ -103,9 +98,9 @@ module.exports.loop = function () {
     var remoteMiners4_3 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '55db3133efa8e3fe66e0488e');
     var remoteMiners4_4 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '55db3133efa8e3fe66e04890');
     var remoteMiners4_1 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '55db3116efa8e3fe66e047c5');
-    var remoteMiners5_1 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '55db3117efa8e3fe66e047cd');
     var remoteMiners4_2 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '55db3116efa8e3fe66e047c6');
-    
+    var remoteMiners5_1 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '55db3117efa8e3fe66e047cd');
+
     var remoteMinerHauler2_1 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMinerHauler' && c.memory.sourceId == '55db318befa8e3fe66e04ba5');
     var remoteMinerHauler3_1 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMinerHauler' && c.memory.sourceId == '55db3154efa8e3fe66e0494d');
     var remoteMinerHauler4_1 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMinerHauler' && c.memory.sourceId == '55db3115efa8e3fe66e047c3');
@@ -118,14 +113,12 @@ module.exports.loop = function () {
     var MineralMiner_5=_.filter(Game.creeps, (creep) => creep.memory.role == 'mineralMIner'&& creep.memory.targetRoom == 'W28S29');
 
     var remoteHaulers1_1=_.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHauler'&& creep.memory.targetRoom == 'W28S28');
-   
     var remoteHaulers2_1=_.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHauler'&& creep.memory.targetRoom == 'W27S28');
     var remoteHaulers2_2=_.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHauler'&& creep.memory.targetRoom == 'W26S29');
     var remoteHaulers3_1=_.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHauler'&& creep.memory.targetRoom == 'W27S28');
     var remoteHaulers4_1=_.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHauler'&& creep.memory.targetRoom == 'W28S27');
     var remoteHaulers5_1=_.filter(Game.creeps, (creep) => creep.memory.role == 'remoteHauler'&& creep.memory.targetRoom == 'W29S29');
 
-    var LinkerSource1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'linkerSource'&& creep.memory.linkId == '6a01e57a532f25f5ab19ec66');
     var LinkerStorage1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'linkerStorage'&& creep.memory.linkId == '6a1a9ad106382f425a860ee9');
     var LinkerStorage2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'linkerStorage'&& creep.memory.linkId == '6a17638d5d6bdcd5eeb4ca61');
     var LinkerStorage3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'linkerStorage'&& creep.memory.linkId == '6a17496873d18470acf2ef44');
@@ -268,7 +261,7 @@ for(let tower of towers) {
     }
 
 // 3. Автоматичне створення кріпів
-// --- СПАВНЕР 1 (Основна база )  7 lvl
+// --- СПАВНЕР 1 (Основна база )  
         let s1 = Game.spawns['Spawn1'];  
         if(!s1.spawning) { 
             
@@ -303,20 +296,6 @@ for(let tower of towers) {
                 role: 'mineralMIner', 
                 targetRoom: 'W29S28' }});
         }
-        else if(miner.length < 2) {
-            if(minersOnSource.length < 1) {
-            s1.spawnCreep([WORK, WORK,WORK, WORK, WORK,CARRY, MOVE, MOVE], 'Miner1_' + Game.time, 
-                {memory: {
-                     role: 'miner', 
-                    targetSourceId: '55db3116efa8e3fe66e047c9' }});
-            }
-            else {
-            s1.spawnCreep([WORK, WORK, WORK, WORK, WORK,CARRY, MOVE, MOVE], 'Miner1_2_' + Game.time, {
-                memory: { 
-                    role: 'miner', 
-                    targetSourceId: '55db3116efa8e3fe66e047cb' }});
-            }
-        }       
         else if(remoteMiners1_1.length < 1) {
             s1.spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE,MOVE, CARRY], 'RMiner1W28S28_' + Game.time, {
             memory: { role: 'remoteMiner', 
@@ -412,7 +391,7 @@ for(let tower of towers) {
                 {memory: {
                     role: 'upgrader', 
                     targetRoom: 'W29S28',
-                    linkId: '69f73a85788980053d456476'}});
+                    linkId: '6a1ac4cb4f03e8f542254857'}});
         } 
          else if(remoteBuilderS1.length <0 ) {
             s1_2.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
@@ -430,7 +409,7 @@ for(let tower of towers) {
         }
     }
     
-// --- СПАВНЕР 2 (Друга база / Експансія)  7 lvl
+// --- СПАВНЕР 2 
         let s2 = Game.spawns['Spawn2'];
         if(s2 && !s2.spawning) { // Перевіряємо чи він вільний
         if (harvesters2.length <0) {
@@ -472,12 +451,12 @@ for(let tower of towers) {
         }
         
         else if(remoteMiners2_3.length < 1) {
-        s2.spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner1W26S29_' + Game.time, {
+        s2.spawnCreep([WORK, WORK, WORK, WORK, WORK,CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner1W26S29_' + Game.time, {
             memory: { role: 'remoteMiner', targetRoom: 'W26S29', sourceId: '55db3178efa8e3fe66e04a7d' }
         });
         }
         else if(remoteMiners2_4.length < 1) {
-        s2.spawnCreep([WORK, WORK, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner2W26S29_' + Game.time, {
+        s2.spawnCreep([WORK, WORK, WORK, WORK, WORK,CARRY, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner2W26S29_' + Game.time, {
             memory: { role: 'remoteMiner', targetRoom: 'W26S29', sourceId: '55db3178efa8e3fe66e04a7e' }
         });
         }
@@ -536,11 +515,11 @@ for(let tower of towers) {
         }
          else if (defenderS2_2.length < 1) {
             s2_1.spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, 
-        WORK, WORK, 
-        CARRY, CARRY, 
+        WORK, WORK, WORK, WORK, 
+        CARRY, CARRY, CARRY, CARRY, 
         RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, 
         ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, 
-        MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
+        MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,  MOVE, MOVE, MOVE,
         MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
         HEAL, HEAL], 'DEFW26S29_'+Game.time, {
                 memory: { role: 'defender', targetRoom: 'W26S29' }
@@ -580,7 +559,8 @@ for(let tower of towers) {
     MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], 'builder_S2' + Game.time, {memory: {role: 'builder',targetRoom: 'W27S29'}});
         }
     }
-// --- СПАВНЕР 3 (ТРетя база / Експансія) 6 lvl
+
+// --- СПАВНЕР 3 
      let s3_1 = Game.spawns['Spawn3_1'];
         if(s3_1 && !s3_1.spawning) { // Перевіряємо чи він вільний    
         if (LinkerStorage3.length <1){
@@ -709,8 +689,9 @@ for(let tower of towers) {
          
         
     }
-// --- СПАВНЕР 4 (четверта база / Експансія) 5 lvl
-        let s4 = Game.spawns['Spawn4'];
+
+// --- СПАВНЕР 4 
+    let s4 = Game.spawns['Spawn4'];
         if(s4 && !s4.spawning) { // Перевіряємо чи він вільний
         
         if(SpawnHaulerS4.length < 1) { 
@@ -806,29 +787,34 @@ for(let tower of towers) {
             });
         }
             }
-
     let s4_1 = Game.spawns['Spawn4_1'];
         if(s4_1 && !s4_1.spawning) { // Перевіряємо чи він вільний
-       
-            if(haulerS4.length <1) { 
+        if(haulerS4.length <1) { 
         s4_1.spawnCreep([CARRY, CARRY, CARRY,CARRY, CARRY, CARRY,CARRY, CARRY, CARRY,CARRY, CARRY, CARRY,CARRY, CARRY, CARRY,CARRY, CARRY, CARRY,MOVE, MOVE,MOVE,MOVE, MOVE,MOVE,MOVE, MOVE,MOVE], 'haulerS4'+Game.time,  {memory: {role: 'hauler',targetRoom: 'W29S27'}})
         }
-     }
-        else if (defenderS4_1.length < 1) {
+        else if(reservers4_1.length < 1) {
+            s4_1.spawnCreep([CLAIM,CLAIM, MOVE, MOVE, MOVE], 'ReserverW28S27_'+ Game.time, {
+            memory: {
+                role: 'reserver',
+                targetRoom: 'W28S27',
+        }});
+        }
+       
+         else if (defenderS4_1.length < 1) {
             s4_1.spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, 
-        WORK, WORK, 
-        CARRY, CARRY, 
+        WORK, WORK,  WORK, WORK,
+        CARRY, CARRY,  CARRY, CARRY, 
         RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, 
         ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, 
         MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
         MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
-        HEAL, HEAL], 'DEFW27S28_1_'+Game.time, {
+        HEAL, HEAL], 'DEFW28S27_1_'+Game.time, {
                 memory: { role: 'defender', targetRoom: 'W28S27' }
             });
         }
-
-        
-    // --- СПАВНЕР 5 (четверта база / Експансія) 5 lvl
+    }
+     
+// --- СПАВНЕР 5 
         let s5 = Game.spawns['Spawn5'];
         if(s5 && !s5.spawning) { // Перевіряємо чи він вільний
         
@@ -918,6 +904,7 @@ for(let tower of towers) {
         }
            
     }
+
 //indastry
     for(let roomName in Game.rooms){
         let room = Game.rooms[roomName];
