@@ -53,9 +53,8 @@ module.exports.loop = function () {
     var defenderS4_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W28S27");
     var defenderS5_1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'defender'&& creep.memory.targetRoom == "W29S29");
     
-
-    
     var miner = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
+    var minersOnSource = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.targetSourceId == '55db3116efa8e3fe66e047c9');
     var minerS2_1 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '55db3155efa8e3fe66e04958');
     var minerS2_2 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '55db3155efa8e3fe66e04957');
     var minerS3_1 = _.filter(Game.creeps, (c) => c.memory.role == 'remoteMiner' && c.memory.sourceId == '55db3154efa8e3fe66e04950');
@@ -70,7 +69,7 @@ module.exports.loop = function () {
     var haulerS3 = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler'&& creep.memory.targetRoom == "W27S27");
     var haulerS4 = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler'&& creep.memory.targetRoom == "W29S27");
     var haulerS5 = _.filter(Game.creeps, (creep) => creep.memory.role == 'hauler'&& creep.memory.targetRoom == "W28S29");
-    var minersOnSource = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner' && creep.memory.targetSourceId == '55db3116efa8e3fe66e047c9');
+    
     var remoteBuilderS1 = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteBuilder' && creep.memory.targetRoom == "W29S27");
     var remoteBuilderS2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteBuilder' && creep.memory.targetRoom == "W28S29");
     
@@ -128,137 +127,137 @@ module.exports.loop = function () {
     var Claimer = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer');
 
     // логіка вежі
-for(let tower of towers) {    
-    // 1.1 Пріоритет №1: Атака ворогів
-    var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-    if(closestHostile) {
-        tower.attack(closestHostile);
-    } 
-    // 1.2 Пріоритет №2: Ремонт (якщо немає ворогів)
-    else {
-        // Шукаємо критичні пошкодження: Дороги та Контейнери
-        var urgentRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (s) => {
-                return (s.structureType == STRUCTURE_ROAD || s.structureType == STRUCTURE_CONTAINER) && 
-                       s.hits < s.hitsMax;}});
-        if(urgentRepair) {tower.repair(urgentRepair);} 
-        
+    for(let tower of towers) {    
+        // 1.1 Пріоритет №1: Атака ворогів
+        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if(closestHostile) {
+            tower.attack(closestHostile);
+        } 
+        // 1.2 Пріоритет №2: Ремонт (якщо немає ворогів)
         else {
-         // Якщо дороги цілі, займаємося стінами та рампартами
-        var defensiveRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+            // Шукаємо критичні пошкодження: Дороги та Контейнери
+            var urgentRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (s) => {
-                    return (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART) && 
-                           s.hits < 100000;}
-            });
-            if(defensiveRepair) {
-                tower.repair(defensiveRepair);
+                    return (s.structureType == STRUCTURE_ROAD || s.structureType == STRUCTURE_CONTAINER) && 
+                        s.hits < s.hitsMax;}});
+            if(urgentRepair) {tower.repair(urgentRepair);} 
+            
+            else {
+            // Якщо дороги цілі, займаємося стінами та рампартами
+            var defensiveRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (s) => {
+                        return (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART) && 
+                            s.hits < 100000;}
+                });
+                if(defensiveRepair) {
+                    tower.repair(defensiveRepair);
+                }
             }
         }
     }
-}
-    let sourceLinkS1_1 = Game.getObjectById('6a1431c777fce14e0c0e72a9');
-    let sourceLinkS1_2 = Game.getObjectById('6a01e57a532f25f5ab19ec66'); 
-    let sourceLinkS1_3 = Game.getObjectById('6a2fa1f5a9c1c077f350c3f7');
-    let targetLinkS1 = Game.getObjectById('6a1a9ad106382f425a860ee9');
-    let targetLinkS1_2 = Game.getObjectById('6a2eb2f606a19d38eca01fdd');
+    // Логіка ЛіНКів
 
-    // 2. Перевіряємо перший лінк-джерелоS1
-    if (sourceLinkS1_1 && targetLinkS1 && sourceLinkS1_1.cooldown == 0) {
-    if (sourceLinkS1_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS1_1.transferEnergy(targetLinkS1);
-    }
-    }
+        // spawn1
+        let sourceLinkS1_1 = Game.getObjectById('6a1431c777fce14e0c0e72a9');
+        let sourceLinkS1_2 = Game.getObjectById('6a01e57a532f25f5ab19ec66'); 
+        let sourceLinkS1_3 = Game.getObjectById('6a2fa1f5a9c1c077f350c3f7');
+        let targetLinkS1 = Game.getObjectById('6a1a9ad106382f425a860ee9');
+        let targetLinkS1_2 = Game.getObjectById('6a2eb2f606a19d38eca01fdd');
 
-    // 3. Перевіряємо другий лінк-джерелоS1
-    // Він працює незалежно: якщо перший на перезарядці, цей все одно відправить енергію
-    if (sourceLinkS1_2 && targetLinkS1 && sourceLinkS1_2.cooldown == 0) {
-    if (sourceLinkS1_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS1_2.transferEnergy(targetLinkS1);
-    }
-    }
-// 4 Перевіряємо 3 лінк-джерелоS1
-    // Він працює незалежно: якщо перший на перезарядці, цей все одно відправить енергію
-    if (sourceLinkS1_3 && targetLinkS1 && sourceLinkS1_3.cooldown == 0) {
-    if (sourceLinkS1_3.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS1_3.transferEnergy(targetLinkS1);
-    }
-    }
+        // лінк-джерело
+        if (sourceLinkS1_1 && targetLinkS1 && sourceLinkS1_1.cooldown == 0) {
+        if (sourceLinkS1_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS1_1.transferEnergy(targetLinkS1);
+        }
+        }
 
-// spawn2
-        let sourceLinkS2_1 = Game.getObjectById('6a0c505ae7e8d2a68cdffb4c');
-        let sourceLinkS2_2 = Game.getObjectById('6a231e975e9ef622c6b11baf'); 
-        let targetLinkS2_1 = Game.getObjectById('6a17638d5d6bdcd5eeb4ca61');
-        let targetLinkS2_2 = Game.getObjectById('6a183a707162c3849c86d173');
+        // лінк-джерело
+        if (sourceLinkS1_2 && targetLinkS1 && sourceLinkS1_2.cooldown == 0) {
+        if (sourceLinkS1_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS1_2.transferEnergy(targetLinkS1);
+        }
+        }
+        // лінк-джерело
+        if (sourceLinkS1_3 && targetLinkS1 && sourceLinkS1_3.cooldown == 0) {
+        if (sourceLinkS1_3.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS1_3.transferEnergy(targetLinkS1);
+        }
+        }
 
-    // 2. Перевіряємо перший лінк-джерелоS2
-    if (sourceLinkS2_1 && targetLinkS2_1 && sourceLinkS2_1.cooldown == 0) {
-    if (sourceLinkS2_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS2_1.transferEnergy(targetLinkS2_1);
-    }
-    }
+        // spawn2
+            let sourceLinkS2_1 = Game.getObjectById('6a0c505ae7e8d2a68cdffb4c');
+            let sourceLinkS2_2 = Game.getObjectById('6a231e975e9ef622c6b11baf'); 
+            let targetLinkS2_1 = Game.getObjectById('6a17638d5d6bdcd5eeb4ca61');
+            let targetLinkS2_2 = Game.getObjectById('6a183a707162c3849c86d173');
 
-    // 3. Перевіряємо другий лінк-джерелоS2
-    // Він працює незалежно: якщо перший на перезарядці, цей все одно відправить енергію
-   if (sourceLinkS2_2 && targetLinkS2_1 && sourceLinkS2_2.cooldown == 0) {
-    if (sourceLinkS2_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS2_2.transferEnergy(targetLinkS2_1);
-    }
-    }
-    // spawn3
-        let sourceLinkS3_1 = Game.getObjectById('6a32bfa22a5f581a771e6b7b');
-        let sourceLinkS3_2 = Game.getObjectById('6a2712b759ab19389d8a2d1b'); 
-        let targetLinkS3 = Game.getObjectById('6a17496873d18470acf2ef44');
-        let targetLinkS3_1 = Game.getObjectById('6a19e3e4ff91507127143c46');
+        // лінк-джерело
+        if (sourceLinkS2_1 && targetLinkS2_1 && sourceLinkS2_1.cooldown == 0) {
+        if (sourceLinkS2_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS2_1.transferEnergy(targetLinkS2_1);
+        }
+        }
 
-    // 2. Перевіряємо перший лінк-джерелоS2
-    if (sourceLinkS3_1 && targetLinkS3 && sourceLinkS3_1.cooldown == 0) {
-    if (sourceLinkS3_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 700) {
-        sourceLinkS3_1.transferEnergy(targetLinkS3);
-    }
-    }
-     if (sourceLinkS3_2 && targetLinkS3 && sourceLinkS3_2.cooldown == 0) {
-    if (sourceLinkS3_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS3_2.transferEnergy(targetLinkS3);
-    }
-    }
- // spawn4
-        let sourceLinkS4_1 = Game.getObjectById('6a1a03a14f03e80f8e25132f');
-        let sourceLinkS4_2 = Game.getObjectById('6a1ec9cb34a2fbc89c868aba'); 
-        let sourceLinkS4_3 = Game.getObjectById('6a2aad18ee0887a45a89d95c');
-        let targetLinkS4 = Game.getObjectById('6a19dfcad1a6e81d67d9dd27');
+        // лінк-джерело
+        if (sourceLinkS2_2 && targetLinkS2_1 && sourceLinkS2_2.cooldown == 0) {
+        if (sourceLinkS2_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS2_2.transferEnergy(targetLinkS2_1);
+        }
+        }
+        //spawn3
+            let sourceLinkS3_1 = Game.getObjectById('6a32bfa22a5f581a771e6b7b');
+            let sourceLinkS3_2 = Game.getObjectById('6a2712b759ab19389d8a2d1b'); 
+            let targetLinkS3 = Game.getObjectById('6a17496873d18470acf2ef44');
+            let targetLinkS3_1 = Game.getObjectById('6a19e3e4ff91507127143c46');
 
-    // 2. Перевіряємо перший лінк-джерелоS2
-    if (sourceLinkS4_1 && targetLinkS4 && sourceLinkS4_1.cooldown == 0) {
-    if (sourceLinkS4_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS4_1.transferEnergy(targetLinkS4);
-    }
-    }
-     if (sourceLinkS4_2 && targetLinkS4 && sourceLinkS4_2.cooldown == 0) {
-    if (sourceLinkS4_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS4_2.transferEnergy(targetLinkS4);
-    }
-    }
-     if (sourceLinkS4_3 && targetLinkS4 && sourceLinkS4_3.cooldown == 0) {
-    if (sourceLinkS4_3.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS4_3.transferEnergy(targetLinkS4);
-    }
-    }
-   // spawn5
-        let sourceLinkS5_1 = Game.getObjectById('6a290dd0d90a1de551b1a71a');
-        let sourceLinkS5_2 = Game.getObjectById('6a34ed6f5d1621514c166b19'); 
-        let targetLinkS5 = Game.getObjectById('6a28f72d0b346572948cf561');
+        //  лінк-джерело
+        if (sourceLinkS3_1 && targetLinkS3 && sourceLinkS3_1.cooldown == 0) {
+        if (sourceLinkS3_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 700) {
+            sourceLinkS3_1.transferEnergy(targetLinkS3);
+        }
+        }
+        if (sourceLinkS3_2 && targetLinkS3 && sourceLinkS3_2.cooldown == 0) {
+        if (sourceLinkS3_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS3_2.transferEnergy(targetLinkS3);
+        }
+        }
+    // spawn4
+            let sourceLinkS4_1 = Game.getObjectById('6a1a03a14f03e80f8e25132f');
+            let sourceLinkS4_2 = Game.getObjectById('6a1ec9cb34a2fbc89c868aba'); 
+            let sourceLinkS4_3 = Game.getObjectById('6a2aad18ee0887a45a89d95c');
+            let targetLinkS4 = Game.getObjectById('6a19dfcad1a6e81d67d9dd27');
 
-    // 2. Перевіряємо перший лінк-джерелоS2
-    if (sourceLinkS5_1 && targetLinkS5 && sourceLinkS5_1.cooldown == 0) {
-    if (sourceLinkS5_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS5_1.transferEnergy(targetLinkS5);
-    }
-    }
-     if (sourceLinkS5_2 && targetLinkS5 && sourceLinkS5_2.cooldown == 0) {
-    if (sourceLinkS5_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
-        sourceLinkS5_2.transferEnergy(targetLinkS5);
-    }
-    }
+        // лінк-джерело
+        if (sourceLinkS4_1 && targetLinkS4 && sourceLinkS4_1.cooldown == 0) {
+        if (sourceLinkS4_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS4_1.transferEnergy(targetLinkS4);
+        }
+        }
+        if (sourceLinkS4_2 && targetLinkS4 && sourceLinkS4_2.cooldown == 0) {
+        if (sourceLinkS4_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS4_2.transferEnergy(targetLinkS4);
+        }
+        }
+        if (sourceLinkS4_3 && targetLinkS4 && sourceLinkS4_3.cooldown == 0) {
+        if (sourceLinkS4_3.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS4_3.transferEnergy(targetLinkS4);
+        }
+        }
+    // spawn5
+            let sourceLinkS5_1 = Game.getObjectById('6a290dd0d90a1de551b1a71a');
+            let sourceLinkS5_2 = Game.getObjectById('6a34ed6f5d1621514c166b19'); 
+            let targetLinkS5 = Game.getObjectById('6a28f72d0b346572948cf561');
+
+        // лінк-джерело
+        if (sourceLinkS5_1 && targetLinkS5 && sourceLinkS5_1.cooldown == 0) {
+        if (sourceLinkS5_1.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS5_1.transferEnergy(targetLinkS5);
+        }
+        }
+        if (sourceLinkS5_2 && targetLinkS5 && sourceLinkS5_2.cooldown == 0) {
+        if (sourceLinkS5_2.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) {
+            sourceLinkS5_2.transferEnergy(targetLinkS5);
+        }
+        }
 
 // 3. Автоматичне створення кріпів
 // --- СПАВНЕР 1 (Основна база )  
@@ -357,8 +356,8 @@ for(let tower of towers) {
         
         else if (defenderS1_1.length < 1) {
         s1_2.spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, 
-            WORK, WORK, 
-            CARRY, CARRY, 
+            WORK, WORK, WORK, WORK, 
+            CARRY, CARRY, ARRY, CARRY, 
             RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, 
             ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, 
             MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
@@ -384,10 +383,10 @@ for(let tower of towers) {
                 targetRoom: 'W28S29',
         }});
             }
-         else if(upgraderS1.length < 1) {
-            s1_2.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+         else if(upgraderS1.length < 2) {
+            s1_2.spawnCreep([ WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
                 CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,
-                MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE ], 'upgrader' + Game.time, 
+                MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE ], 'upgrader' + Game.time, 
                 {memory: {
                     role: 'upgrader', 
                     targetRoom: 'W29S28',
@@ -435,13 +434,13 @@ for(let tower of towers) {
             memory: { role: 'mineralMIner', targetRoom: 'W27S29' }
         });
         }
-        else if(remoteBuilderS2.length < 0) {
+        else if(remoteBuilderS2.length < 2) {
             s2.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
-    WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
-    CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,
-    CARRY,CARRY,CARRY,
-    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], 'RemoteBuilder_' + Game.time, {
+            WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+            CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,
+            CARRY,CARRY,CARRY,
+            MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+            MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], 'RemoteBuilder_' + Game.time, {
             memory: {
                 role: 'remoteBuilder',
                 targetRoom: "W28S29",
@@ -471,8 +470,7 @@ for(let tower of towers) {
                 containerIds: [
                     '6a2ad67b6d352ee8e7160802', // Контейнер 1
                     '6a2add144b12a44309a319df', // Контейнер 2
-                    //'69fb669e5e59b641886bef1b', // Контейнер 2
-                               ],
+                   ],
                 delivering: false
             }
             });
@@ -535,8 +533,8 @@ for(let tower of towers) {
                 deliveryId: '6a0c505ae7e8d2a68cdffb4c',
                 targetRoom: 'W26S29', //  віддалена кімната для пошуку
                 containerIds: [
-                    '6a34178ae2f8057e013a840c', // Контейнер 1
-                    '6a340fa258079cadb54d3a18', // Контейнер 2
+                    '6a3660ff3e2ff0524b40ab26', // Контейнер 1
+                    '6a365d2b3b98877a17258cfd', // Контейнер 2
                            ],
                 delivering: false
             }
@@ -664,11 +662,11 @@ for(let tower of towers) {
         }
         else if (defenderS3_1.length < 1) {
         s3.spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, 
-    WORK, WORK, 
-    CARRY, CARRY, 
+    WORK, WORK,WORK, WORK, 
+    CARRY, CARRY,CARRY, CARRY,
     RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, 
     ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, 
-    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
+    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
     HEAL, HEAL], 'DEFW27S28_1_'+Game.time, {
             memory: { role: 'defender', targetRoom: 'W27S28' }
@@ -769,7 +767,7 @@ for(let tower of towers) {
             memory: { role: 'remoteMiner', targetRoom: 'W28S27', sourceId: '55db3133efa8e3fe66e04890' }
         });
         }
-        else if (remoteHaulers4_1.length < 2 ) {
+        else if (remoteHaulers4_1.length < 1 ) {
         s4.spawnCreep([CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
                            MOVE,MOVE,MOVE, MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE,HEAL], 'R_HaulerW28S27' + Game.time, {
             memory: {
@@ -858,7 +856,7 @@ for(let tower of towers) {
         s5.spawnCreep([CARRY, CARRY, CARRY,CARRY, CARRY,CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY,CARRY, CARRY,CARRY, CARRY, CARRY, CARRY,CARRY, CARRY,CARRY, CARRY, CARRY,MOVE,MOVE,MOVE, MOVE,MOVE,MOVE,MOVE, MOVE,MOVE,MOVE, MOVE,MOVE,MOVE, MOVE,MOVE,MOVE, MOVE,MOVE], 'haulerS5'+Game.time,  {memory: {role: 'hauler',targetRoom: 'W28S29'}})
         }
        
-        else if(upgraderS5.length <4) {
+        else if(upgraderS5.length <1) {
             s5.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
                 CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY, CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE], 'upgrader' + Game.time, {memory: {role: 'upgrader', targetRoom: 'W28S29',linkId: '6a2e728ea9c1c0040b507382'}});
         } 
