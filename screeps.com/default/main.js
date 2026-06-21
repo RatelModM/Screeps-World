@@ -357,7 +357,7 @@ module.exports.loop = function () {
         else if (defenderS1_1.length < 1) {
         s1_2.spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, 
             WORK, WORK, WORK, WORK, 
-            CARRY, CARRY, ARRY, CARRY, 
+            CARRY, CARRY, CARRY, CARRY, 
             RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, 
             ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, 
             MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
