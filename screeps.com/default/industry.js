@@ -10,10 +10,10 @@ var industry = {
         // ПРІОРИТЕТ 1: Стиснення сирих мінералів (Keanium, Catalyst, Oxygen)
         // Структура: { сировина: потрібна_кількість, продукт: що_вийде, енергія: 200 }
         const mineralRecipes = [
-            { ingredient: RESOURCE_OXYGEN, product: RESOURCE_OXIDANT },
-            { ingredient: RESOURCE_CATALYST, product: RESOURCE_PURIFIER },
-            { ingredient: RESOURCE_KEANIUM, product: RESOURCE_KEANIUM_BAR },
-            { ingredient: RESOURCE_LEMERGIUM, product: RESOURCE_LEMERGIUM_BAR }
+            // { ingredient: RESOURCE_OXYGEN, product: RESOURCE_OXIDANT },
+            // { ingredient: RESOURCE_CATALYST, product: RESOURCE_PURIFIER },
+            // { ingredient: RESOURCE_KEANIUM, product: RESOURCE_KEANIUM_BAR },
+            // { ingredient: RESOURCE_LEMERGIUM, product: RESOURCE_LEMERGIUM_BAR }
         ];
 
         for (let recipe of mineralRecipes) {

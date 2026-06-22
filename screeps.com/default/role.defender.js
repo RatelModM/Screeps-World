@@ -62,7 +62,7 @@ var roleDefender = {
             
            
            // Умова Б: Якщо в кишені немає енергії — шукаємо підніжну енергію, контейнер або сторедж
-            else if (creep.store && creep.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+            else if (creep.store && creep.store[RESOURCE_ENERGY] <20) {
                 
                 // 1. Спочатку шукаємо енергію, що валяється на підлозі (Пріоритет №1, бо вона зникає)
                 let droppedEnergy = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {

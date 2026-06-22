@@ -39,28 +39,38 @@ var roleHauler = {
             // =========================================================================
             // ЯКЩО В ТОРБІ ЧИСТА ЕНЕРГІЯ -> ГОДУЄМО БАЗУ
             // =========================================================================
-            else {
-                target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) && 
-                                   s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-                });
-                
-                if (!target && creep.room.storage) {
-                    target = creep.room.storage;
+           else {
+        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (s) => {
+                // Спавни та екстеншени заправляємо, якщо там є бодай трохи місця
+                if (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) {
+                    return s.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
-            }
-
-            if (target) {
-                if (creep.transfer(target, resourceToTransfer) == ERR_NOT_IN_RANGE) {
-                    let strokeColor = '#ffffff';
-                    if (target.structureType == STRUCTURE_FACTORY) strokeColor = '#00ffff';
-                    if (target.structureType == STRUCTURE_STORAGE) strokeColor = '#00ff00';
-                    
-                    creep.moveTo(target, {reusePath: 50, visualizePathStyle: {stroke: strokeColor}});
+                // Вежі заправляємо ОДНОЧАСНО з ними, але ТІЛЬКИ якщо в них менше половини енергії
+                if (s.structureType == STRUCTURE_TOWER) {
+                    return s.store[RESOURCE_ENERGY] < (s.store.getCapacity(RESOURCE_ENERGY) / 2);
                 }
+                return false;
             }
-        } 
+        });
         
+        // Якщо все заправлено — веземо надлишки в Storage
+        if (!target && creep.room.storage) {
+            target = creep.room.storage;
+        }
+    }
+
+    if (target) {
+        if (creep.transfer(target, resourceToTransfer) == ERR_NOT_IN_RANGE) {
+            let strokeColor = '#ffffff'; // Дефолтний білий для спавнів та екстеншенів
+            if (target.structureType == STRUCTURE_FACTORY) strokeColor = '#00ffff';
+            if (target.structureType == STRUCTURE_STORAGE) strokeColor = '#00ff00';
+            if (target.structureType == STRUCTURE_TOWER) strokeColor = '#ffaa00'; // Помаранчевий трек до вежі
+            
+            creep.moveTo(target, {reusePath: 50, visualizePathStyle: {stroke: strokeColor}});
+        }
+    }
+}
         // 3. ЛОГІКА ЗАПРАВКИ (Порожній)
         else {
             // ПРІОРИТЕТ 1: Шукаємо повні контейнери з енергією (> 700)

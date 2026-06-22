@@ -2,44 +2,44 @@ var marketManager = {
     // Базові налаштування ринку
     config: {
         TERMINAL_ENERGY_BUFFER: 40000, // Скільки енергії тримати в терміналі для відправок / оплати доставки
-        TRADE_AMOUNT: 1000,            // Розмір однієї партії для продажу/пересилки/закупівлі
+        TRADE_AMOUNT: 2000,            // Розмір однієї партії для продажу/пересилки/закупівлі
         SURPLUS_THRESHOLD: 15000,      // Загальний поріг для твоїх мінералів (якщо більше — продаємо)
         
         SELL_THRESHOLDS: {
-            [RESOURCE_BATTERY]: 30000,       // Батареї продаємо тільки якщо їх більше 30к
+            [RESOURCE_BATTERY]: 50000,       // Батареї продаємо тільки якщо їх більше 30к
             [RESOURCE_LEMERGIUM_BAR]: 5000,  // Бари продаємо, якщо накопичилось більше 6к
             [RESOURCE_KEANIUM_BAR]: 20000,
-            // [RESOURCE_OXIDANT]: 20000,
+            [RESOURCE_OXIDANT]: 25000,
             [RESOURCE_PURIFIER]: 25000,
             
             // // Базові мінерали (наприклад, продаємо тільки надлишки вище 20к)
             // [RESOURCE_HYDROGEN]: 20000,
-            // [RESOURCE_OXYGEN]: 20000,
+            [RESOURCE_OXYGEN]: 25000,
             // [RESOURCE_UTRIUM]: 20000,
             // [RESOURCE_LEMERGIUM]: 25000,     // Захист: продаємо лише якщо вище 25к (для фабрики)
             // [RESOURCE_KEANIUM]: 20000,
             // [RESOURCE_ZYNTHIUM]: 20000,
-            // [RESOURCE_CATALYST]: 20000
+            [RESOURCE_CATALYST]: 25000
         },
         // Мінімальні ціни продажу (Запобіжник: ціна SELL-ордера ніколи не впаде нижче цих значень)
         MIN_PRICES: {
-            [RESOURCE_BATTERY]: 300,
+            [RESOURCE_BATTERY]: 400,
             // [RESOURCE_OXIDANT]: 2200.5,
             [RESOURCE_PURIFIER]: 4500.05,
             // [RESOURCE_KEANIUM_BAR]: 700,
             [RESOURCE_KEANIUM]: 100,
             
             // Захист дефіцитних ресурсів (ціна продажу обов'язково вища за ціну закупівлі)
-            [RESOURCE_LEMERGIUM]: 950,       
+            [RESOURCE_LEMERGIUM]: 1000,       
             // [RESOURCE_LEMERGIUM_BAR]: 3700   
         },
 
         // НАЛАШТУВАННЯ ДЛЯ ЗАКУПІВЛІ (Миттєва скупка та пасивні BUY-ордери)
         BUY_CONFIG: {
             [RESOURCE_LEMERGIUM]: {
-                maxAmount: 20000,     // Нам потрібно 10к для фабрики
+                maxAmount: 45000,     // Нам потрібно 10к для фабрики
                 maxPrice: 550,        // Купуємо не дорожче ніж 650
-                sellThreshold: 5000  // Продаємо лише якщо накопичилось більше 25к (захист від зациклення)
+                sellThreshold: 45000  // Продаємо лише якщо накопичилось більше 25к (захист від зациклення)
             },
             [RESOURCE_KEANIUM]: {
                 // maxAmount: 20000,     // Нам потрібно 10к для фабрики
