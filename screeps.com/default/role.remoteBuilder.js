@@ -73,7 +73,7 @@ var roleRemoteBuilder = {
                     // 2. Потім беремо зі Storage/Container
                     let source = creep.room.storage || creep.pos.findClosestByRange(FIND_STRUCTURES, {
                         filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) && 
-                                       s.store[RESOURCE_ENERGY] > 1500
+                                       s.store[RESOURCE_ENERGY] > 1000
                     });
 
                     if(source) {
