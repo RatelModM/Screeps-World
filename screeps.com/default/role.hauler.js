@@ -80,7 +80,7 @@ var roleHauler = {
 
             if (container) {
                 if (creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(container, {reusePath: 20, visualizePathStyle: {stroke: '#ffaa00'}});
+                    creep.moveTo(container, {reusePath: 50, visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             } 
             // ПРІОРИТЕТ 2: Шукаємо мінерали в контейнерах (> 900)
@@ -94,7 +94,7 @@ var roleHauler = {
                     var mineralTypeToWithdraw = Object.keys(mineralContainer.store).find(r => r !== RESOURCE_ENERGY && mineralContainer.store[r] > 0);
                     
                     if (creep.withdraw(mineralContainer, mineralTypeToWithdraw) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(mineralContainer, {reusePath: 20, visualizePathStyle: {stroke: '#ffaa00'}});
+                        creep.moveTo(mineralContainer, {reusePath: 50, visualizePathStyle: {stroke: '#ffaa00'}});
                     }
                 }
                 // ПРІОРИТЕТ 3: Якщо контейнери порожні, а база голодна — беремо енергію зі Storage
@@ -106,7 +106,7 @@ var roleHauler = {
 
                     if (needsEnergy && creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 0) {
                         if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(creep.room.storage, {reusePath: 20, visualizePathStyle: {stroke: '#ffaa00'}});
+                            creep.moveTo(creep.room.storage, {reusePath: 50, visualizePathStyle: {stroke: '#ffaa00'}});
                         }
                     } 
                     // =========================================================================
@@ -119,7 +119,7 @@ var roleHauler = {
 
                         if (droppedResource) {
                             if (creep.pickup(droppedResource) == ERR_NOT_IN_RANGE) {
-                                creep.moveTo(droppedResource, {reusePath: 5, visualizePathStyle: {stroke: '#ff0000'}});
+                                creep.moveTo(droppedResource, {reusePath: 50, visualizePathStyle: {stroke: '#ff0000'}});
                             }
                         }
                         // ПРІОРИТЕТ 5: Якщо навіть на землі нічого немає — йдемо відпочивати

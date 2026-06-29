@@ -41,7 +41,7 @@ var roleRemoteHauler = {
                 let exitTile = creep.pos.findClosestByPath(exitDir); 
                 
                 if (exitTile) {
-                    creep.moveTo(exitTile, {reusePath: 20, visualizePathStyle: {stroke: '#00ff00'}});
+                    creep.moveTo(exitTile, {reusePath: 50, visualizePathStyle: {stroke: '#00ff00'}});
                 }
                 return; 
             }
@@ -68,7 +68,7 @@ var roleRemoteHauler = {
             // Віддаємо енергію знайденому об'єкту
             if (target) {
                 if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 20});
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
                 }
             } else {
                 creep.say('💤'); 
@@ -83,7 +83,7 @@ var roleRemoteHauler = {
                 let exitTile = creep.pos.findClosestByPath(exitDir); 
                 
                 if (exitTile) {
-                    creep.moveTo(exitTile, {reusePath: 20, visualizePathStyle: {stroke: '#ffaa00'}});
+                    creep.moveTo(exitTile, {reusePath: 50, visualizePathStyle: {stroke: '#ffaa00'}});
                 }
                 return; 
             }
@@ -110,7 +110,7 @@ var roleRemoteHauler = {
 
                 let pickupTarget = candidates[0];
                 if (creep.withdraw(pickupTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(pickupTarget, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5});
+                    creep.moveTo(pickupTarget, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
                 }
             } 
             else {
@@ -121,14 +121,14 @@ var roleRemoteHauler = {
 
                 if (dropped) {
                     if (creep.pickup(dropped) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 5});
+                        creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
                     }
                 } else {
                     // Якщо роботи немає — стаємо ближче до центру кімнати, щоб не блокувати виходи
                     creep.say('💤');
-                    if (!creep.pos.isNearTo(25, 25)) {
-                        creep.moveTo(25, 25, {range: 3});
-                    }
+                    // if (!creep.pos.isNearTo(25, 25)) {
+                    //     creep.moveTo(25, 25, {range: 3});
+                    // }
                 }
             }
         }

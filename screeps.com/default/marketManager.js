@@ -17,7 +17,7 @@ var marketManager = {
             
             // // Базові мінерали (наприклад, продаємо тільки надлишки вище 20к)
             // [RESOURCE_HYDROGEN]: 20000,
-            [RESOURCE_OXYGEN]: 45000,
+            [RESOURCE_OXYGEN]: 25000,
             // [RESOURCE_UTRIUM]: 20000,
             // [RESOURCE_LEMERGIUM]: 25000,     // Захист: продаємо лише якщо вище 25к (для фабрики)
             // [RESOURCE_KEANIUM]: 20000,
@@ -30,8 +30,8 @@ var marketManager = {
             // [RESOURCE_OXIDANT]: 2200.5,
             [RESOURCE_PURIFIER]: 4500.05,
             // [RESOURCE_KEANIUM_BAR]: 700,
-            [RESOURCE_KEANIUM]: 100,
-            [RESOURCE_OXYGEN]: 350,
+            [RESOURCE_KEANIUM]: 80,
+            [RESOURCE_OXYGEN]: 390,
             
             // Захист дефіцитних ресурсів (ціна продажу обов'язково вища за ціну закупівлі)
             [RESOURCE_LEMERGIUM]: 960,       
@@ -41,8 +41,8 @@ var marketManager = {
         // НАЛАШТУВАННЯ ДЛЯ ЗАКУПІВЛІ (Миттєва скупка та пасивні BUY-ордери)
         BUY_CONFIG: {
             [RESOURCE_LEMERGIUM]: {
-                maxAmount: 45000,     // Нам потрібно .... для фабрики
-                maxPrice: 570,        // Купуємо не дорожче ніж ...
+                maxAmount: 30000,     // Нам потрібно .... для фабрики
+                maxPrice: 550,        // Купуємо не дорожче ніж ...
                 sellThreshold: 15000  // Продаємо лише якщо накопичилось більше... (захист від зациклення)
             },
             [RESOURCE_KEANIUM]: {
