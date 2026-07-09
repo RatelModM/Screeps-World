@@ -22,7 +22,7 @@ var marketManager = {
             // [RESOURCE_LEMERGIUM]: 25000,     // Захист: продаємо лише якщо вище 25к (для фабрики)
             // [RESOURCE_KEANIUM]: 20000,
             // [RESOURCE_ZYNTHIUM]: 20000,
-            [RESOURCE_CATALYST]: 55000
+            [RESOURCE_CATALYST]: 25000
         },
         // Мінімальні ціни продажу (Запобіжник: ціна SELL-ордера ніколи не впаде нижче цих значень)
         MIN_PRICES: {
@@ -31,18 +31,20 @@ var marketManager = {
             [RESOURCE_PURIFIER]: 4500.05,
             // [RESOURCE_KEANIUM_BAR]: 700,
             [RESOURCE_KEANIUM]: 80,
-            [RESOURCE_OXYGEN]: 390,
+            [RESOURCE_OXYGEN]: 400,
             
             // Захист дефіцитних ресурсів (ціна продажу обов'язково вища за ціну закупівлі)
             [RESOURCE_LEMERGIUM]: 960,       
-            [RESOURCE_LEMERGIUM_BAR]: 3900   
+            [RESOURCE_LEMERGIUM_BAR]: 3900,
+            [RESOURCE_CATALYST]: 900,
+       
         },
 
         // НАЛАШТУВАННЯ ДЛЯ ЗАКУПІВЛІ (Миттєва скупка та пасивні BUY-ордери)
         BUY_CONFIG: {
             [RESOURCE_LEMERGIUM]: {
-                maxAmount: 30000,     // Нам потрібно .... для фабрики
-                maxPrice: 550,        // Купуємо не дорожче ніж ...
+                maxAmount: 35000,     // Нам потрібно .... для фабрики
+                maxPrice: 450,        // Купуємо не дорожче ніж ...
                 sellThreshold: 15000  // Продаємо лише якщо накопичилось більше... (захист від зациклення)
             },
             [RESOURCE_KEANIUM]: {

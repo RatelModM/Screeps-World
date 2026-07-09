@@ -12,7 +12,23 @@ var roleUpgrader = {
 
         // --- ЛОГІКА ПРОКАЧКИ ---
         if(creep.memory.upgrading) {
-            if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+            
+            // --- НОВЕ: Пріоритетне поповнення вежі ---
+            var tower = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                filter: (s) => s.structureType == STRUCTURE_TOWER && s.store[RESOURCE_ENERGY] < 850
+            });
+            
+            if (tower) {
+                if (creep.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(tower, {
+                        reusePath: 15,
+                        visualizePathStyle: {stroke: '#ffffff'}
+                    });
+                }
+            } 
+            // ----------------------------------------
+            
+            else if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller, {
                     reusePath: 15,
                     visualizePathStyle: {stroke: '#ffffff'}
@@ -26,7 +42,7 @@ var roleUpgrader = {
             // Пріоритет 1: Конкретний лінк за ID з пам'яті кріпа
             if (creep.memory.linkId) {
                 let specificLink = Game.getObjectById(creep.memory.linkId);
-                if (specificLink && specificLink.store[RESOURCE_ENERGY] > 100) {
+                if (specificLink && specificLink.store[RESOURCE_ENERGY] > 0) {
                     target = specificLink;
                 }
             }
@@ -48,7 +64,7 @@ var roleUpgrader = {
                 if (creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, { 
                         maxRooms: 1, 
-                        reusePath: 15, 
+                        reusePath: 20, 
                         visualizePathStyle: {stroke: '#ffaa00'} 
                     });
                 }
@@ -60,7 +76,7 @@ var roleUpgrader = {
                     if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(source, { 
                             maxRooms: 1, 
-                            reusePath: 15, 
+                            reusePath: 50, 
                             visualizePathStyle: {stroke: '#ff0000'} 
                         });
                     }

@@ -9,7 +9,7 @@ var roleDefender = {
             return;
         }
 
-        // 2. ПОШУК ЦІЛІ (Пріоритети: Хілери -> Кріпи -> Ядро інвайдерів)
+        // 2. ПОШУК ЦІЛІ (Пріоритети: Хілери -> Кріпи -> Ворожі структури)
         let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
             filter: (hostile) => hostile.getActiveBodyparts(HEAL) > 0
         });
@@ -18,9 +18,10 @@ var roleDefender = {
             target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         }
 
+        // --- ЗМІНЕНО: Шукаємо всі ворожі будівлі (крім Контролера) ---
         if (!target) {
-            target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (s) => s.structureType == STRUCTURE_INVADER_CORE
+            target = creep.pos.findClosestByRange(FIND_HOSTILE_STRUCTURES, {
+                filter: (s) => s.structureType != STRUCTURE_CONTROLLER
             });
         }
 
@@ -39,7 +40,8 @@ var roleDefender = {
                 creep.moveTo(rampart, {visualizePathStyle: {stroke: '#00ff00'}});
             } else {
                 let desiredRange = 3; 
-                if (target.structureType === STRUCTURE_INVADER_CORE || creep.getActiveBodyparts(ATTACK) > 0) {
+                // --- ЗМІНЕНО: Підходимо впритул (range 1), якщо це структура АБО якщо є ATTACK ---
+                if (target.structureType || creep.getActiveBodyparts(ATTACK) > 0) {
                     desiredRange = 1;
                 }
 
@@ -60,8 +62,7 @@ var roleDefender = {
                 creep.heal(creep);
             }
             
-           
-           // Умова Б: Якщо в кишені немає енергії — шукаємо підніжну енергію, контейнер або сторедж
+            // Умова Б: Якщо в кишені немає енергії — шукаємо підніжну енергію, контейнер або сторедж
             else if (creep.store && creep.store[RESOURCE_ENERGY] <20) {
                 
                 // 1. Спочатку шукаємо енергію, що валяється на підлозі (Пріоритет №1, бо вона зникає)

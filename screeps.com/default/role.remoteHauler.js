@@ -121,7 +121,7 @@ var roleRemoteHauler = {
 
                 if (dropped) {
                     if (creep.pickup(dropped) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 50});
+                        creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 70});
                     }
                 } else {
                     // Якщо роботи немає — стаємо ближче до центру кімнати, щоб не блокувати виходи
