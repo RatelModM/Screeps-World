@@ -15,7 +15,7 @@ var roleUpgrader = {
             
             // --- НОВЕ: Пріоритетне поповнення вежі ---
             var tower = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                filter: (s) => s.structureType == STRUCTURE_TOWER && s.store[RESOURCE_ENERGY] < 850
+                filter: (s) => s.structureType == STRUCTURE_TOWER && s.store[RESOURCE_ENERGY] < 750
             });
             
             if (tower) {
@@ -30,7 +30,7 @@ var roleUpgrader = {
             
             else if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller, {
-                    reusePath: 15,
+                    reusePath: 50,
                     visualizePathStyle: {stroke: '#ffffff'}
                 });
             }
@@ -42,7 +42,7 @@ var roleUpgrader = {
             // Пріоритет 1: Конкретний лінк за ID з пам'яті кріпа
             if (creep.memory.linkId) {
                 let specificLink = Game.getObjectById(creep.memory.linkId);
-                if (specificLink && specificLink.store[RESOURCE_ENERGY] > 0) {
+                if (specificLink && specificLink.store[RESOURCE_ENERGY] > 400) {
                     target = specificLink;
                 }
             }
@@ -64,7 +64,7 @@ var roleUpgrader = {
                 if (creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, { 
                         maxRooms: 1, 
-                        reusePath: 20, 
+                        reusePath: 50, 
                         visualizePathStyle: {stroke: '#ffaa00'} 
                     });
                 }

@@ -40,20 +40,23 @@ var roleHauler = {
             // ЯКЩО В ТОРБІ ЧИСТА ЕНЕРГІЯ -> ГОДУЄМО БАЗУ
             // =========================================================================
            else {
-        target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (s) => {
-                // Спавни та екстеншени заправляємо, якщо там є бодай трохи місця
-                if (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) {
-                    return s.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                // 1. Спочатку шукаємо найближчий спавн або екстеншн, який потребує енергії
+            target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: (s) => {
+                    return (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
+                        s.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
-                // Вежі заправляємо ОДНОЧАСНО з ними, але ТІЛЬКИ якщо в них менше половини енергії
-                if (s.structureType == STRUCTURE_TOWER) {
-                    return s.store[RESOURCE_ENERGY] < (s.store.getCapacity(RESOURCE_ENERGY) / 2);
-                }
-                return false;
+            });
+
+            // 2. Якщо всі спавни та екстеншени повністю заправлені (target не знайдено)
+            if (!target) {
+                target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (s) => {
+                        return s.structureType == STRUCTURE_TOWER &&
+                            s.store[RESOURCE_ENERGY] < (s.store.getCapacity(RESOURCE_ENERGY) / 2);
+                    }
+                });
             }
-        });
-        
         // Якщо все заправлено — веземо надлишки в Storage
         if (!target && creep.room.storage) {
             target = creep.room.storage;
