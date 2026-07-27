@@ -19,7 +19,7 @@ var roleRemoteBuilder = {
             creep.memory.building = true;
             }
 
-        // --- 3. ЛОГІКА ДІЙ (Має енергію) ---
+       // - 3. ЛОГІКА ДІЙ (Має енергію) ---
         if(creep.memory.building) {
             // Йдемо до цільової кімнати
             if(creep.room.name !== creep.memory.targetRoom) {
@@ -41,14 +41,30 @@ var roleRemoteBuilder = {
                         creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                     }
                 } 
-                // 2. Якщо будувати нічого — покращуємо контролер
+                // 2. Якщо будувати нічого — заправляємо вежі (Tower)
                 else {
-                    if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffff00'}}); // Жовта лінія для апгрейду
+                    var tower = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return structure.structureType == STRUCTURE_TOWER &&
+                                   structure.store.getFreeCapacity(RESOURCE_ENERGY) > 200;
+                        }
+                    });
+
+                    if(tower) {
+                        if(creep.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(tower, {visualizePathStyle: {stroke: '#ffaa00'}}); // Помаранчева лінія
+                        }
+                    }
+                    // 3. Якщо немає будівництв і вежам енергія не потрібна — покращуємо контролер
+                    else {
+                        if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffff00'}}); // Жовта лінія
+                        }
                     }
                 }
+                
             }
-        } 
+        }
         
         // --- 4. ЛОГІКА ЗБОРУ (Немає енергії) ---
         else {
@@ -62,7 +78,7 @@ var roleRemoteBuilder = {
                 
                 // 1. Спочатку підбираємо те, що впало (Dropped)
                 let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 1000
+                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 500
                 });
                 
                 if(dropped) {
@@ -73,12 +89,12 @@ var roleRemoteBuilder = {
                     // 2. Потім беремо зі Storage/Container
                     let source = creep.room.storage || creep.pos.findClosestByRange(FIND_STRUCTURES, {
                         filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) && 
-                                       s.store[RESOURCE_ENERGY] > 1000
+                                       s.store[RESOURCE_ENERGY] > 500
                     });
 
                     if(source) {
                         if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(source, {maxRooms: 1});
+                            creep.moveTo(source, { reusePath: 70, maxRooms: 1});
                         }
                     } else {
                         // 3. Якщо зовсім порожньо - копаємо самі (FIND_SOURCES_ACTIVE краще, щоб не чекав порожнє джерело)

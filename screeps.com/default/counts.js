@@ -1,13 +1,13 @@
 module.exports = function() {
     // Ініціалізуємо всі масиви порожніми
     const counts = {
-        harvesters: [], harvesters2: [], harvesters3: [], harvesters4: [], harvesters5: [], harvesters6: [],
-        upgraderS1: [], upgraderS2: [], upgraderS3: [], upgraderS4: [], upgraderS5: [], upgraderS6: [],
+        harvesters: [], harvesters2: [], harvesters3: [], harvesters4: [], harvesters5: [], harvesters6: [],harvesters7: [],
+        upgraderS1: [], upgraderS2: [], upgraderS3: [], upgraderS4: [], upgraderS5: [], upgraderS6: [],upgraderS7: [],
         builders: [], builders2: [], builders3: [], builders4: [],
         defenderS1_1: [], defenderS2_1: [], defenderS2_2: [], defenderS3_1: [], defenderS3_2: [], defenderS4_1: [], defenderS5_1: [],
         miner: [], minersOnSource: [],
-        minerS2_1: [], minerS2_2: [], minerS3_1: [], minerS3_2: [], minerS5_1: [], minerS5_2: [], minerS6_1: [], minerS6_2: [],
-        haulerS1: [], haulerS2: [], haulerS3: [], haulerS4: [], haulerS5: [], haulerS6: [],
+        minerS2_1: [], minerS2_2: [], minerS3_1: [], minerS3_2: [], minerS5_1: [], minerS5_2: [], minerS6_1: [], minerS6_2: [], minerS7_1: [], minerS7_2: [],
+        haulerS1: [], haulerS2: [], haulerS3: [], haulerS4: [], haulerS5: [], haulerS6: [],haulerS7: [],
         remoteBuilderS1: [], remoteBuilderS2: [],
         reservers1_1: [], reservers2_1: [], reservers2_2: [], reservers3_1: [], reservers4_1: [], reservers5_1: [],
         SpawnHaulerS1: [], SpawnHaulerS2: [], SpawnHaulerS3: [], SpawnHaulerS4: [], SpawnHaulerS5: [], SpawnHaulerS6: [],
@@ -34,6 +34,7 @@ module.exports = function() {
                 else if (mem.targetRoom === "W29S27") counts.harvesters4.push(creep);
                 else if (mem.targetRoom === "W28S29") counts.harvesters5.push(creep);
                 else if (mem.targetRoom === "W27S28") counts.harvesters6.push(creep);
+                else if (mem.targetRoom === "W28S26") counts.harvesters7.push(creep);
                 break;
 
             case 'upgrader':
@@ -43,20 +44,21 @@ module.exports = function() {
                 else if (mem.targetRoom === "W29S27") counts.upgraderS4.push(creep);
                 else if (mem.targetRoom === "W28S29") counts.upgraderS5.push(creep);
                 else if (mem.targetRoom === "W27S28") counts.upgraderS6.push(creep);
+                else if (mem.targetRoom === "W27S28") counts.upgraderS7.push(creep);
                 break;
 
             case 'builder':
                 if (mem.targetRoom === "W29S28") counts.builders.push(creep);
                 else if (mem.targetRoom === "W27S29") counts.builders2.push(creep);
-                else if (mem.targetRoom === "W27S27") counts.builders3.push(creep);
-                else if (mem.targetRoom === "W29S27") counts.builders4.push(creep);
+                else if (mem.targetRoom === "W28S26") counts.builders3.push(creep);
+                else if (mem.targetRoom === "W28S26") counts.builders4.push(creep);
                 break;
 
             case 'defender':
                 if (mem.targetRoom === "W28S28") counts.defenderS1_1.push(creep);
                 else if (mem.targetRoom === "W29S29") counts.defenderS2_1.push(creep);
                 else if (mem.targetRoom === "W26S29") counts.defenderS2_2.push(creep);
-                else if (mem.targetRoom === "W27S28") counts.defenderS3_1.push(creep);
+                else if (mem.targetRoom === "W28S26") counts.defenderS3_1.push(creep);
                 else if (mem.targetRoom === "W27S26") counts.defenderS3_2.push(creep);
                 else if (mem.targetRoom === "W28S27") counts.defenderS4_1.push(creep);
                 else if (mem.targetRoom === "W29S29") counts.defenderS5_1.push(creep);
@@ -77,6 +79,8 @@ module.exports = function() {
                 else if (mem.sourceId === '55db3134efa8e3fe66e04898') counts.minerS5_2.push(creep);
                 else if (mem.sourceId === '55db3155efa8e3fe66e04953') counts.minerS6_1.push(creep);
                 else if (mem.sourceId === '55db3155efa8e3fe66e04955') counts.minerS6_2.push(creep);
+                else if (mem.sourceId === '55db3132efa8e3fe66e0488a') counts.minerS7_1.push(creep);
+                else if (mem.sourceId === '55db3132efa8e3fe66e0488c') counts.minerS7_2.push(creep);
                 
                 // Група remoteMiners
                 if (mem.sourceId === '55db3133efa8e3fe66e04894') counts.remoteMiners1_1.push(creep);
@@ -85,8 +89,8 @@ module.exports = function() {
                 else if (mem.sourceId === '55db3134efa8e3fe66e04898') counts.remoteMiners2_2.push(creep);
                 else if (mem.sourceId === '55db3178efa8e3fe66e04a7d') counts.remoteMiners2_3.push(creep);
                 else if (mem.sourceId === '55db3178efa8e3fe66e04a7e') counts.remoteMiners2_4.push(creep);
-                else if (mem.sourceId === '55db3155efa8e3fe66e04953') counts.remoteMiners3_1.push(creep);
-                else if (mem.sourceId === '55db3155efa8e3fe66e04955') counts.remoteMiners3_2.push(creep);
+                else if (mem.sourceId === '55db3132efa8e3fe66e0488a') counts.remoteMiners3_1.push(creep);
+                else if (mem.sourceId === '55db3132efa8e3fe66e0488c') counts.remoteMiners3_2.push(creep);
                 else if (mem.sourceId === '55db3133efa8e3fe66e0488e') counts.remoteMiners4_3.push(creep);
                 else if (mem.sourceId === '55db3133efa8e3fe66e04890') counts.remoteMiners4_4.push(creep);
                 else if (mem.sourceId === '55db3116efa8e3fe66e047c5') counts.remoteMiners4_1.push(creep);
@@ -101,11 +105,12 @@ module.exports = function() {
                 else if (mem.targetRoom === "W29S27") counts.haulerS4.push(creep);
                 else if (mem.targetRoom === "W28S29") counts.haulerS5.push(creep);
                 else if (mem.targetRoom === "W27S28") counts.haulerS6.push(creep);
+                else if (mem.targetRoom === "W28S26") counts.haulerS7.push(creep);
                 break;
 
             case 'remoteBuilder':
-                if (mem.targetRoom === "W27S28") counts.remoteBuilderS1.push(creep);
-                else if (mem.targetRoom === "W28S29") counts.remoteBuilderS2.push(creep);
+                if (mem.homeRoom === "W29S28") counts.remoteBuilderS1.push(creep);
+                else if (mem.homeRoom === "W27S29") counts.remoteBuilderS2.push(creep);
                 break;
 
             case 'reserver':

@@ -116,7 +116,7 @@ var roleRemoteHauler = {
             else {
                 // Якщо контейнери порожні, шукаємо підняту (dropped) енергію
                 let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 700
+                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 500
                 });
 
                 if (dropped) {

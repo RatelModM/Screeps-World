@@ -21,6 +21,7 @@ module.exports = function() {
     const targetS2 = '6a17638d5d6bdcd5eeb4ca61';
     processLink('6a0c505ae7e8d2a68cdffb4c', targetS2);
     processLink('6a58ff9adb6eed661217b59c', targetS2);
+    processLink('6a631a959fd25266357be3ec', targetS2);
 
     // === SPAWN 3 ===
     const targetS3 = '6a58f9655ef34826f219d8ad';

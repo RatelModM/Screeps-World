@@ -30,7 +30,7 @@ var roleSpawnHauler = {
             } else {
                 // Якщо все повне, можна додати логіку доставки до Вежі (Tower)
                 var tower = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (s) => s.structureType == STRUCTURE_TOWER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                    filter: (s) => s.structureType == STRUCTURE_TOWER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 200
                 });
                 if(tower) {
                     if(creep.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
