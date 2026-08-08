@@ -22,21 +22,21 @@ var marketManager = {
             // [RESOURCE_LEMERGIUM]: 25000,     // Захист: продаємо лише якщо вище 25к (для фабрики)
             // [RESOURCE_KEANIUM]: 20000,
             // [RESOURCE_ZYNTHIUM]: 20000,
-            [RESOURCE_CATALYST]: 25000
+            [RESOURCE_CATALYST]: 55000
         },
         // Мінімальні ціни продажу (Запобіжник: ціна SELL-ордера ніколи не впаде нижче цих значень)
         MIN_PRICES: {
-            [RESOURCE_BATTERY]: 400,
+            [RESOURCE_BATTERY]: 600,
             // [RESOURCE_OXIDANT]: 2200.5,
             [RESOURCE_PURIFIER]: 4500.05,
             // [RESOURCE_KEANIUM_BAR]: 700,
-            [RESOURCE_KEANIUM]: 80,
+            [RESOURCE_KEANIUM]: 100,
             [RESOURCE_OXYGEN]: 500,
             
             // Захист дефіцитних ресурсів (ціна продажу обов'язково вища за ціну закупівлі)
             [RESOURCE_LEMERGIUM]: 960,       
             [RESOURCE_LEMERGIUM_BAR]: 3900,
-            [RESOURCE_CATALYST]: 900,
+            [RESOURCE_CATALYST]: 1000,
        
         },
 

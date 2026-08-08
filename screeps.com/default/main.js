@@ -243,4 +243,14 @@ module.exports.loop = function () {
 
     });
     console.log(`🪣 Bucket: ${Game.cpu.bucket} / 10000 | CPU Used: ${Game.cpu.getUsed().toFixed(2)}`);
+    
+   
+   if (Game.cpu.generatePixel && Game.cpu.bucket === 10000) {
+         let result = Game.cpu.generatePixel();
+         if (result === OK) {
+        console.log('💎 Успішно згенеровано 1 Pixel!');
+     } else {
+        console.log(`⚠️ Помилка генерації пикселя: ${result}`);
+    }
+}
 }

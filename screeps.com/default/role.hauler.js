@@ -117,7 +117,7 @@ var roleHauler = {
                     // =========================================================================
                     else {
                         var droppedResource = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                            filter: (r) => r.amount > 0 // Будь-який ресурс (і енергія, і мінерали)
+                            filter: (r) => r.amount > 1000 // Будь-який ресурс (і енергія, і мінерали)
                         });
 
                         if (droppedResource) {

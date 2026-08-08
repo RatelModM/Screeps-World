@@ -85,23 +85,23 @@ var roleRemoteBuilder = {
                     if(creep.pickup(dropped) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(dropped, {maxRooms: 1});
                     }
-                } else {
-                    // 2. Потім беремо зі Storage/Container
-                    let source = creep.room.storage || creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                        filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) && 
-                                       s.store[RESOURCE_ENERGY] > 500
-                    });
+                } // 2. Потім беремо зі Storage/Container
+                let source = null;
 
-                    if(source) {
-                        if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(source, { reusePath: 70, maxRooms: 1});
-                        }
-                    } else {
-                        // 3. Якщо зовсім порожньо - копаємо самі (FIND_SOURCES_ACTIVE краще, щоб не чекав порожнє джерело)
-                        let mine = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-                        if(mine && creep.harvest(mine) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(mine, {maxRooms: 1});
-                        }
+                // Перевіряємо чи є Storage І чи є в ньому енергія
+                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 100000) {
+                    source = creep.room.storage;
+                } else {
+                    // Якщо Storage порожній або його немає — шукаємо найближчий контейнер
+                    source = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                        filter: (s) => s.structureType == STRUCTURE_CONTAINER && 
+                                    s.store[RESOURCE_ENERGY] > 400 // Знизив поріг до 100, щоб не чекав 500
+                    });
+                }
+
+                if(source) {
+                    if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(source, { reusePath: 50, maxRooms: 1 });
                     }
                 }
             }

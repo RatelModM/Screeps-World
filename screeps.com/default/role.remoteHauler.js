@@ -52,7 +52,7 @@ var roleRemoteHauler = {
             // Якщо в пам'яті жорстко прописана ціль і там є місце
             if (creep.memory.deliveryId) {
                 let deliveryTarget = Game.getObjectById(creep.memory.deliveryId);
-                if (deliveryTarget && deliveryTarget.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                if (deliveryTarget && deliveryTarget.store.getFreeCapacity(RESOURCE_ENERGY) > 100) {
                     target = deliveryTarget;
                 }
             }
@@ -83,7 +83,7 @@ var roleRemoteHauler = {
                 let exitTile = creep.pos.findClosestByPath(exitDir); 
                 
                 if (exitTile) {
-                    creep.moveTo(exitTile, {reusePath: 50, visualizePathStyle: {stroke: '#ffaa00'}});
+                    creep.moveTo(exitTile, {reusePath: 70, visualizePathStyle: {stroke: '#ffaa00'}});
                 }
                 return; 
             }
@@ -94,7 +94,7 @@ var roleRemoteHauler = {
             
             for (let id of containerIds) {
                 let obj = Game.getObjectById(id);
-                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) >= 100) { 
+                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) >= 1200) { 
                     candidates.push(obj);
                 }
             }
@@ -110,7 +110,7 @@ var roleRemoteHauler = {
 
                 let pickupTarget = candidates[0];
                 if (creep.withdraw(pickupTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(pickupTarget, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 50});
+                    creep.moveTo(pickupTarget, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 70});
                 }
             } 
             else {

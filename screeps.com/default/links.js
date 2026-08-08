@@ -1,6 +1,6 @@
 module.exports = function() {
     // Допоміжна функція, щоб не писати купу однакових if-перевірок
-    function processLink(sourceId, targetId, minEnergy = 700) {
+    function processLink(sourceId, targetId, minEnergy = 500) {
         const source = Game.getObjectById(sourceId);
         const target = Game.getObjectById(targetId);
 
@@ -43,4 +43,10 @@ module.exports = function() {
     const targetS6 = '6a420a4ae4e7cf835ecb98e2';
     processLink('6a422d0e7d65b3c30e6484e2', targetS6);
     processLink('6a47d126c02cb4f8836f60fe', targetS6);
+
+    // === SPAWN 7 ===
+    const targetS7 = '6a6efc3a6ada3760776043e3';
+    processLink('6a69a77c3aa2c86090281732', targetS7);
+    processLink('6a6f6bfd3b087e367770b181', targetS7,100);
+    
 };
