@@ -43,10 +43,12 @@ module.exports = function() {
     const targetS6 = '6a420a4ae4e7cf835ecb98e2';
     processLink('6a422d0e7d65b3c30e6484e2', targetS6);
     processLink('6a47d126c02cb4f8836f60fe', targetS6);
+    processLink('6a54a7e62f05b3c7f32ddc72', targetS6);
 
     // === SPAWN 7 ===
     const targetS7 = '6a6efc3a6ada3760776043e3';
-    processLink('6a69a77c3aa2c86090281732', targetS7);
+    processLink('6a8712856c26a041aea28e4b', targetS7);
     processLink('6a6f6bfd3b087e367770b181', targetS7,100);
+    processLink('6a7b085848a56fe4b8ff521c', targetS7,);
     
 };

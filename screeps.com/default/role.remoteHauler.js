@@ -94,7 +94,7 @@ var roleRemoteHauler = {
             
             for (let id of containerIds) {
                 let obj = Game.getObjectById(id);
-                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) >= 1200) { 
+                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) >= 800) { 
                     candidates.push(obj);
                 }
             }

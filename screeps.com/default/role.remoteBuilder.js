@@ -78,7 +78,7 @@ var roleRemoteBuilder = {
                 
                 // 1. Спочатку підбираємо те, що впало (Dropped)
                 let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 500
+                    filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 100
                 });
                 
                 if(dropped) {
@@ -89,13 +89,13 @@ var roleRemoteBuilder = {
                 let source = null;
 
                 // Перевіряємо чи є Storage І чи є в ньому енергія
-                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 100000) {
+                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 5000) {
                     source = creep.room.storage;
                 } else {
                     // Якщо Storage порожній або його немає — шукаємо найближчий контейнер
                     source = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                         filter: (s) => s.structureType == STRUCTURE_CONTAINER && 
-                                    s.store[RESOURCE_ENERGY] > 400 // Знизив поріг до 100, щоб не чекав 500
+                                    s.store[RESOURCE_ENERGY] > 800 
                     });
                 }
 

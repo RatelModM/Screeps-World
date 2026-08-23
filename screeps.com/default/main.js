@@ -135,38 +135,60 @@ module.exports.loop = function () {
         Claimer
         } = getAllCounts();
        
-        // логіка вежі
-        for (let tower of towers) {
-            // 1.1 Пріоритет №1: Атака ворогів
-            var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-            if (closestHostile) {
-                tower.attack(closestHostile);
-            }
-            // 1.2 Пріоритет №2: Ремонт (якщо немає ворогів)
-            else {
-                // Шукаємо критичні пошкодження: Дороги та Контейнери
-                var urgentRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (s) => {
-                        return (s.structureType == STRUCTURE_ROAD || s.structureType == STRUCTURE_CONTAINER) &&
-                            s.hits < s.hitsMax;
-                    }
-                });
-                if (urgentRepair) { tower.repair(urgentRepair); }
+        // логіка веж
+    for (let tower of towers) {
 
-                else {
-                    // Якщо дороги цілі, займаємося стінами та рампартами
-                    var defensiveRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                        filter: (s) => {
-                            return (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART) &&
-                                s.hits < 300000;
-                        }
-                    });
-                    if (defensiveRepair) {
-                        tower.repair(defensiveRepair);
-                    }
-                }
-            }
+    // 1. ПРІОРИТЕТ №1: АТАКА ВОРОГІВ
+    // Спочатку шукаємо хілерів (HEAL)
+    let target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
+        filter: (creep) => creep.getActiveBodyparts(HEAL) > 0
+    });
+
+    // Якщо хілерів немає — беремо будь-якого найближчого ворога
+    if (!target) {
+        target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+    }
+
+    if (target) {
+        tower.attack(target);
+        continue; // Знайшли ворога -> атакуємо і йдемо до наступної вежі
+    }
+
+    // 2. ПРІОРИТЕТ №2: ЛІКУВАННЯ СВОЇХ КРІПІВ (Корисно при захисті)
+    let injuredCreep = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
+        filter: (c) => c.hits < c.hitsMax
+    });
+
+    if (injuredCreep) {
+        tower.heal(injuredCreep);
+        continue;
+    }
+
+    // 3. ПРІОРИТЕТ №3: РЕМОНТ (Тільки якщо в вежі > 500 energy)
+    if (tower.store[RESOURCE_ENERGY] > 500) {
+        
+        // 3.1 Терміновий ремонт: Дороги та Контейнери
+        let urgentRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (s) => (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER) && 
+                           s.hits < s.hitsMax
+        });
+
+        if (urgentRepair) {
+            tower.repair(urgentRepair);
+            continue;
         }
+
+        // 3.2 Захисний ремонт: Стіни та Рампарти (до 300,000)
+        let defensiveRepair = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (s) => (s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART) && 
+                           s.hits < 300000
+        });
+
+        if (defensiveRepair) {
+            tower.repair(defensiveRepair);
+        }
+    }
+}
         // Логіка ЛіНКів
            manageLinks();
 
@@ -245,12 +267,12 @@ module.exports.loop = function () {
     console.log(`🪣 Bucket: ${Game.cpu.bucket} / 10000 | CPU Used: ${Game.cpu.getUsed().toFixed(2)}`);
     
    
-   if (Game.cpu.generatePixel && Game.cpu.bucket === 10000) {
-         let result = Game.cpu.generatePixel();
-         if (result === OK) {
-        console.log('💎 Успішно згенеровано 1 Pixel!');
-     } else {
-        console.log(`⚠️ Помилка генерації пикселя: ${result}`);
-    }
-}
+//    if (Game.cpu.generatePixel && Game.cpu.bucket === 10000) {
+//          let result = Game.cpu.generatePixel();
+//          if (result === OK) {
+//         console.log('💎 Успішно згенеровано 1 Pixel!');
+//      } else {
+//         console.log(`⚠️ Помилка генерації пикселя: ${result}`);
+//     }
+// }
 }

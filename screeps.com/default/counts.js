@@ -13,7 +13,7 @@ module.exports = function() {
         SpawnHaulerS1: [], SpawnHaulerS2: [], SpawnHaulerS3: [], SpawnHaulerS4: [], SpawnHaulerS5: [], SpawnHaulerS6: [],
         remoteMiners1_1: [], remoteMiners1_2: [], remoteMiners2_1: [], remoteMiners2_2: [], remoteMiners2_3: [], remoteMiners2_4: [],
         remoteMiners3_1: [], remoteMiners3_2: [], remoteMiners4_3: [], remoteMiners4_4: [], remoteMiners4_1: [], remoteMiners4_2: [], remoteMiners5_1: [],
-        remoteMinerHauler2_1: [], remoteMinerHauler3_1: [], remoteMinerHauler4_1: [], remoteMinerHauler4_2: [],
+        remoteMinerHauler2_1: [], remoteMinerHauler3_1: [], remoteMinerHauler4_1: [], remoteMinerHauler4_2: [],remoteMinerHauler6: [],
         MineralMiner_1: [], MineralMiner_2: [], MineralMiner_3: [], MineralMiner_4: [], MineralMiner_5: [], MineralMiner_6: [],MineralMiner_7: [],
         remoteHaulers1_1: [], remoteHaulers2_1: [], remoteHaulers2_2: [], remoteHaulers3_1: [], remoteHaulers4_1: [], remoteHaulers5_1: [], remoteHaulers6_1: [],
         LinkerStorage1: [], LinkerStorage2: [], LinkerStorage3: [], LinkerStorage4: [], LinkerStorage5: [], LinkerStorage6: [], LinkerStorage7: [],
@@ -138,6 +138,7 @@ module.exports = function() {
                 else if (mem.sourceId === '55db3154efa8e3fe66e0494d') counts.remoteMinerHauler3_1.push(creep);
                 else if (mem.sourceId === '55db3115efa8e3fe66e047c3') counts.remoteMinerHauler4_1.push(creep);
                 else if (mem.sourceId === '55db3115efa8e3fe66e047c1') counts.remoteMinerHauler4_2.push(creep);
+                else if (mem.sourceId === '55db3177efa8e3fe66e04a7a') counts.remoteMinerHauler6.push(creep);
                 
                 break;
 
