@@ -1,61 +1,58 @@
 var roleRemoteMiner = {
     run: function(creep) {
-        // 1. Якщо ми не в цільовій кімнаті — йдемо туди
+        // 1. Якщо ми не в цільовій кімнаті — йдемо туди (з високим reusePath)
         if (creep.room.name !== creep.memory.targetRoom) {
-            creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {
-                reusePath: 20, 
-                visualizePathStyle: {stroke: '#ffaa00'}
-            });
-            return; // Перериваємо тік, поки не дійдемо
+            let targetPos = new RoomPosition(25, 25, creep.memory.targetRoom);
+            creep.moveTo(targetPos, { reusePath: 50 });
+            return;
         } 
         
-        // 2. Ми в цільовій кімнаті. Шукаємо джерело за ID
+        // 2. Джерело в кімнаті
         let source = Game.getObjectById(creep.memory.sourceId);
-        if (!source) return; // Захист на випадок, якщо об'єкт ще не провантажився
+        if (!source) return;
 
-        // --- ЛОГІКА ПОШУКУ ЛІНКА ---
-        let link = null;
-        if (creep.memory.linkId) {
-            link = Game.getObjectById(creep.memory.linkId);
-        } else {
-            // Шукаємо лінк в радіусі 2 клітин від джерела
-            link = source.pos.findInRange(FIND_STRUCTURES, 2, {
-                filter: (s) => s.structureType == STRUCTURE_LINK
+        // === ОПТИМІЗАЦІЯ: КЕШУВАННЯ ID В ПАМ'ЯТЬ (Шукаємо лише 1 раз за життя кріпа) ===
+        if (creep.memory.containerId === undefined) {
+            let container = source.pos.findInRange(FIND_STRUCTURES, 1, {
+                filter: (s) => s.structureType === STRUCTURE_CONTAINER
             })[0];
+            // Якщо знайшли — пишемо ID, якщо ні — пишемо null (щоб не шукати знову)
+            creep.memory.containerId = container ? container.id : null;
         }
 
-        // Шукаємо контейнер поруч із джерелом (в радіусі 1 клітини)
-        let container = source.pos.findInRange(FIND_STRUCTURES, 1, {
-            filter: (s) => s.structureType == STRUCTURE_CONTAINER
-        })[0];
+        if (creep.memory.linkId === undefined) {
+            let link = source.pos.findInRange(FIND_STRUCTURES, 2, {
+                filter: (s) => s.structureType === STRUCTURE_LINK
+            })[0];
+            creep.memory.linkId = link ? link.id : null;
+        }
 
-        // Визначаємо ідеальну позицію для копання
+        // Отримуємо об'єкти з пам'яті напряму (0 CPU)
+        let container = creep.memory.containerId ? Game.getObjectById(creep.memory.containerId) : null;
+        let link = creep.memory.linkId ? Game.getObjectById(creep.memory.linkId) : null;
+
+        // Перевірка: якщо контейнер знищили або його побудували пізніше — оновлюємо пам'ять раз на 100 тіків
+        if (!container && Game.time % 100 === 0) {
+            delete creep.memory.containerId;
+        }
+
+        // Визначаємо ціль
         let targetPos = container ? container.pos : source.pos;
-        let requiredRange = container ? 0 : 1; // На контейнер треба стати, до джерела — підійти впритул
+        let requiredRange = container ? 0 : 1;
 
-        // 3. ЛОГІКА РУХУ ТА ДІЙ
+        // 3. РУХ ТА ДІЇ
         if (creep.pos.getRangeTo(targetPos) > requiredRange) {
-            creep.say('🛵' + (link ? '🔗' : '⛏️'));
-            creep.moveTo(targetPos, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 5});
+            creep.moveTo(targetPos, { reusePath: 20 });
         } else {
-            // Ми на місці! Видобуваємо енергію кожен тік
+            // Видобуток
             creep.harvest(source);
 
-            // --- ОНОВЛЕНА ФУНКЦІЯ РЕМОНТУ ТА СКИДАННЯ ---
-            
-            // Варіант А: Скидаємо в лінк ТІЛЬКИ тоді, коли кріп ПОВНІСТЮ заповнений
+            // Скидання в лінк або ремонт контейнера
             if (creep.store.getFreeCapacity() === 0 && link && link.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                 creep.transfer(link, RESOURCE_ENERGY);
-              
             } 
-            // Варіант Б: Якщо кріп НЕ повний, але контейнер потребує ремонту (менше 80% HP)
             else if (container && container.hits < container.hitsMax * 0.8 && creep.store[RESOURCE_ENERGY] > 0) {
                 creep.repair(container);
-                creep.say('🛠️');
-            } 
-            // Варіант В: Кріп просто копає (енергія з часом заповнить кріпа, а надлишок впаде в контейнер)
-            else {
-                creep.say('⛏️');
             }
         }
     }

@@ -89,7 +89,7 @@ var roleRemoteBuilder = {
                 let source = null;
 
                 // Перевіряємо чи є Storage І чи є в ньому енергія
-                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 5000) {
+                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 50000) {
                     source = creep.room.storage;
                 } else {
                     // Якщо Storage порожній або його немає — шукаємо найближчий контейнер
@@ -104,7 +104,15 @@ var roleRemoteBuilder = {
                         creep.moveTo(source, { reusePath: 50, maxRooms: 1 });
                     }
                 }
-            }
+                else {
+                        let activeSource = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+                        if (activeSource) {
+                            if (creep.harvest(activeSource) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(activeSource, { reusePath: 20, maxRooms: 1, visualizePathStyle: {stroke: '#ffaa00'} });
+                            }
+                        }
+                    } 
+            }    
         }
     }
 };

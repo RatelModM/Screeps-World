@@ -78,7 +78,7 @@ var roleHauler = {
         else {
             // ПРІОРИТЕТ 1: Шукаємо повні контейнери з енергією (> 700)
             var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 700
+                filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 1999
             });
 
             if (container) {

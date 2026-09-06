@@ -1,24 +1,43 @@
 var roleDefender = {
     /** @param {Creep} creep **/
     run: function(creep) {
-        // 1. Перевірка кімнати
-        if (!creep.memory.targetRoom) return;
-
-        if (creep.room.name !== creep.memory.targetRoom) {
-            creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {range: 10});
+        // 0. СИЛОВИЙ ВИХІД З КОРДОНУ
+        if (creep.pos.x <= 0 || creep.pos.x >= 49 || creep.pos.y <= 0 || creep.pos.y >= 49) {
+            creep.moveTo(new RoomPosition(25, 25, creep.room.name), {
+                visualizePathStyle: {stroke: '#ff00ff'}
+            });
             return;
         }
 
-        // 2. ПОШУК ЦІЛІ (Пріоритети: Хілери -> Кріпи -> Ворожі структури)
+        // 1. ПЕРЕВІРКА КІМНАТИ
+        if (!creep.memory.targetRoom) return;
+
+        if (creep.room.name !== creep.memory.targetRoom) {
+            creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {
+                reusePath: 50,
+                range: 5,
+                visualizePathStyle: {stroke: '#ff00ff', lineStyle: 'dashed'}
+            });
+            creep.say('🛰️ В рейд');
+            return;
+        }
+
+        // Перевірка бойових та робочих деталей
+        let hasAttack = creep.getActiveBodyparts(ATTACK) > 0;
+        let hasRanged = creep.getActiveBodyparts(RANGED_ATTACK) > 0;
+        let hasHeal = creep.getActiveBodyparts(HEAL) > 0;
+        let hasWork = creep.getActiveBodyparts(WORK) > 0;
+        let hasCarry = creep.getActiveBodyparts(CARRY) > 0;
+
+        // 2. ПОШУК ЦІЛІ (Пріоритет: Хілери -> Кріпи -> Споруди)
         let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
-            filter: (hostile) => hostile.getActiveBodyparts(HEAL) > 0
+            filter: (h) => h.getActiveBodyparts(HEAL) > 0
         });
 
         if (!target) {
             target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         }
 
-        // --- ЗМІНЕНО: Шукаємо всі ворожі будівлі (крім Контролера) ---
         if (!target) {
             target = creep.pos.findClosestByRange(FIND_HOSTILE_STRUCTURES, {
                 filter: (s) => s.structureType != STRUCTURE_CONTROLLER
@@ -27,114 +46,163 @@ var roleDefender = {
 
         // 3. БОЙОВА ЛОГІКА
         if (target) {
-            // Атакуємо всім, чим можемо
-            creep.rangedAttack(target);
-            creep.attack(target);
+            let rangeToTarget = creep.pos.getRangeTo(target);
 
-            // 4. РОЗУМНЕ ПОЗИЦІОНУВАННЯ В БОЮ
-            let rampart = target.pos.findInRange(FIND_MY_STRUCTURES, 3, {
-                filter: (s) => s.structureType == STRUCTURE_RAMPART
-            })[0];
+            // --- ВІДСТУП (Якщо втрачена вся зброя) ---
+            if (!hasAttack && !hasRanged) {
+                this.healLogic(creep, hasHeal);
 
-            if (rampart) {
-                creep.moveTo(rampart, {visualizePathStyle: {stroke: '#00ff00'}});
-            } else {
-                let desiredRange = 3; 
-                // --- ЗМІНЕНО: Підходимо впритул (range 1), якщо це структура АБО якщо є ATTACK ---
-                if (target.structureType || creep.getActiveBodyparts(ATTACK) > 0) {
-                    desiredRange = 1;
-                }
-
-                if (creep.pos.getRangeTo(target) > desiredRange) {
-                    creep.moveTo(target, {range: desiredRange, visualizePathStyle: {stroke: '#ff0000'}});
-                }
-            }
-            
-            creep.say('⚔️', true);
-        } 
-        // ==========================================
-        // 5. МИРНИЙ ЧАС (ДОДАТКОВІ ФУНКЦІЇ)
-        // ==========================================
-        else {
-            // Умова А: Якщо кріп поранений і має хілки — лікує себе
-            if (creep.hits < creep.hitsMax && creep.getActiveBodyparts(HEAL) > 0) {
-                creep.say('❤️', true);
-                creep.heal(creep);
-            }
-            
-            // Умова Б: Якщо в кишені немає енергії — шукаємо підніжну енергію, контейнер або сторедж
-            else if (creep.store && creep.store[RESOURCE_ENERGY] <20) {
-                
-                // 1. Спочатку шукаємо енергію, що валяється на підлозі (Пріоритет №1, бо вона зникає)
-                let droppedEnergy = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                    filter: (r) => r.resourceType == RESOURCE_ENERGY && r.amount > 50
+                let safeRampart = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                    filter: (s) => s.structureType == STRUCTURE_RAMPART
                 });
 
-                if (droppedEnergy) {
-                    creep.say('👇 Ground', true);
-                    // Для підлоги використовуємо ПІКАП
-                    if (creep.pickup(droppedEnergy) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(droppedEnergy, {visualizePathStyle: {stroke: '#ffaa00'}});
-                    }
-                } 
-                // 2. Якщо на підлозі порожньо, шукаємо найближчий Контейнер або Сторедж (Пріоритет №2)
-                else {
-                    let energyStructure = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                        filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) 
-                                    && s.store[RESOURCE_ENERGY] > 50
-                    });
+                if (safeRampart && creep.pos.getRangeTo(safeRampart) > 0) {
+                    creep.moveTo(safeRampart, {visualizePathStyle: {stroke: '#00ff00'}});
+                } else if (rangeToTarget < 4) {
+                    this.goToPost(creep);
+                }
+                return;
+            }
 
-                    if (energyStructure) {
-                        creep.say('📦 Structure', true);
-                        // Для споруд використовуємо ВІЗДРАВ
-                        if (creep.withdraw(energyStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(energyStructure, {visualizePathStyle: {stroke: '#ffaa00'}});
-                        }
-                    } else {
-                        // Якщо ніде в кімнаті немає доступної енергії — йдемо на пост
-                        this.goToPost(creep);
-                    }
+            // --- ПРІОРИТЕТ: ЛІКУВАННЯ (при <50% HP) АБО АТАКА ---
+            let didHeal = this.healLogic(creep, hasHeal);
+
+            // Якщо лікування не потрібне — атакуємо
+            if (!didHeal) {
+                if (hasRanged && rangeToTarget <= 3) {
+                    creep.rangedAttack(target);
+                }
+                if (hasAttack && rangeToTarget <= 1) {
+                    creep.attack(target);
                 }
             }
 
-            // Умова В: Якщо енергія є — БУДІВНИЦТВО ТА РЕМОНТ ДОРІГ
-            else if (creep.store && creep.store[RESOURCE_ENERGY] > 0) {
-                
-                // 1. Спочатку шукаємо будівельні майданчики (Construction Sites)
-                let constructionSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-                
-                if (constructionSite) {
-                    creep.say('🚧 Build', true);
-                    if (creep.build(constructionSite) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(constructionSite, {visualizePathStyle: {stroke: '#ffff00'}});
+            // --- 4. ТАКТИКА МАНЕВРУВАННЯ ("БЕЙ-УХОДИ") ---
+            if (hasRanged && !hasAttack) {
+                if (rangeToTarget < 3) {
+                    let fleePath = PathFinder.search(creep.pos, { pos: target.pos, range: 4 }, {
+                        flee: true,
+                        maxRooms: 1
+                    }).path;
+
+                    if (fleePath.length > 0) {
+                        creep.moveTo(fleePath[0], {visualizePathStyle: {stroke: '#ff0000'}});
                     }
+                    creep.say('🏹 Hit&Run', true);
                 } 
-                // 2. Якщо будувати нічого, шукаємо пошкоджені дороги (Roads)
-                else {
-                    let roadToRepair = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                        filter: (s) => s.structureType == STRUCTURE_ROAD && s.hits < s.hitsMax
-                    });
-
-                    if (roadToRepair) {
-                        creep.say('🛠️ Road', true);
-                        if (creep.repair(roadToRepair) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(roadToRepair, {visualizePathStyle: {stroke: '#00ffff'}});
-                        }
-                    } else {
-                        // Якщо немає ні будівництва, ні зламаних доріг — відпочиваємо
-                        this.goToPost(creep);
-                    }
+                else if (rangeToTarget > 3) {
+                    creep.moveTo(target, {range: 3, visualizePathStyle: {stroke: '#ffaa00'}});
                 }
-            }
-
-            // Умова Г: Бездіяльність
+            } 
             else {
-                this.goToPost(creep);
+                if (rangeToTarget > 1) {
+                    creep.moveTo(target, {range: 1, visualizePathStyle: {stroke: '#ff0000'}});
+                }
+            }
+        } 
+
+        // 5. МИРНИЙ ЧАС
+        else {
+            let didHeal = this.healLogic(creep, hasHeal);
+
+            if (!didHeal) {
+                if (hasCarry && hasWork) {
+                    if (creep.store[RESOURCE_ENERGY] < 20) {
+                        let droppedEnergy = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+                            filter: (r) => r.resourceType == RESOURCE_ENERGY && r.amount > 50
+                        });
+
+                        if (droppedEnergy) {
+                            creep.say('👇 Ground', true);
+                            if (creep.pickup(droppedEnergy) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(droppedEnergy, {visualizePathStyle: {stroke: '#ffaa00'}});
+                            }
+                        } else {
+                            let energyStructure = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                                filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) 
+                                            && s.store[RESOURCE_ENERGY] > 50
+                            });
+
+                            if (energyStructure) {
+                                creep.say('📦 Structure', true);
+                                if (creep.withdraw(energyStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                    creep.moveTo(energyStructure, {visualizePathStyle: {stroke: '#ffaa00'}});
+                                }
+                            } else {
+                                this.goToPost(creep);
+                            }
+                        }
+                    } else {
+                        let containerToRepair = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                            filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.hits < s.hitsMax
+                        });
+
+                        if (containerToRepair) {
+                            creep.say('🛠️ Con', true);
+                            if (creep.repair(containerToRepair) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(containerToRepair, {visualizePathStyle: {stroke: '#00ffff'}});
+                            }
+                        } else {
+                            let roadToRepair = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                                filter: (s) => s.structureType == STRUCTURE_ROAD && s.hits < s.hitsMax
+                            });
+
+                            if (roadToRepair) {
+                                creep.say('🛠️ Road', true);
+                                if (creep.repair(roadToRepair) == ERR_NOT_IN_RANGE) {
+                                    creep.moveTo(roadToRepair, {visualizePathStyle: {stroke: '#00ffff'}});
+                                }
+                            } else {
+                                let constructionSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+                                if (constructionSite) {
+                                    creep.say('🚧 Build', true);
+                                    if (creep.build(constructionSite) == ERR_NOT_IN_RANGE) {
+                                        creep.moveTo(constructionSite, {visualizePathStyle: {stroke: '#ffff00'}});
+                                    }
+                                } else {
+                                    this.goToPost(creep);
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    this.goToPost(creep);
+                }
             }
         }
     },
 
-    // Функція повернення на пост
+    // ЛОГІКА ЛІКУВАННЯ (Тільки якщо HP < 50%)
+    healLogic: function(creep, hasHeal) {
+        if (!hasHeal) return false;
+
+        // Пошук себе або союзника, у якого залишилось менше 50% HP
+        let injuredAlly = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
+            filter: (c) => c.hits < (c.hitsMax * 0.5)
+        });
+
+        if (injuredAlly) {
+            let range = creep.pos.getRangeTo(injuredAlly);
+
+            if (range <= 1) {
+                creep.say(injuredAlly.id === creep.id ? '❤️ Heal' : '🩹 Heal Ally', true);
+                creep.heal(injuredAlly);
+                return true;
+            } 
+            else if (range <= 3) {
+                creep.say('💉 R-Heal', true);
+                creep.rangedHeal(injuredAlly);
+                return true;
+            }
+            else if (!creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS)) {
+                creep.moveTo(injuredAlly, {range: 1, visualizePathStyle: {stroke: '#00ff00'}});
+            }
+        }
+
+        return false;
+    },
+
     goToPost: function(creep) {
         if (creep.pos.x !== 25 || creep.pos.y !== 25) {
             creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {range: 3});

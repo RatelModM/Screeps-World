@@ -2,21 +2,21 @@ module.exports = function() {
     // Ініціалізуємо всі масиви порожніми
     const counts = {
         harvesters: [], harvesters2: [], harvesters3: [], harvesters4: [], harvesters5: [], harvesters6: [],harvesters7: [],
-        upgraderS1: [], upgraderS2: [], upgraderS3: [], upgraderS4: [], upgraderS5: [], upgraderS6: [],upgraderS7: [],
+        upgraderS1: [], upgraderS2: [], upgraderS3: [], upgraderS4: [], upgraderS5: [], upgraderS6: [],upgraderS7: [],upgraderS8: [],
         builders: [], builders2: [], builders3: [], builders4: [],
         defenderS1_1: [], defenderS2_1: [], defenderS2_2: [], defenderS3_1: [], defenderS3_2: [], defenderS4_1: [], defenderS5_1: [], defenderS7_1: [],
         miner: [], minersOnSource: [],
-        minerS2_1: [], minerS2_2: [], minerS3_1: [], minerS3_2: [], minerS5_1: [], minerS5_2: [], minerS6_1: [], minerS6_2: [], minerS7_1: [], minerS7_2: [],
-        haulerS1: [], haulerS2: [], haulerS3: [], haulerS4: [], haulerS5: [], haulerS6: [],haulerS7: [],
+        minerS2_1: [], minerS2_2: [], minerS3_1: [], minerS3_2: [], minerS5_1: [], minerS5_2: [], minerS6_1: [], minerS6_2: [], minerS7_1: [], minerS7_2: [],minerS8_1: [], minerS8_2: [],
+        haulerS1: [], haulerS2: [], haulerS3: [], haulerS4: [], haulerS5: [], haulerS6: [],haulerS7: [],haulerS8: [],
         remoteBuilderS1: [], remoteBuilderS2: [],
         reservers1_1: [], reservers2_1: [], reservers2_2: [], reservers3_1: [], reservers4_1: [],reservers4_2: [], reservers5_1: [],
         SpawnHaulerS1: [], SpawnHaulerS2: [], SpawnHaulerS3: [], SpawnHaulerS4: [], SpawnHaulerS5: [], SpawnHaulerS6: [],
         remoteMiners1_1: [], remoteMiners1_2: [], remoteMiners2_1: [], remoteMiners2_2: [], remoteMiners2_3: [], remoteMiners2_4: [],
         remoteMiners3_1: [], remoteMiners3_2: [], remoteMiners4_3: [], remoteMiners4_4: [], remoteMiners4_1: [], remoteMiners4_2: [], remoteMiners5_1: [],
         remoteMinerHauler2_1: [], remoteMinerHauler3_1: [], remoteMinerHauler4_1: [], remoteMinerHauler4_2: [],remoteMinerHauler6: [],
-        MineralMiner_1: [], MineralMiner_2: [], MineralMiner_3: [], MineralMiner_4: [], MineralMiner_5: [], MineralMiner_6: [],MineralMiner_7: [],
+        MineralMiner_1: [], MineralMiner_2: [], MineralMiner_3: [], MineralMiner_4: [], MineralMiner_5: [], MineralMiner_6: [],MineralMiner_7: [],MineralMiner_8: [],
         remoteHaulers1_1: [], remoteHaulers2_1: [], remoteHaulers2_2: [], remoteHaulers3_1: [], remoteHaulers4_1: [], remoteHaulers5_1: [], remoteHaulers6_1: [],
-        LinkerStorage1: [], LinkerStorage2: [], LinkerStorage3: [], LinkerStorage4: [], LinkerStorage5: [], LinkerStorage6: [], LinkerStorage7: [],
+        LinkerStorage1: [], LinkerStorage2: [], LinkerStorage3: [], LinkerStorage4: [], LinkerStorage5: [], LinkerStorage6: [], LinkerStorage7: [],LinkerStorage8: [],
         Claimer: [],
         towers: []
     };
@@ -45,6 +45,7 @@ module.exports = function() {
                 else if (mem.targetRoom === "W28S29") counts.upgraderS5.push(creep);
                 else if (mem.targetRoom === "W27S28") counts.upgraderS6.push(creep);
                 else if (mem.targetRoom === "W28S26") counts.upgraderS7.push(creep);
+                else if (mem.targetRoom === "W28S27") counts.upgraderS8.push(creep);
                 break;
 
             case 'builder':
@@ -56,13 +57,18 @@ module.exports = function() {
 
             case 'defender':
                 if (mem.targetRoom === "W28S28") counts.defenderS1_1.push(creep);
-                else if (mem.targetRoom === "W29S29") counts.defenderS2_1.push(creep);
+                
                 else if (mem.targetRoom === "W26S29") counts.defenderS2_2.push(creep);
                 else if (mem.targetRoom === "W28S26") counts.defenderS3_1.push(creep);
-                else if (mem.targetRoom === "W27S26") counts.defenderS3_2.push(creep);
+                else if (mem.targetRoom === "W25S28") counts.defenderS3_2.push(creep);
                 else if (mem.targetRoom === "W28S27") counts.defenderS4_1.push(creep);
                 else if (mem.targetRoom === "W29S29") counts.defenderS5_1.push(creep);
                 else if (mem.targetRoom === "W29S26") counts.defenderS7_1.push(creep);
+                break;
+            case 'sicario':
+                
+                if (mem.targetRoom === "W24S29") counts.defenderS2_1.push(creep);
+                
                 break;
 
             case 'miner':
@@ -82,6 +88,8 @@ module.exports = function() {
                 else if (mem.sourceId === '55db3155efa8e3fe66e04955') counts.minerS6_2.push(creep);
                 else if (mem.sourceId === '55db3132efa8e3fe66e0488a') counts.minerS7_1.push(creep);
                 else if (mem.sourceId === '55db3132efa8e3fe66e0488c') counts.minerS7_2.push(creep);
+                else if (mem.sourceId === '55db3133efa8e3fe66e04890') counts.minerS8_1.push(creep);
+                else if (mem.sourceId === '55db3133efa8e3fe66e0488e') counts.minerS8_2.push(creep);
                 
                 // Група remoteMiners
                 if (mem.sourceId === '55db3133efa8e3fe66e04894') counts.remoteMiners1_1.push(creep);
@@ -92,8 +100,8 @@ module.exports = function() {
                 else if (mem.sourceId === '55db3178efa8e3fe66e04a7e') counts.remoteMiners2_4.push(creep);
                 else if (mem.sourceId === '55db3132efa8e3fe66e0488a') counts.remoteMiners3_1.push(creep);
                 else if (mem.sourceId === '55db3132efa8e3fe66e0488c') counts.remoteMiners3_2.push(creep);
-                else if (mem.sourceId === '55db3133efa8e3fe66e0488e') counts.remoteMiners4_3.push(creep);
-                else if (mem.sourceId === '55db3133efa8e3fe66e04890') counts.remoteMiners4_4.push(creep);
+                else if (mem.sourceId === '55db3133efa8e3fe66e0488e1') counts.remoteMiners4_3.push(creep);
+                else if (mem.sourceId === '55db3133efa8e3fe66e048901') counts.remoteMiners4_4.push(creep);
                 else if (mem.sourceId === '55db3116efa8e3fe66e047c5') counts.remoteMiners4_1.push(creep);
                 else if (mem.sourceId === '55db3116efa8e3fe66e047c6') counts.remoteMiners4_2.push(creep);
                 else if (mem.sourceId === '55db3117efa8e3fe66e047cd') counts.remoteMiners5_1.push(creep);
@@ -107,6 +115,7 @@ module.exports = function() {
                 else if (mem.targetRoom === "W28S29") counts.haulerS5.push(creep);
                 else if (mem.targetRoom === "W27S28") counts.haulerS6.push(creep);
                 else if (mem.targetRoom === "W28S26") counts.haulerS7.push(creep);
+                else if (mem.targetRoom === "W28S27") counts.haulerS8.push(creep);
                 break;
 
             case 'remoteBuilder':
@@ -116,9 +125,9 @@ module.exports = function() {
 
             case 'reserver':
                 if (mem.targetRoom === 'W28S28') counts.reservers1_1.push(creep);
-                else if (mem.targetRoom === 'W27S28') counts.reservers2_1.push(creep);
+                else if (mem.targetRoom === 'W25S29') counts.reservers2_1.push(creep);
                 else if (mem.targetRoom === 'W26S29') counts.reservers2_2.push(creep);
-                // else if (mem.targetRoom === 'W29S26') counts.reservers3_1.push(creep);
+                else if (mem.targetRoom === 'W25S28') counts.reservers3_1.push(creep);
                 else if (mem.targetRoom === 'W28S27') counts.reservers4_1.push(creep);
                 else if (mem.targetRoom === 'W29S26') counts.reservers4_2.push(creep);
                 else if (mem.targetRoom === 'W29S29') counts.reservers5_1.push(creep);
@@ -150,6 +159,7 @@ module.exports = function() {
                 else if (mem.targetRoom === 'W28S29') counts.MineralMiner_5.push(creep);
                 else if (mem.targetRoom === 'W27S28') counts.MineralMiner_6.push(creep);
                 else if (mem.targetRoom === 'W28S26') counts.MineralMiner_7.push(creep);
+                else if (mem.targetRoom === 'W28S27') counts.MineralMiner_8.push(creep);
                 break;
 
             case 'remoteHauler':
@@ -165,11 +175,12 @@ module.exports = function() {
             case 'linkerStorage':
                 if (mem.linkId === '6a1a9ad106382f425a860ee9') counts.LinkerStorage1.push(creep);
                 else if (mem.linkId === '6a17638d5d6bdcd5eeb4ca61') counts.LinkerStorage2.push(creep);
-                else if (mem.linkId === '6a17496873d18470acf2ef44') counts.LinkerStorage3.push(creep);
+                else if (mem.linkId === '6a58f9655ef34826f219d8ad') counts.LinkerStorage3.push(creep);
                 else if (mem.linkId === '6a58f2831834efde698d694f') counts.LinkerStorage4.push(creep);
                 else if (mem.linkId === '6a28f72d0b346572948cf561') counts.LinkerStorage5.push(creep);
                 else if (mem.linkId === '6a420a4ae4e7cf835ecb98e2') counts.LinkerStorage6.push(creep);
                 else if (mem.linkId === '6a6efc3a6ada3760776043e3') counts.LinkerStorage7.push(creep);
+                else if (mem.linkId === '6a954b8348a56f1bb906a194') counts.LinkerStorage8.push(creep);
                 break;
 
             case 'claimer':

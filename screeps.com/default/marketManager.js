@@ -26,7 +26,7 @@ var marketManager = {
         },
         // Мінімальні ціни продажу (Запобіжник: ціна SELL-ордера ніколи не впаде нижче цих значень)
         MIN_PRICES: {
-            [RESOURCE_BATTERY]: 600,
+            [RESOURCE_BATTERY]: 450,
             // [RESOURCE_OXIDANT]: 2200.5,
             [RESOURCE_PURIFIER]: 4500.05,
             // [RESOURCE_KEANIUM_BAR]: 700,
@@ -36,7 +36,7 @@ var marketManager = {
             // Захист дефіцитних ресурсів (ціна продажу обов'язково вища за ціну закупівлі)
             [RESOURCE_LEMERGIUM]: 960,       
             [RESOURCE_LEMERGIUM_BAR]: 3900,
-            [RESOURCE_CATALYST]: 1000,
+            [RESOURCE_CATALYST]: 1100,
        
         },
 

@@ -50,5 +50,11 @@ module.exports = function() {
     processLink('6a8712856c26a041aea28e4b', targetS7);
     processLink('6a6f6bfd3b087e367770b181', targetS7,100);
     processLink('6a7b085848a56fe4b8ff521c', targetS7,);
+
+     // === SPAWN 8 ===
+    const targetS8 = '6a954b8348a56f1bb906a194';
+    processLink('6a8c04790411eb2fb33ebbad', targetS8);
+    processLink('6a941fe6ca45324d20f16842', targetS8);
+    
     
 };

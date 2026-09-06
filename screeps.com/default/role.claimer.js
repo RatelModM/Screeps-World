@@ -11,8 +11,6 @@ var roleClaimer = {
 
         // 1. Перевірка: чи ми в цільовій кімнаті?
         if (creep.room.name !== targetRoom) {
-            // Набагато простіший і надійніший спосіб переходу між кімнатами.
-            // Кріп сам знайде шлях до координат x:25, y:25 у вказаній кімнаті.
             const destination = new RoomPosition(25, 25, targetRoom);
             creep.moveTo(destination, { visualizePathStyle: {stroke: '#ff00ff'} });
         } 
@@ -21,16 +19,34 @@ var roleClaimer = {
             const controller = creep.room.controller;
             
             if (controller) {
-                // Намагаємось захопити
-                const result = creep.claimController(controller);
-                
-                if (result === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(controller, { visualizePathStyle: {stroke: '#ffffff'} });
-                } else if (result === ERR_GCL_NOT_ENOUGH) {
-                    // Якщо рівень GCL не дозволяє захопити, резервуємо
-                    const reserveResult = creep.reserveController(controller);
-                    if (reserveResult === ERR_NOT_IN_RANGE) {
+                const myUsername = creep.owner.username;
+
+                // Перевіряємо, чи є у контролера чужий власник або чужа резервація
+                const isForeignOwner = controller.owner && controller.owner.username !== myUsername;
+                const isForeignReservation = controller.reservation && controller.reservation.username !== myUsername;
+
+                // КРОК А: Нейтралізація (якщо контролер чужий)
+                if (isForeignOwner || isForeignReservation) {
+                    const attackResult = creep.attackController(controller);
+                    
+                    if (attackResult === ERR_NOT_IN_RANGE) {
+                        creep.moveTo(controller, { visualizePathStyle: {stroke: '#ff0000'} });
+                    }
+                } 
+                // КРОК Б: Захоплення або резервація (якщо контролер нейтральний)
+                else {
+                    const claimResult = creep.reserveController(controller);
+                    
+                    if (claimResult === ERR_NOT_IN_RANGE) {
                         creep.moveTo(controller, { visualizePathStyle: {stroke: '#ffffff'} });
+                    } 
+                    else if (claimResult === ERR_GCL_NOT_ENOUGH) {
+                        // Якщо рівень GCL не дозволяє захопити, резервуємо
+                        const reserveResult = creep.claimController(controller);
+                        
+                        if (reserveResult === ERR_NOT_IN_RANGE) {
+                            creep.moveTo(controller, { visualizePathStyle: {stroke: '#00ffff'} });
+                        }
                     }
                 }
             }
