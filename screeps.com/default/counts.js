@@ -60,14 +60,16 @@ module.exports = function() {
                 
                 else if (mem.targetRoom === "W26S29") counts.defenderS2_2.push(creep);
                 else if (mem.targetRoom === "W28S26") counts.defenderS3_1.push(creep);
-                else if (mem.targetRoom === "W25S28") counts.defenderS3_2.push(creep);
+                
                 else if (mem.targetRoom === "W28S27") counts.defenderS4_1.push(creep);
                 else if (mem.targetRoom === "W29S29") counts.defenderS5_1.push(creep);
                 else if (mem.targetRoom === "W29S26") counts.defenderS7_1.push(creep);
                 break;
+
             case 'sicario':
                 
                 if (mem.targetRoom === "W24S29") counts.defenderS2_1.push(creep);
+                else if (mem.targetRoom === "W25S28") counts.defenderS3_2.push(creep);
                 
                 break;
 

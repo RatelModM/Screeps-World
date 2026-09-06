@@ -317,7 +317,7 @@ module.exports = function(counts) {
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,
                      MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,
-                    HEAL, HEAL,HEAL, HEAL], 'Sikario_' + Game.time, {
+                    HEAL, HEAL,HEAL, HEAL], 'Sicario_' + Game.time, {
                     memory: { role: 'sicario', targetRoom: 'W24S29' }
                 });
             }
@@ -351,7 +351,7 @@ module.exports = function(counts) {
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,
                      MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,
-                    HEAL, HEAL,HEAL, HEAL], 'Sikario_' + Game.time, {
+                    HEAL, HEAL,HEAL, HEAL], 'Sicario_' + Game.time, {
                     memory: { role: 'sicario', targetRoom: 'W24S29' }
                 });
             }
@@ -367,18 +367,24 @@ module.exports = function(counts) {
                     memory: { role: 'defender', targetRoom: 'W26S29' }
                 });
             }
-            else if (reservers2_1.length < 1) {
-                s2_3.spawnCreep([CLAIM,CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM,  
-                                 MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                                 MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE
-                      ],
-                     'ReserverW24S29_' + Game.time, {
+            else if (reservers2_1.length < 1 && (!Memory.lastReserverSpawn || Game.time - Memory.lastReserverSpawn >= 900)) {
+                 let result = s2_3.spawnCreep([
+                    CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM,  
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE
+                ],
+                'ReserverW24S29_' + Game.time, {
                     memory: {
                         role: 'reserver',
                         targetRoom: 'W25S29',
                     }
                 });
-            }
+
+    // Записуємо час ТІЛЬКИ у разі успішного запуску спавну
+    if (result === OK) {
+        Memory.lastReserverSpawn = Game.time;
+    }
+}
 
                                   
         }
@@ -491,19 +497,16 @@ module.exports = function(counts) {
             //     });
             // }
 
-         else if (defenderS3_2.length < 0) {
-                let result = s3_1.spawnCreep([ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK,ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK,
-                    ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK,ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK,
-                     ATTACK, ATTACK, ATTACK, ATTACK,
-                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,
-                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,
-                    HEAL, HEAL], 'DEFW25S28_2_' + Game.time, {
-                    memory: { role: 'defender', targetRoom: 'W25S28' }
+         else if (defenderS3_2.length < 1) {
+                 s3_1.spawnCreep([RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
+                    RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
+                    RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,
+                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,
+                    HEAL, HEAL,HEAL, HEAL], 'DEFW25S28_2_' + Game.time, {
+                    memory: { role: 'sicario', targetRoom: 'W25S28' }
                 });
-                if (result !== OK) {
-            console.log(`Spawn3_1 не зміг створити LinkerStorage3! Код помилки: ${result}`);
-        }
-            }
+                           }
 
             else if (remoteHaulers3_1.length < 0) {
                 s3_1.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
