@@ -204,10 +204,21 @@ var roleDefender = {
     },
 
     goToPost: function(creep) {
-        if (creep.pos.x !== 25 || creep.pos.y !== 25) {
-            creep.moveTo(new RoomPosition(25, 25, creep.memory.targetRoom), {range: 3});
+    // 1. Шукаємо прапор за ім'ям (з creep.memory.targetFlag або дефолтний 'Post')
+    // Якщо його немає — беремо перший прапор у поточній кімнаті
+    let flagName = creep.memory.targetFlag || 'Post';
+    let targetFlag = Game.flags[flagName] || creep.room.find(FIND_FLAGS)[0];
+
+    // 2. Якщо прапор знайдено — йдемо до нього (якщо ми далі ніж range 3)
+            if (targetFlag) {
+                if (!creep.pos.inRangeTo(targetFlag, 3)) {
+                    creep.moveTo(targetFlag, {
+                        range: 3, 
+                        visualizePathStyle: {stroke: '#00ff00', lineStyle: 'dotted'}
+                    });
+                }
+            }
         }
-    }
 };
 
 module.exports = roleDefender;

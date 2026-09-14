@@ -136,7 +136,7 @@ module.exports.loop = function () {
                 if (!urgentRepair) {
                     defensiveRepair = room.find(FIND_STRUCTURES, {
                         filter: (s) => (s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART) &&
-                                    s.hits < 300000
+                                    s.hits < 350000
                     })[0];
                 }
             }
@@ -200,4 +200,5 @@ module.exports.loop = function () {
 
         console.log(`🪣 Bucket: ${Game.cpu.bucket} / 10000 | CPU Used: ${Game.cpu.getUsed().toFixed(2)}`);
     });
+    Game.cpu.generatePixel()
 };

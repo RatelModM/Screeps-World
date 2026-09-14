@@ -100,46 +100,40 @@ var roleHauler = {
                         creep.moveTo(mineralContainer, {reusePath: 50, visualizePathStyle: {stroke: '#ffaa00'}});
                     }
                 }
-                // ПРІОРИТЕТ 3: Якщо контейнери порожні, а база голодна — беремо енергію зі Storage
-                else {
+                       
+                // ПРІОРИТЕТ 3: Якщо контейнери порожні, а база голодна — беремо з Storage/Terminal
+          
+              else {
                     var needsEnergy = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                         filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) && 
-                                       s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                     });
 
-                    if (needsEnergy && creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 0) {
-                        if (creep.withdraw(creep.room.storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(creep.room.storage, {reusePath: 50, visualizePathStyle: {stroke: '#ffaa00'}});
-                        }
-                    } 
-                    // =========================================================================
-                    // ПРІОРИТЕТ 4 (ОСТАННЯ ЧЕРГА): Підбираємо БУДЬ-ЯКІ ресурси з землі
-                    // =========================================================================
-                    else {
-                        var droppedResource = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                            filter: (r) => r.amount > 1000 // Будь-який ресурс (і енергія, і мінерали)
-                        });
+                    if (needsEnergy) {
+                        var storage = creep.room.storage;
+                        var terminal = creep.room.terminal;
+                        var targetSource = null;
 
-                        if (droppedResource) {
-                            if (creep.pickup(droppedResource) == ERR_NOT_IN_RANGE) {
-                                creep.moveTo(droppedResource, {reusePath: 50, visualizePathStyle: {stroke: '#ff0000'}});
-                            }
+                        let storageEnergy = storage ? storage.store[RESOURCE_ENERGY] : 0;
+                        let terminalEnergy = terminal ? terminal.store[RESOURCE_ENERGY] : 0;
+
+                        // 1. Пріоритет: Якщо Storage наповнений (>= 374k) — беремо з Storage
+                        if (storageEnergy >= 376000) {
+                            targetSource = storage;
+                        } 
+                        // 2. Якщо Storage < 374k і в Terminal є ЕНЕРГІЯ — спустошуємо Terminal
+                        else if (terminalEnergy > 0) {
+                            targetSource = terminal;
+                        } 
+                        // 3. Фолбек: Якщо Terminal порожній — забираємо залишки зі Storage
+                        else if (storageEnergy > 0) {
+                            targetSource = storage;
                         }
-                        // ПРІОРИТЕТ 5: Якщо навіть на землі нічого немає — йдемо відпочивати
-                        else {
-                            creep.say('💤');
-                            let parkFlag = creep.pos.findClosestByRange(FIND_FLAGS, {
-                                filter: (flag) => flag.name.includes('Park')
-                            });
-                            
-                            if (parkFlag) {
-                                if (!creep.pos.inRangeTo(parkFlag, 3)) {
-                                    creep.moveTo(parkFlag, {range: 3, visualizePathStyle: {stroke: '#888888'}});
-                                }
-                            } else {
-                                if (creep.room.storage && creep.pos.getRangeTo(creep.room.storage) > 4) {
-                                    creep.moveTo(creep.room.storage, {range: 4, visualizePathStyle: {stroke: '#888888'}});
-                                }
+
+                        // Забір енергії з обраного джерела
+                        if (targetSource) {
+                            if (creep.withdraw(targetSource, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(targetSource, {reusePath: 50, visualizePathStyle: {stroke: '#ffaa00'}});
                             }
                         }
                     }

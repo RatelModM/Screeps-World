@@ -151,10 +151,10 @@ module.exports = function(counts) {
                 s1_2.spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,
                     WORK, WORK, WORK, WORK,
                     CARRY, CARRY, CARRY, CARRY,
-                    RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK,
-                    ATTACK, ATTACK, ATTACK, ATTACK, ATTACK,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK,
+                    ATTACK, ATTACK, ATTACK, ATTACK, ATTACK,
                     HEAL, HEAL], 'DEFW28S28_1_' + Game.time, {
                     memory: {
                         role: 'defender',
@@ -193,7 +193,7 @@ module.exports = function(counts) {
                         }
                     });
             }
-            else if (remoteBuilderS1.length < 0) {
+            else if (remoteBuilderS1.length < 1) {
                 s1_2.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
                     WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
                     CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
@@ -202,7 +202,7 @@ module.exports = function(counts) {
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RemoteBuilder_' + Game.time, {
                     memory: {
                         role: 'remoteBuilder',
-                        targetRoom: "W29S27",
+                        targetRoom: "W28S27",
                         homeRoom: 'W29S28', // Твоя основна кімната
                         building: false
                     }
@@ -223,7 +223,7 @@ module.exports = function(counts) {
                 let units = Math.floor(energy / 150);
                 
                 // 3. Обмеження гри: максимум 50 деталей на кріпа (16 блоків * 3 = 48 деталей)
-                if (units > 16) units = 16;
+                if (units > 24) units = 24;
 
                 let body = [];
 
@@ -312,13 +312,13 @@ module.exports = function(counts) {
             }
             else if (defenderS2_1.length < 2) {
                 s2.spawnCreep([                   
-                    RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
-                    RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
+                   RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,
-                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,
-                    HEAL, HEAL,HEAL, HEAL], 'Sicario_' + Game.time, {
-                    memory: { role: 'sicario', targetRoom: 'W24S29' }
+                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    HEAL,HEAL, HEAL, HEAL,HEAL,HEAL,HEAL, HEAL,HEAL,HEAL], 'Sicario_' + Game.time, {
+                    memory: { role: 'sicario', targetRoom: 'W23S29',
+                    targetWallId: null }
                 });
             }
             else if (upgraderS2.length < 1) {
@@ -350,9 +350,11 @@ module.exports = function(counts) {
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,
-                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,
-                    HEAL, HEAL,HEAL, HEAL], 'Sicario_' + Game.time, {
-                    memory: { role: 'sicario', targetRoom: 'W24S29' }
+                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    HEAL, HEAL,HEAL,], 'Sicario_' + Game.time, {
+                    memory: { role: 'sicario', targetRoom: 'W23S29',
+                    targetWallId: null
+                     }
                 });
             }
             else if (defenderS2_2.length < 1) {
@@ -367,16 +369,15 @@ module.exports = function(counts) {
                     memory: { role: 'defender', targetRoom: 'W26S29' }
                 });
             }
-            else if (reservers2_1.length < 1 && (!Memory.lastReserverSpawn || Game.time - Memory.lastReserverSpawn >= 900)) {
+            else if (reservers2_1.length < 1 && (!Memory.lastReserverSpawn || Game.time - Memory.lastReserverSpawn >= 2000)) {
                  let result = s2_3.spawnCreep([
-                    CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM,  
-                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    CLAIM, CLAIM, CLAIM,CLAIM, CLAIM,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE
                 ],
                 'ReserverW24S29_' + Game.time, {
                     memory: {
                         role: 'reserver',
-                        targetRoom: 'W25S29',
+                        targetRoom: 'W23S29',
                     }
                 });
 
@@ -394,8 +395,32 @@ module.exports = function(counts) {
             // if (SpawnHaulerS2.length < 1) { 
             //     s2_1.spawnCreep([CARRY, CARRY,CARRY, CARRY, MOVE, MOVE], 'Spawnhauler'+Game.time,  {memory: {role: 'spawnhauler', targetRoom: 'W27S29'}})
             // }
-            if (haulerS2.length < 1) {
-                s2_1.spawnCreep([CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'haulerS2' + Game.time, { memory: { role: 'hauler', targetRoom: 'W27S29' } })
+           if (haulerS2.length < 1) {
+                // 1. Беремо доступну енергію в кімнаті прямо зараз
+                let energy = s2_1.room.energyAvailable; 
+
+                // 2. Рахуємо кількість блоків [CARRY, CARRY, MOVE] (150 energy за блок)
+                let units = Math.floor(energy / 150);
+                
+                // 3. Обмеження гри: максимум 50 деталей на кріпа (16 блоків * 3 = 48 деталей)
+                if (units > 16) units = 16;
+
+                let body = [];
+
+                // Якщо енергії менше 150, але є хоча б 100 — створюємо мінімального кріпа [CARRY, MOVE]
+                if (units < 2 && energy >= 300) {
+                    body = [CARRY, MOVE];
+                } else if (units >= 1) {
+                    for (let i = 0; i < units * 2; i++) body.push(CARRY);
+                    for (let i = 0; i < units; i++) body.push(MOVE);
+                }
+
+                // 4. Спавнимо кріпа (якщо назбиралося хоча б на мінімальний body)
+                if (body.length > 0) {
+                    s2_1.spawnCreep(body, 'haulerS2' + Game.time, { 
+                        memory: { role: 'hauler', targetRoom: 'W27S29' } 
+                    });
+                }
             }
             else if (LinkerStorage2.length < 1) {
                 s2_1.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'linkStorage2', {
@@ -452,9 +477,10 @@ module.exports = function(counts) {
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,
-                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,
-                    HEAL, HEAL,HEAL, HEAL], 'Sikario_' + Game.time, {
-                    memory: { role: 'sicario', targetRoom: 'W24S29' }
+                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                     HEAL,HEAL, HEAL], 'Sikario_' + Game.time, {
+                    memory: { role: 'sicario', targetRoom: 'W23S29',
+                    targetWallId: null }
                 });
             }
 
@@ -497,14 +523,15 @@ module.exports = function(counts) {
             //     });
             // }
 
-         else if (defenderS3_2.length < 1) {
-                 s3_1.spawnCreep([RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
+         else if (defenderS3_2.length < 0) {
+                 s3_1.spawnCreep([
+                    RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,
-                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,
-                    HEAL, HEAL,HEAL, HEAL], 'DEFW25S28_2_' + Game.time, {
-                    memory: { role: 'sicario', targetRoom: 'W25S28' }
+                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                     HEAL,HEAL, HEAL], 'sicario3_' + Game.time, {
+                    memory: { role: 'sicario', targetRoom: 'W24S29' }
                 });
                            }
 
@@ -614,16 +641,26 @@ module.exports = function(counts) {
                 });
             }
 
-            else if (reservers3_1.length < 1) {
+            else if (reservers3_1.length < 1 && (!Memory.lastReserverSpawn || Game.time - Memory.lastReserverSpawn >= 2000)) {
                 s3.spawnCreep([CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 
                     'ReserverW29S26_' + Game.time, {
                     memory: {
                         role: 'reserver',
-                        targetRoom: 'W25S28',
+                        targetRoom: 'W24S29',
                     }
                 });
             }
-
+            else if (defenderS3_2.length < 0) {
+                 s3.spawnCreep([
+                    TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                    TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                    ATTACK,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,
+                    HEAL, HEAL,HEAL, HEAL, HEAL, HEAL,HEAL, HEAL, HEAL,HEAL], 'BigBen_' + Game.time, {
+                    memory: { role: 'sicario', targetRoom: 'W24S29' }
+                });
+                           }
             // else if(upgraderS3.length <0) {
             //     s3.spawnCreep([WORK,WORK,WORK,WORK,WORK,WORK, CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,
             //         WORK,WORK,WORK,WORK,WORK,WORK, CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE ],
@@ -1216,13 +1253,13 @@ module.exports = function(counts) {
                 });
             }
             else if (defenderS7_1.length < 1) {
-                s7.spawnCreep([
-                     WORK,
-                     CARRY,
-                    RANGED_ATTACK,
+                s7.spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,
+                    WORK, WORK, WORK, WORK,
+                    CARRY, CARRY, CARRY, CARRY,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK,
                     ATTACK, ATTACK, ATTACK, ATTACK, ATTACK,
-                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
-                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
                     HEAL, HEAL], 'DEFW29S26_' + Game.time, {
                     memory: { role: 'defender', targetRoom: 'W29S26' }
                 });
@@ -1331,7 +1368,7 @@ module.exports = function(counts) {
                     memory: { role: 'remoteMiner', targetRoom: 'W28S27', sourceId: '55db3133efa8e3fe66e0488e' }
                 });
             }
-            else if (upgraderS8.length < 2) {
+            else if (upgraderS8.length < 1) {
                 // 1. Беремо доступну енергію в кімнаті прямо зараз
                 let energy = s8.room.energyAvailable; 
 

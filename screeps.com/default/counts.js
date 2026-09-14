@@ -68,8 +68,8 @@ module.exports = function() {
 
             case 'sicario':
                 
-                if (mem.targetRoom === "W24S29") counts.defenderS2_1.push(creep);
-                else if (mem.targetRoom === "W25S28") counts.defenderS3_2.push(creep);
+                if (mem.targetRoom === "W23S29") counts.defenderS2_1.push(creep);
+                else if (mem.targetRoom === "W24S29") counts.defenderS3_2.push(creep);
                 
                 break;
 
@@ -127,9 +127,9 @@ module.exports = function() {
 
             case 'reserver':
                 if (mem.targetRoom === 'W28S28') counts.reservers1_1.push(creep);
-                else if (mem.targetRoom === 'W25S29') counts.reservers2_1.push(creep);
+                else if (mem.targetRoom === 'W23S29') counts.reservers2_1.push(creep);
                 else if (mem.targetRoom === 'W26S29') counts.reservers2_2.push(creep);
-                else if (mem.targetRoom === 'W25S28') counts.reservers3_1.push(creep);
+                else if (mem.targetRoom === 'W24S29') counts.reservers3_1.push(creep);
                 else if (mem.targetRoom === 'W28S27') counts.reservers4_1.push(creep);
                 else if (mem.targetRoom === 'W29S26') counts.reservers4_2.push(creep);
                 else if (mem.targetRoom === 'W29S29') counts.reservers5_1.push(creep);
