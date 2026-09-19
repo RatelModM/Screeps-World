@@ -28,35 +28,17 @@ var roleHarvester = {
         // --- 3. ПЕРЕМИКАННЯ СТАНІВ (Працює вже в цільовій кімнаті) ---
         if(!creep.memory.delivering && creep.store.getFreeCapacity() == 0) {
             creep.memory.delivering = true;
-            creep.say('🚚 Несу');
+            
         }
         if(creep.memory.delivering && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.delivering = false;
-            creep.say('🔄 Збір');
+           
         }
 
         // --- 4. ЛОГІКА ДОСТАВКИ ---
         if(creep.memory.delivering) {
             
-            // --- МЕХАНІКА RELAY (Естафета) ---
-            if (!creep.memory.lastRelay || Game.time > creep.memory.lastRelay + 6) {
-                let receiver = creep.pos.findInRange(FIND_MY_CREEPS, 1, {
-                    filter: (c) => c.memory.role == 'harvester' && !c.memory.delivering
-                })[0];
-
-                if (receiver) {
-                    if (creep.transfer(receiver, RESOURCE_ENERGY) == OK) {
-                        creep.memory.delivering = false;
-                        receiver.memory.delivering = true;
-                        creep.memory.lastRelay = Game.time;
-                        receiver.memory.lastRelay = Game.time;
-                        creep.say('🤝 Relay');
-                        return; 
-                    }
-                }
-            }
-
-            // Шукаємо споруди в поточній кімнаті
+                       // Шукаємо споруди в поточній кімнаті
             var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
@@ -69,7 +51,7 @@ var roleHarvester = {
             if(target) {
                 if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {
-                        reusePath: 5, 
+                        reusePath: 20, 
                         visualizePathStyle: {stroke: '#ffffff'}
                     });
                 }
@@ -78,7 +60,7 @@ var roleHarvester = {
                 // Якщо все повне — апгрейдимо контролер цієї ж кімнати
                 if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(creep.room.controller, {
-                        reusePath: 10,
+                        reusePath:20,
                         visualizePathStyle: {stroke: '#00ff00'}
                     });
                 }
@@ -93,7 +75,7 @@ var roleHarvester = {
 
             if (dropped) {
                 if (creep.pickup(dropped) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5});
+                    creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 20});
                 }
             } 
             else {
@@ -105,7 +87,7 @@ var roleHarvester = {
 
                 if (container) {
                     if (creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5});
+                        creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 20});
                     }
                 }
                 // Пріоритет 3: Майнінг з джерела
@@ -113,7 +95,7 @@ var roleHarvester = {
                     let source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
                     if (source) {
                         if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 5});
+                            creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 20});
                         }
                     }
                 }

@@ -1,53 +1,47 @@
 var roleClaimer = {
+    /** @param {Creep} creep **/
     run: function(creep) {
-        // Отримуємо назву цільової кімнати з пам'яті
         const targetRoom = creep.memory.targetRoom;
 
-        // Захист: якщо кімната не вказана, виводимо помилку і зупиняємось
         if (!targetRoom) {
-            console.log('Помилка: ' + creep.name + ' не знає, куди йти (немає targetRoom в пам\'яті)!');
+            console.log(`Помилка: ${creep.name} не має targetRoom в пам'яті!`);
             return;
         }
 
-        // 1. Перевірка: чи ми в цільовій кімнаті?
+        // 1. Рух до цільової кімнати
         if (creep.room.name !== targetRoom) {
             const destination = new RoomPosition(25, 25, targetRoom);
-            creep.moveTo(destination, { visualizePathStyle: {stroke: '#ff00ff'} });
+            creep.moveTo(destination, { reusePath: 20, visualizePathStyle: { stroke: '#ff00ff' } });
+            return;
+        }
+
+        // 2. Дії в цільовій кімнаті
+        const controller = creep.room.controller;
+        if (!controller) return;
+
+        const myUsername = creep.owner.username;
+
+        // КРОК 1: Якщо є БУДЬ-ЯКА резервація (навіть ваша) або чужий власник
+        // claimController не спрацює, поки є резервація, тому спочатку збиваємо її
+        if (controller.reservation || (controller.owner && controller.owner.username !== myUsername)) {
+            const attackResult = creep.attackController(controller);
+            if (attackResult === ERR_NOT_IN_RANGE) {
+                creep.moveTo(controller, { reusePath: 10, visualizePathStyle: { stroke: '#ff0000' } });
+            }
         } 
-        // 2. Ми в потрібній кімнаті. Шукаємо контролер
+        // КРОК 2: Контролер повністю нейтральний — захоплюємо або резервуємо
         else {
-            const controller = creep.room.controller;
-            
-            if (controller) {
-                const myUsername = creep.owner.username;
+            // Спочатку намагаємося ЗАХОПИТИ (claimController)
+            const claimResult = creep.claimController(controller);
 
-                // Перевіряємо, чи є у контролера чужий власник або чужа резервація
-                const isForeignOwner = controller.owner && controller.owner.username !== myUsername;
-                const isForeignReservation = controller.reservation && controller.reservation.username !== myUsername;
-
-                // КРОК А: Нейтралізація (якщо контролер чужий)
-                if (isForeignOwner || isForeignReservation) {
-                    const attackResult = creep.attackController(controller);
-                    
-                    if (attackResult === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(controller, { visualizePathStyle: {stroke: '#ff0000'} });
-                    }
-                } 
-                // КРОК Б: Захоплення або резервація (якщо контролер нейтральний)
-                else {
-                    const claimResult = creep.reserveController(controller);
-                    
-                    if (claimResult === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(controller, { visualizePathStyle: {stroke: '#ffffff'} });
-                    } 
-                    else if (claimResult === ERR_GCL_NOT_ENOUGH) {
-                        // Якщо рівень GCL не дозволяє захопити, резервуємо
-                        const reserveResult = creep.claimController(controller);
-                        
-                        if (reserveResult === ERR_NOT_IN_RANGE) {
-                            creep.moveTo(controller, { visualizePathStyle: {stroke: '#00ffff'} });
-                        }
-                    }
+            if (claimResult === ERR_NOT_IN_RANGE) {
+                creep.moveTo(controller, { reusePath: 10, visualizePathStyle: { stroke: '#00ffff' } });
+            } 
+            // Якщо не вистачає рівня GCL — переходимо на резервацію (reserveController)
+            else if (claimResult === ERR_GCL_NOT_ENOUGH) {
+                const reserveResult = creep.reserveController(controller);
+                if (reserveResult === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(controller, { reusePath: 10, visualizePathStyle: { stroke: '#ffffff' } });
                 }
             }
         }

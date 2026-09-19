@@ -1,22 +1,22 @@
 module.exports = function(counts) {
     //  counts лише ті масиви, які потрібні для перевірки лімітів
     const {
-        harvesters, harvesters2, harvesters3, harvesters4, harvesters5, harvesters6,harvesters7,
-        upgraderS1, upgraderS2, upgraderS3, upgraderS4, upgraderS5, upgraderS6, upgraderS7, upgraderS8,
+        harvesters, harvesters2, harvesters3, harvesters4, harvesters5, harvesters6,harvesters7,harvesters9,
+        upgraderS1, upgraderS2, upgraderS3, upgraderS4, upgraderS5, upgraderS6, upgraderS7, upgraderS8,upgraderS9,
         builders, builders2, builders3, builders4,
         defenderS1_1, defenderS2_1, defenderS2_2, defenderS3_1, defenderS3_2, defenderS4_1, defenderS5_1, defenderS7_1,
         miner, minersOnSource,
-        minerS2_1, minerS2_2, minerS3_1, minerS3_2, minerS5_1, minerS5_2, minerS6_1, minerS6_2, minerS7_1, minerS7_2, minerS8_1, minerS8_2,
-        haulerS1, haulerS2, haulerS3, haulerS4, haulerS5, haulerS6, haulerS7, haulerS8,
+        minerS2_1, minerS2_2, minerS3_1, minerS3_2, minerS5_1, minerS5_2, minerS6_1, minerS6_2, minerS7_1, minerS7_2, minerS8_1, minerS8_2, minerS9_1, minerS9_2,
+        haulerS1, haulerS2, haulerS3, haulerS4, haulerS5, haulerS6, haulerS7, haulerS8, haulerS9,
         remoteBuilderS1, remoteBuilderS2,
         reservers1_1, reservers2_1, reservers2_2, reservers3_1, reservers4_1, reservers4_2, reservers5_1,
         SpawnHaulerS1, SpawnHaulerS2, SpawnHaulerS3, SpawnHaulerS4, SpawnHaulerS5, SpawnHaulerS6,
         remoteMiners1_1, remoteMiners1_2, remoteMiners2_1, remoteMiners2_2, remoteMiners2_3, remoteMiners2_4,
         remoteMiners3_1, remoteMiners3_2, remoteMiners4_3, remoteMiners4_4, remoteMiners4_1, remoteMiners4_2, remoteMiners5_1,
         remoteMinerHauler2_1, remoteMinerHauler3_1, remoteMinerHauler4_1, remoteMinerHauler4_2,remoteMinerHauler6,
-        MineralMiner_1, MineralMiner_2, MineralMiner_3, MineralMiner_4, MineralMiner_5, MineralMiner_6, MineralMiner_7, MineralMiner_8,
+        MineralMiner_1, MineralMiner_2, MineralMiner_3, MineralMiner_4, MineralMiner_5, MineralMiner_6, MineralMiner_7, MineralMiner_8, MineralMiner_9,
         remoteHaulers1_1, remoteHaulers2_1, remoteHaulers2_2, remoteHaulers3_1, remoteHaulers4_1, remoteHaulers5_1, remoteHaulers6_1,
-        LinkerStorage1, LinkerStorage2, LinkerStorage3, LinkerStorage4, LinkerStorage5, LinkerStorage6, LinkerStorage7, LinkerStorage8,
+        LinkerStorage1, LinkerStorage2, LinkerStorage3, LinkerStorage4, LinkerStorage5, LinkerStorage6, LinkerStorage7, LinkerStorage8,LinkerStorage9,
         Claimer, 
         } = counts;
         
@@ -172,11 +172,11 @@ module.exports = function(counts) {
                     }
                 });
             }
-            else if (Claimer.length < 0) {
+            else if (Claimer.length <0 ) {
                 s1_2.spawnCreep([CLAIM, MOVE, MOVE, MOVE], 'Claimer_' + Game.time, {
                     memory: {
                         role: 'claimer',
-                        targetRoom: 'W28S27',
+                        targetRoom: 'W23S29',
                     }
                 });
             }
@@ -259,16 +259,17 @@ module.exports = function(counts) {
                     memory: { role: 'mineralMIner', targetRoom: 'W27S29' }
                 });
             }
-            else if (remoteBuilderS2.length < 0) {
+            else if (remoteBuilderS2.length < 2) {
                 s2.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
-                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, 
                     CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
                     CARRY, CARRY, CARRY,
-                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RemoteBuilder_S2' + Game.time, {
                     memory: {
                         role: 'remoteBuilder',
-                        targetRoom: "W28S26",
+                        targetRoom: "W23S29",
                         homeRoom: 'W27S29', // Твоя основна кімната
                         building: false
                     }
@@ -310,7 +311,7 @@ module.exports = function(counts) {
                     }
                 });
             }
-            else if (defenderS2_1.length < 2) {
+            else if (defenderS2_1.length < 1) {
                 s2.spawnCreep([                   
                    RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
@@ -344,7 +345,7 @@ module.exports = function(counts) {
                     }
                 });
             }
-            else if (defenderS2_1.length < 2) {
+            else if (defenderS2_1.length < 1) {
                 s2_3.spawnCreep([                   
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
@@ -369,23 +370,23 @@ module.exports = function(counts) {
                     memory: { role: 'defender', targetRoom: 'W26S29' }
                 });
             }
-            else if (reservers2_1.length < 1 && (!Memory.lastReserverSpawn || Game.time - Memory.lastReserverSpawn >= 2000)) {
-                 let result = s2_3.spawnCreep([
-                    CLAIM, CLAIM, CLAIM,CLAIM, CLAIM,
-                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE
-                ],
-                'ReserverW24S29_' + Game.time, {
-                    memory: {
-                        role: 'reserver',
-                        targetRoom: 'W23S29',
-                    }
-                });
+//             else if (reservers2_1.length < 0 && (!Memory.lastReserverSpawn || Game.time - Memory.lastReserverSpawn >= 2000)) {
+//                  let result = s2_3.spawnCreep([
+//                     CLAIM, CLAIM, CLAIM,CLAIM, CLAIM,CLAIM, CLAIM, CLAIM,
+//                     MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE
+//                 ],
+//                 'ReserverW24S29_' + Game.time, {
+//                     memory: {
+//                         role: 'reserver',
+//                         targetRoom: 'W23S29',
+//                     }
+//                 });
 
-    // Записуємо час ТІЛЬКИ у разі успішного запуску спавну
-    if (result === OK) {
-        Memory.lastReserverSpawn = Game.time;
-    }
-}
+//     // Записуємо час ТІЛЬКИ у разі успішного запуску спавну
+//     if (result === OK) {
+//         Memory.lastReserverSpawn = Game.time;
+//     }
+// }
 
                                   
         }
@@ -434,11 +435,11 @@ module.exports = function(counts) {
                 s2_1.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'RMH_' + Game.time, {
                     memory: {
                         role: 'remoteMinerHauler',
-                        homeRoom: 'W27S29',
+                        homeRoom: 'W23S29',
                         remoteRoom: 'W25S29',
                         harvesting: true,
                         sourceId: '55db318befa8e3fe66e04ba5',
-                        linkId: '6a0c505ae7e8d2a68cdffb4c'
+                        linkId: '6aaea469b285e611eb9ef5e0'
                     }
                 });
             }
@@ -472,7 +473,7 @@ module.exports = function(counts) {
                 });
             }
             
-           else if (defenderS2_1.length < 2) {
+           else if (defenderS2_1.length < 1) {
                 s2_1.spawnCreep([RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
@@ -483,16 +484,28 @@ module.exports = function(counts) {
                     targetWallId: null }
                 });
             }
+            else if (remoteBuilderS2.length < 2) {
+                s2_1.spawnCreep([WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK,
+                    CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
+                    CARRY, CARRY, CARRY,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RemoteBuilder_S2' + Game.time, {
+                    memory: {
+                        role: 'remoteBuilder',
+                        targetRoom: "W23S29",
+                        homeRoom: 'W27S29', // Твоя основна кімната
+                        building: false
+                    }
+                });
+            }
 
         }
 
         // --- СПАВНЕР 3 
         let s3_1 = Game.spawns['Spawn3_1'];
         if (s3_1 && !s3_1.spawning) {    
-            // if (haulerS3.length < 1) {
-            //     s3_1.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
-            //         MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'haulerS3' + Game.time, { memory: { role: 'hauler', targetRoom: 'W27S27' } })
-            // }
+           
 
           if (LinkerStorage3.length < 1) {
                 s3_1.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
@@ -510,19 +523,7 @@ module.exports = function(counts) {
             //     ],
             //         'upgrader' + Game.time, { memory: { role: 'upgrader', targetRoom: 'W27S27', linkId: '6a32bfa22a5f581a771e6b7b' } });
             // }
-            // else if (remoteMinerHauler3_1.length < 0) {
-            //     s3_1.spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], 'RMH_' + Game.time, {
-            //         memory: {
-            //             role: 'remoteMinerHauler',
-            //             homeRoom: 'W27S27',
-            //             remoteRoom: 'W27S26',
-            //             harvesting: true,
-            //             sourceId: '55db3154efa8e3fe66e0494d',
-            //             linkId: '6a2712b759ab19389d8a2d1b'
-            //         }
-            //     });
-            // }
-
+            
          else if (defenderS3_2.length < 0) {
                  s3_1.spawnCreep([
                     RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,
@@ -534,24 +535,6 @@ module.exports = function(counts) {
                     memory: { role: 'sicario', targetRoom: 'W24S29' }
                 });
                            }
-
-            else if (remoteHaulers3_1.length < 0) {
-                s3_1.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
-                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, HEAL], 'R_HaulerW27S28' + Game.time, {
-                    memory: {
-                        role: 'remoteHauler',
-                        homeRoom: 'W27S27',
-                        deliveryId: '6a12d083c464bd850bf17bae',
-                        targetRoom: 'W27S28', //  віддалена кімната для пошуку
-                        containerIds: [
-                            '6a2a4a919705f9853263e99c', // Контейнер 1
-                            // '69fc9003fcb3376e1cc0a065', // Контейнер 2
-                            //'69fb669e5e59b641886bef1b', // Контейнер 2
-                        ],
-                        delivering: false
-                    }
-                });
-            }
 
         }
         let s3 = Game.spawns['Spawn3'];
@@ -589,7 +572,7 @@ module.exports = function(counts) {
             //     s3.spawnCreep([CARRY, CARRY,CARRY, CARRY, MOVE, MOVE], 'Spawnhauler'+Game.time,  {memory: {role: 'spawnhauler', targetRoom: 'W27S27'}})
             // }      
             else if (harvesters3.length < 0) {
-                s3.spawnCreep([WORK, CARRY, CARRY, MOVE, MOVE], 'H3_' + Game.time, { memory: { role: 'harvester', targetRoom: 'W27S27' } });
+                s3.spawnCreep([WORK, CARRY, , MOVE, ], 'H3_' + Game.time, { memory: { role: 'harvester', targetRoom: 'W27S27' } });
             }
             else if (minerS3_1.length < 1) {
                 s3.spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], 'RMinerS31_' + Game.time, {
@@ -607,7 +590,8 @@ module.exports = function(counts) {
                 });
             }
             else if (upgraderS3.length < 1) {
-                s3.spawnCreep([ WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE,
+                s3.spawnCreep([ WORK, WORK, WORK, WORK,WORK, WORK, WORK, WORK,WORK, WORK, WORK, WORK,
+                     CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE,
                     WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE
                 ],
                     'upgrader' + Game.time, { memory: { role: 'upgrader', targetRoom: 'W27S27', linkId: '6a32bfa22a5f581a771e6b7b' } });
@@ -641,15 +625,15 @@ module.exports = function(counts) {
                 });
             }
 
-            else if (reservers3_1.length < 1 && (!Memory.lastReserverSpawn || Game.time - Memory.lastReserverSpawn >= 2000)) {
-                s3.spawnCreep([CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 
-                    'ReserverW29S26_' + Game.time, {
-                    memory: {
-                        role: 'reserver',
-                        targetRoom: 'W24S29',
-                    }
-                });
-            }
+            // else if (reservers3_1.length < 1 && (!Memory.lastReserverSpawn || Game.time - Memory.lastReserverSpawn >= 2000)) {
+            //     s3.spawnCreep([CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 
+            //         'ReserverS3_' + Game.time, {
+            //         memory: {
+            //             role: 'reserver',
+            //             targetRoom: 'W24S29',
+            //         }
+            //     });
+            // }
             else if (defenderS3_2.length < 0) {
                  s3.spawnCreep([
                     TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
@@ -961,10 +945,15 @@ module.exports = function(counts) {
                     }
                 });
             }
-
+            else if (remoteMiners5_1.length < 0) {
+                s5_1.spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'RMiner3W29S29_' + Game.time, {
+                    memory: { role: 'remoteMiner', targetRoom: "W29S29", sourceId: '55db3117efa8e3fe66e047cd' }
+                });
+            }
             else if (upgraderS5.length < 1) {
-                s5.spawnCreep([WORK, WORK, WORK, WORK, WORK,  
-                    CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'upgrader' + Game.time, { memory: { role: 'upgrader', targetRoom: 'W28S29', linkId: '6a2e728ea9c1c0040b507382' } });
+                s5.spawnCreep([WORK, WORK, WORK, WORK, WORK,
+                    CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,  MOVE, MOVE, MOVE, MOVE, MOVE], 'upgrader' + Game.time, { memory: { role: 'upgrader', targetRoom: 'W28S29', linkId: '6a2e728ea9c1c0040b507382' } });
             }
 
         }
@@ -993,12 +982,44 @@ module.exports = function(counts) {
                     memory: { role: 'defender', targetRoom: 'W29S29' }
                 });
             }
+            
             else if (upgraderS5.length < 1) {
                 s5_1.spawnCreep([WORK, WORK, WORK, WORK, WORK,
-                    CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE], 'upgrader' + Game.time, { memory: { role: 'upgrader', targetRoom: 'W28S29', linkId: '6a2e728ea9c1c0040b507382' } });
+                    CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,  MOVE, MOVE, MOVE, MOVE, MOVE], 'upgrader' + Game.time, { memory: { role: 'upgrader', targetRoom: 'W28S29', linkId: '6a2e728ea9c1c0040b507382' } });
+                }
+            }
+         let s5_2 = Game.spawns['Spawn5_2'];
+         if (s5_2 && !s5_2.spawning) { 
+
+            if (minerS5_1.length < 1) {
+                s5_2.spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], 'RMinerS5_' + Game.time, {
+                    memory: { role: 'remoteMiner', targetRoom: "W28S29", sourceId: '55db3134efa8e3fe66e04897' }
+                });
+            }
+            else if (minerS5_2.length < 1) {
+                s5_2.spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE], 'RMinerS5_' + Game.time, {
+                    memory: { role: 'remoteMiner', targetRoom: "W28S29", sourceId: '55db3134efa8e3fe66e04898' }
+                });
+            }
+            else if (upgraderS5.length < 1) {
+                s5_1.spawnCreep([WORK, WORK, WORK, WORK, WORK,
+                    CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, 
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,  MOVE, MOVE, MOVE, MOVE, MOVE], 'upgrader' + Game.time, { memory: { role: 'upgrader', targetRoom: 'W28S29', linkId: '6a2e728ea9c1c0040b507382' } });
+                }
+            else if (defenderS5_1.length < 1) {
+                s5_2.spawnCreep([TOUGH, TOUGH, TOUGH, TOUGH,
+                    WORK, WORK, WORK, WORK,
+                    CARRY, CARRY, CARRY, CARRY,
+                    RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK,
+                    ATTACK, ATTACK, ATTACK, ATTACK, ATTACK,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE,
+                    HEAL, HEAL], 'DEFW29S29_' + Game.time, {
+                    memory: { role: 'defender', targetRoom: 'W29S29' }
+                });
             }
         }
-
         // --- СПАВНЕР 6 
         let s6 = Game.spawns['Spawn6'];
         if (s6 && !s6.spawning) { 
@@ -1368,7 +1389,7 @@ module.exports = function(counts) {
                     memory: { role: 'remoteMiner', targetRoom: 'W28S27', sourceId: '55db3133efa8e3fe66e0488e' }
                 });
             }
-            else if (upgraderS8.length < 1) {
+            else if (upgraderS8.length < 2) {
                 // 1. Беремо доступну енергію в кімнаті прямо зараз
                 let energy = s8.room.energyAvailable; 
 
@@ -1411,6 +1432,199 @@ module.exports = function(counts) {
             }
            
         }
+        let s8_1 = Game.spawns['Spawn8_1'];
+        if (s8_1 && !s8_1.spawning) { 
 
+            if (haulerS8.length < 1) {
+                // 1. Беремо доступну енергію в кімнаті прямо зараз
+                let energy = s8_1.room.energyAvailable; 
+
+                // 2. Рахуємо кількість блоків [CARRY, CARRY, MOVE] (150 energy за блок)
+                let units = Math.floor(energy / 150);
+                
+                // 3. Обмеження гри: максимум 50 деталей на кріпа (16 блоків * 3 = 48 деталей)
+                if (units > 16) units = 16;
+
+                let body = [];
+
+                // Якщо енергії менше 150, але є хоча б 100 — створюємо мінімального кріпа [CARRY, MOVE]
+                if (units < 2 && energy >= 300) {
+                    body = [CARRY, MOVE];
+                } else if (units >= 1) {
+                    for (let i = 0; i < units * 2; i++) body.push(CARRY);
+                    for (let i = 0; i < units; i++) body.push(MOVE);
+                }
+
+                // 4. Спавнимо кріпа (якщо назбиралося хоча б на мінімальний body)
+                if (body.length > 0) {
+                    s8_1.spawnCreep(body, 'haulerS8' + Game.time, { 
+                        memory: { role: 'hauler', targetRoom: 'W28S27' } 
+                    });
+                }
+            }
+            else if (minerS8_1.length < 1) {
+                s8_1.spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], 'Miner8W28S27_' + Game.time, {
+                    memory: { role: 'remoteMiner', targetRoom: 'W28S27', sourceId: '55db3133efa8e3fe66e04890' }
+                });
+            }
+            else if (minerS8_2.length < 1) {
+                s8_1.spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], 'Miner8W28S27_' + Game.time, {
+                    memory: { role: 'remoteMiner', targetRoom: 'W28S27', sourceId: '55db3133efa8e3fe66e0488e' }
+                });
+            }
+            else if (upgraderS8.length < 2) {
+                // 1. Беремо доступну енергію в кімнаті прямо зараз
+                let energy = s8_1.room.energyAvailable; 
+
+                // 2. Рахуємо кількість блоків [WORK,CARRY, CARRY, MOVE] (150 energy за блок)
+                let units = Math.floor(energy / 200);
+                
+                // 3. Обмеження гри: максимум 50 деталей на кріпа (16 блоків * 3 = 48 деталей)
+                if (units > 16) units = 16;
+
+                let body = [];
+
+                // Якщо енергії менше 150, але є хоча б 100 — створюємо мінімального кріпа [CARRY, MOVE]
+                if (units < 8 && energy >= 1600) {
+                    body = [WORK, CARRY, MOVE];
+                } else if (units >= 8) {
+                    for (let i = 0; i < units; i++) body.push(WORK);
+                    for (let i = 0; i < units; i++) body.push(CARRY);
+                    for (let i = 0; i < units; i++) body.push(MOVE);
+                }
+
+                // 4. Спавнимо кріпа (якщо назбиралося хоча б на мінімальний body)
+                if (body.length > 0) {
+                    s8_1.spawnCreep(body, 'upgrader' + Game.time, { 
+                        memory: { role: 'upgrader', targetRoom: 'W28S27', linkId: '6a94ac311038afb213a20df9' } 
+                    });
+                }
+            }
+            else if (LinkerStorage8.length < 1) {
+                s8_1.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'linkStorage8'+ Game.time, {
+                    memory: {
+                        role: 'linkerStorage',
+                        linkId: '6a954b8348a56f1bb906a194'
+                    }
+                });
+            }
+            else if (MineralMiner_8.length < 1) {
+                s8_1.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'MMiner8_' + Game.time, {
+                    memory: { role: 'mineralMIner', targetRoom: 'W28S27' }
+                });
+            }
+           
+        }
+        // --- СПАВНЕР 9
+        let s9 = Game.spawns['Spawn9'];
+        if (s9 && !s9.spawning) { 
+
+            if (harvesters9.length < 1) {
+                // 1. Беремо доступну енергію в кімнаті прямо зараз
+                let energy = s9.room.energyAvailable; 
+
+                // 2. Рахуємо кількість блоків [CARRY, CARRY, MOVE] (150 energy за блок)
+                let units = Math.floor(energy / 300);
+                
+                // 3. Обмеження гри: максимум 50 деталей на кріпа (16 блоків * 3 = 48 деталей)
+                if (units > 16) units = 16;
+
+                let body = [];
+
+                // Якщо енергії менше 150, але є хоча б 100 — створюємо мінімального кріпа [CARRY, MOVE]
+                if (units < 1 && energy >= 300) {
+                    body = [WORK,CARRY, MOVE];
+                } else if (units >= 1) {
+                    for (let i = 0; i < units; i++) body.push(WORK);
+                    for (let i = 0; i < units*2; i++) body.push(CARRY);
+                    for (let i = 0; i < units*2; i++) body.push(MOVE);
+                }
+
+                // 4. Спавнимо кріпа (якщо назбиралося хоча б на мінімальний body)
+                if (body.length > 0) {
+                    s9.spawnCreep(body, 'harvestS9' + Game.time, { 
+                        memory: { role: 'harvester', targetRoom: 'W23S29' } 
+                    });
+                }
+            }
+            // if (haulerS9.length < 0) {
+            //     // 1. Беремо доступну енергію в кімнаті прямо зараз
+            //     let energy = s9.room.energyAvailable; 
+
+            //     // 2. Рахуємо кількість блоків [CARRY, CARRY, MOVE] (150 energy за блок)
+            //     let units = Math.floor(energy / 150);
+                
+            //     // 3. Обмеження гри: максимум 50 деталей на кріпа (16 блоків * 3 = 48 деталей)
+            //     if (units > 16) units = 16;
+
+            //     let body = [];
+
+            //     // Якщо енергії менше 150, але є хоча б 100 — створюємо мінімального кріпа [CARRY, MOVE]
+            //     if (units < 2 && energy >= 300) {
+            //         body = [CARRY, MOVE];
+            //     } else if (units >= 1) {
+            //         for (let i = 0; i < units * 2; i++) body.push(CARRY);
+            //         for (let i = 0; i < units; i++) body.push(MOVE);
+            //     }
+
+            //     // 4. Спавнимо кріпа (якщо назбиралося хоча б на мінімальний body)
+            //     if (body.length > 0) {
+            //         s9.spawnCreep(body, 'haulerS9' + Game.time, { 
+            //             memory: { role: 'hauler', targetRoom: 'W23S29' } 
+            //         });
+            //     }
+            // }
+            else if (minerS9_1.length < 1) {
+                s9.spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], 'Miner9W23S29_' + Game.time, {
+                    memory: { role: 'remoteMiner', targetRoom: 'W23S29', sourceId: '55db31c9efa8e3fe66e04d8e' }
+                });
+            }
+            else if (minerS9_2.length < 1) {
+                s9.spawnCreep([WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE], 'Miner9W23S29_' + Game.time, {
+                    memory: { role: 'remoteMiner', targetRoom: 'W23S29', sourceId: ' 55db31c9efa8e3fe66e04d90' }
+                });
+            }
+            // else if (upgraderS9.length < 0) {
+            //     // 1. Беремо доступну енергію в кімнаті прямо зараз
+            //     let energy = s9.room.energyAvailable; 
+
+            //     // 2. Рахуємо кількість блоків [WORK,CARRY, CARRY, MOVE] (150 energy за блок)
+            //     let units = Math.floor(energy / 200);
+                
+            //     // 3. Обмеження гри: максимум 50 деталей на кріпа (16 блоків * 3 = 48 деталей)
+            //     if (units > 16) units = 16;
+
+            //     let body = [];
+
+            //     // Якщо енергії менше 150, але є хоча б 100 — створюємо мінімального кріпа [CARRY, MOVE]
+            //     if (units < 8 && energy >= 1600) {
+            //         body = [WORK, CARRY, MOVE];
+            //     } else if (units >= 8) {
+            //         for (let i = 0; i < units; i++) body.push(WORK);
+            //         for (let i = 0; i < units; i++) body.push(CARRY);
+            //         for (let i = 0; i < units; i++) body.push(MOVE);
+            //     }
+
+            //     // 4. Спавнимо кріпа (якщо назбиралося хоча б на мінімальний body)
+            //     if (body.length > 0) {
+            //         s9.spawnCreep(body, 'upgrader' + Game.time, { 
+            //             memory: { role: 'upgrader', targetRoom: 'W23S29', linkId: '6a94ac311038afb213a20df9' } 
+            //         });
+            //     }
+            // }
+            // else if (LinkerStorage9.length < 0) {
+            //     s9.spawnCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'linkStorage9'+ Game.time, {
+            //         memory: {
+            //             role: 'linkerStorage',
+            //             linkId: '6a954b8348a56f1bb906a194'
+            //         }
+            //     });
+            // }
+            // else if (MineralMiner_9.length < 0) {
+            //     s9.spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], 'MMiner9_' + Game.time, {
+            //         memory: { role: 'mineralMIner', targetRoom: 'W23S29' }
+            //     });
+            // }
+    }
         
 };

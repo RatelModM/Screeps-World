@@ -200,5 +200,5 @@ module.exports.loop = function () {
 
         console.log(`🪣 Bucket: ${Game.cpu.bucket} / 10000 | CPU Used: ${Game.cpu.getUsed().toFixed(2)}`);
     });
-    Game.cpu.generatePixel()
+    // Game.cpu.generatePixel()
 };
