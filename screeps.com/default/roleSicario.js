@@ -181,9 +181,9 @@ var roleSicario = {
 
             if (targetFlag) {
                 // Зближуємося з прапором на відстань 3
-                if (!creep.pos.inRangeTo(targetFlag, 3)) {
+                if (!creep.pos.inRangeTo(targetFlag, 2)) {
                     creep.moveTo(targetFlag, {
-                        range: 3, 
+                        range: 2, 
                         reusePath: 50,
                         visualizePathStyle: { stroke: '#ffffff', lineStyle: 'dotted' }
                     });

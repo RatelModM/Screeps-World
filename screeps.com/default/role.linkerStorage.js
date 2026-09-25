@@ -27,34 +27,28 @@ var roleLinkerStorage = {
                         let factoryEnergyMax = limits.get(STRUCTURE_FACTORY, RESOURCE_ENERGY).max;
                         
                         let terminalEnergyTarget = limits.get(STRUCTURE_TERMINAL, RESOURCE_ENERGY).target || limits.get(STRUCTURE_TERMINAL, RESOURCE_ENERGY).max;
-                        
                         let totalStorageEnergy = storage.store[RESOURCE_ENERGY] + creep.store[RESOURCE_ENERGY];
 
-                        // 1. Сховище (Пріоритет №1 - базовий рівень)
                         if (storage && totalStorageEnergy < storageEnergyTarget) {
                             if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                                 creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
                             }
                         } 
-                        // 2.  Фабрика (Пріоритет №2 - підтримка виробництва)
                         else if (factory && factory.store[RESOURCE_ENERGY] < factoryEnergyTarget) {
                             if (creep.transfer(factory, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                                 creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ff00'}});
                             }
                         } 
-                        // 3. Термінал (Пріоритет №3 - до TARGET)
                         else if (terminal && terminal.store[RESOURCE_ENERGY] < terminalEnergyTarget) {
                             if (creep.transfer(terminal, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                                 creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ffaa00'}});
                             }
                         } 
-                        // 4. Сховище (Забиваємо до максимуму)
                         else if (storage && storage.store[RESOURCE_ENERGY] < storageEnergyMax) {
                             if (creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                                 creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
                             }
                         } 
-                        // 5. Фабрика (Резерв до максимуму)
                         else if (factory && factory.store[RESOURCE_ENERGY] < factoryEnergyMax) {
                             if (creep.transfer(factory, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                                 creep.moveTo(factory, {visualizePathStyle: {stroke: '#ff00ff'}});
@@ -65,7 +59,7 @@ var roleLinkerStorage = {
                     else {
                         let factoryTarget = limits.get(STRUCTURE_FACTORY, resourceType).target;
                         
-                        // 1. Якщо фабрика ТРЕБУЄ цей ресурс і він ще не заповнений
+                        // 1. Якщо фабриці ПОТРІБЕН цей ресурс і рівень нижчий за TARGET
                         if (factory && factoryTarget > 0 && factory.store[resourceType] < factoryTarget) {
                             if (creep.transfer(factory, resourceType) == ERR_NOT_IN_RANGE) {
                                 creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ff00'}});
@@ -73,16 +67,16 @@ var roleLinkerStorage = {
                             return;
                         }
                         
-                        // 2. Інакше (це надлишок або готові бари) — несемо в Термінал
-                        let terminalMax = limits.get(STRUCTURE_TERMINAL, resourceType).max;
+                        // 2. Наповнюємо Термінал до TARGET
+                        let terminalTarget = limits.get(STRUCTURE_TERMINAL, resourceType).target;
                         let currentInTerminal = terminal ? (terminal.store[resourceType] || 0) : 0;
 
-                        if (terminal && currentInTerminal < terminalMax) {
+                        if (terminal && currentInTerminal < terminalTarget) {
                             if (creep.transfer(terminal, resourceType) == ERR_NOT_IN_RANGE) {
                                 creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ff00ff'}});
                             }
                         } 
-                        // 3. Якщо Термінал забитий — скидаємо в Storage
+                        // 3. Усі надлишки скидаємо в Storage
                         else {
                             if (creep.transfer(storage, resourceType) == ERR_NOT_IN_RANGE) {
                                 creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffffff'}});
@@ -111,39 +105,50 @@ var roleLinkerStorage = {
             for (let resourceType in factory.store) {
                 if (resourceType === RESOURCE_ENERGY) continue;
                 
-                if (factory.store[resourceType] > 0) {
+                let currentAmount = factory.store[resourceType];
+                if (currentAmount > 0) {
                     let maxAllowed = limits.get(STRUCTURE_FACTORY, resourceType).max;
                     
-                    if (factory.store[resourceType] > maxAllowed) {
-                        if (creep.withdraw(factory, resourceType) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ffff'}});
+                    if (currentAmount > maxAllowed) {
+                        let amountToEvacuate = Math.min(creep.store.getFreeCapacity(), currentAmount - maxAllowed);
+                        
+                        if (amountToEvacuate > 0) {
+                            if (creep.withdraw(factory, resourceType, amountToEvacuate) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(factory, {visualizePathStyle: {stroke: '#00ffff'}});
+                            }
+                            return;
                         }
-                        return;
                     }
                 }
             }
         }
 
-        // ПРІОРИТЕТ 3: ЕВАКУАЦІЯ З ТЕРМІНАЛА (Якщо там ресурсу більше за ліміт max)
+        // ПРІОРИТЕТ 3: ЕВАКУАЦІЯ З ТЕРМІНАЛА (Забираємо лише точний надлишок)
         if (terminal) {
             for (let resourceType in terminal.store) {
                 if (resourceType === RESOURCE_ENERGY) continue;
 
-                if (terminal.store[resourceType] > 0) {
+                let currentAmount = terminal.store[resourceType];
+                if (currentAmount > 0) {
                     let maxAllowed = limits.get(STRUCTURE_TERMINAL, resourceType).max;
                     
-                    if (terminal.store[resourceType] > maxAllowed) {
-                        if (creep.withdraw(terminal, resourceType) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ff0000'}});
+                    if (currentAmount > maxAllowed) {
+                        let amountToEvacuate = Math.min(creep.store.getFreeCapacity(), currentAmount - maxAllowed);
+                        
+                        if (amountToEvacuate > 0) {
+                            if (creep.withdraw(terminal, resourceType, amountToEvacuate) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(terminal, {visualizePathStyle: {stroke: '#ff0000'}});
+                            }
+                            return;
                         }
-                        return;
                     }
                 }
             }
         }
 
-        // ПРІОРИТЕТ 4: НАПОВНЕННЯ ТЕРМІНАЛА ЕНЕРГІЄЮ ЗІ СХОВИЩА
+        // ПРІОРИТЕТ 4: НАПОВНЕННЯ ТЕРМІНАЛА ЗІ СХОВИЩА (ЕНЕРГІЯ ТА МІНЕРАЛИ/СИРОВИНА)
         if (terminal) {
+            // 4.1. Перевірка енергії для Термінала
             let terminalEnergyTarget = limits.get(STRUCTURE_TERMINAL, RESOURCE_ENERGY).target || limits.get(STRUCTURE_TERMINAL, RESOURCE_ENERGY).max;
             
             if (terminal.store[RESOURCE_ENERGY] < terminalEnergyTarget) {
@@ -154,6 +159,32 @@ var roleLinkerStorage = {
                         creep.moveTo(storage, {visualizePathStyle: {stroke: '#ffaa00'}});
                     }
                     return;
+                }
+            }
+
+            // 4.2. Перевірка мінералів/ресурсів для Термінала згідно з limits.terminal
+            if (limits.terminal) {
+                for (let resourceType in limits.terminal) {
+                    if (resourceType === RESOURCE_ENERGY) continue;
+
+                    let target = limits.get(STRUCTURE_TERMINAL, resourceType).target;
+                    let currentInTerminal = terminal.store[resourceType] || 0;
+
+                    if (currentInTerminal < target) {
+                        let availableInStorage = storage.store[resourceType] || 0;
+
+                        if (availableInStorage > 0) {
+                            let amountNeeded = target - currentInTerminal;
+                            let amountToWithdraw = Math.min(creep.store.getFreeCapacity(), amountNeeded, availableInStorage);
+
+                            if (amountToWithdraw > 0) {
+                                if (creep.withdraw(storage, resourceType, amountToWithdraw) == ERR_NOT_IN_RANGE) {
+                                    creep.moveTo(storage, {visualizePathStyle: {stroke: '#ff00ff'}});
+                                }
+                                return;
+                            }
+                        }
+                    }
                 }
             }
         }

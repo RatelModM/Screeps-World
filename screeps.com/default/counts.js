@@ -2,7 +2,7 @@ module.exports = function() {
     // Ініціалізуємо всі масиви порожніми
     const counts = {
         harvesters: [], harvesters2: [], harvesters3: [], harvesters4: [], harvesters5: [], harvesters6: [],harvesters7: [],harvesters9: [],
-        upgraderS1: [], upgraderS2: [], upgraderS3: [], upgraderS4: [], upgraderS5: [], upgraderS6: [],upgraderS7: [],upgraderS8: [],
+        upgraderS1: [], upgraderS2: [], upgraderS3: [], upgraderS4: [], upgraderS5: [], upgraderS6: [],upgraderS7: [],upgraderS8: [],upgraderS9: [],
         builders: [], builders2: [], builders3: [], builders4: [],
         defenderS1_1: [], defenderS2_1: [], defenderS2_2: [], defenderS3_1: [], defenderS3_2: [], defenderS4_1: [], defenderS5_1: [], defenderS7_1: [],
         miner: [], minersOnSource: [],
@@ -13,10 +13,10 @@ module.exports = function() {
         SpawnHaulerS1: [], SpawnHaulerS2: [], SpawnHaulerS3: [], SpawnHaulerS4: [], SpawnHaulerS5: [], SpawnHaulerS6: [],
         remoteMiners1_1: [], remoteMiners1_2: [], remoteMiners2_1: [], remoteMiners2_2: [], remoteMiners2_3: [], remoteMiners2_4: [],
         remoteMiners3_1: [], remoteMiners3_2: [], remoteMiners4_3: [], remoteMiners4_4: [], remoteMiners4_1: [], remoteMiners4_2: [], remoteMiners5_1: [],
-        remoteMinerHauler2_1: [], remoteMinerHauler3_1: [], remoteMinerHauler4_1: [], remoteMinerHauler4_2: [],remoteMinerHauler6: [],
+        remoteMinerHauler2_1: [], remoteMinerHauler3_1: [], remoteMinerHauler4_1: [], remoteMinerHauler4_2: [],remoteMinerHauler6: [],remoteMinerHauler9: [],
         MineralMiner_1: [], MineralMiner_2: [], MineralMiner_3: [], MineralMiner_4: [], MineralMiner_5: [], MineralMiner_6: [],MineralMiner_7: [],MineralMiner_8: [],
         remoteHaulers1_1: [], remoteHaulers2_1: [], remoteHaulers2_2: [], remoteHaulers3_1: [], remoteHaulers4_1: [], remoteHaulers5_1: [], remoteHaulers6_1: [],
-        LinkerStorage1: [], LinkerStorage2: [], LinkerStorage3: [], LinkerStorage4: [], LinkerStorage5: [], LinkerStorage6: [], LinkerStorage7: [],LinkerStorage8: [],
+        LinkerStorage1: [], LinkerStorage2: [], LinkerStorage3: [], LinkerStorage4: [], LinkerStorage5: [], LinkerStorage6: [], LinkerStorage7: [],LinkerStorage8: [],LinkerStorage9: [],
         Claimer: [],
         towers: []
     };
@@ -47,6 +47,7 @@ module.exports = function() {
                 else if (mem.targetRoom === "W27S28") counts.upgraderS6.push(creep);
                 else if (mem.targetRoom === "W28S26") counts.upgraderS7.push(creep);
                 else if (mem.targetRoom === "W28S27") counts.upgraderS8.push(creep);
+                else if (mem.targetRoom === "W23S29") counts.upgraderS9.push(creep);
                 break;
 
             case 'builder':
@@ -149,11 +150,12 @@ module.exports = function() {
                 break;
 
             case 'remoteMinerHauler':
-                if (mem.sourceId === '55db318befa8e3fe66e04ba5') counts.remoteMinerHauler2_1.push(creep);
+                if (mem.sourceId === '55db31a7efa8e3fe66e04ccb') counts.remoteMinerHauler2_1.push(creep);
                 else if (mem.sourceId === '55db3154efa8e3fe66e0494d') counts.remoteMinerHauler3_1.push(creep);
                 else if (mem.sourceId === '55db3115efa8e3fe66e047c3') counts.remoteMinerHauler4_1.push(creep);
                 else if (mem.sourceId === '55db3115efa8e3fe66e047c1') counts.remoteMinerHauler4_2.push(creep);
                 else if (mem.sourceId === '55db3177efa8e3fe66e04a7a') counts.remoteMinerHauler6.push(creep);
+                else if (mem.sourceId === '55db31a7efa8e3fe66e04ccb') counts.remoteMinerHauler9.push(creep);
                 
                 break;
 
@@ -187,6 +189,7 @@ module.exports = function() {
                 else if (mem.linkId === '6a420a4ae4e7cf835ecb98e2') counts.LinkerStorage6.push(creep);
                 else if (mem.linkId === '6a6efc3a6ada3760776043e3') counts.LinkerStorage7.push(creep);
                 else if (mem.linkId === '6a954b8348a56f1bb906a194') counts.LinkerStorage8.push(creep);
+                else if (mem.linkId === '6ab410e400d0166ee859332b') counts.LinkerStorage9.push(creep);
                 break;
 
             case 'claimer':

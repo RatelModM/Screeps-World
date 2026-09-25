@@ -3,13 +3,15 @@ const limits = {
     // ГОЛОВНИЙ СКЛАД (Storage)
     // =========================================================================
     storage: {
-        energy: { target: 375000, max: 650000 }
+        energy: { target: 375000, max: 650000 },
+        //  X:     { target: 11000,  max: 20000 },
     },
  //  (Storage)
     // =========================================================================
     terminal: {
         energy: { target: 50000, max: 55000 },
-        
+        purifier: { target: 9000,     max: 10000},
+        X:        { target: 11000,  max: 40000 },
      
     },
     // =========================================================================
@@ -29,7 +31,7 @@ const limits = {
         L:              { target: 0,  max: 0 }, // RESOURCE_LEMERIUM
         K:              { target: 3000,  max: 5000 }, // RESOURCE_KEANIUM
         Z:              { target: 3000,  max: 5000 }, // RESOURCE_ZYNTHIUM
-        X:              { target: 3000,  max: 5000 }, // RESOURCE_CATALYST
+        X:              { target: 0,  max: 0 }, // RESOURCE_CATALYST
         G:              { target: 2000,  max: 4000 }, // RESOURCE_GHODIUM
 
         // ---------------------------------------------------------------------
@@ -41,7 +43,7 @@ const limits = {
         lemergium_bar:   { target: 0,    max: 100 },
         keanium_bar:    { target: 0,     max: 100 },
         zynthium_bar:   { target: 0,     max: 100 },
-        purifier:       { target: 0,     max: 100},
+        purifier:       { target: 1300,   max: 1300},
         ghodium_melt:   { target: 0,     max: 100 },
 
         // ---------------------------------------------------------------------

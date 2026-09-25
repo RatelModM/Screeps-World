@@ -7,8 +7,20 @@ var industry = {
         // Якщо фабрики немає або вона на кулдауні — чекаємо
         if (!factory || factory.cooldown > 0) return;
 
-        // ПРІОРИТЕТ 1: Стиснення сирих мінералів (Keanium, Catalyst, Oxygen)
-        // Структура: { сировина: потрібна_кількість, продукт: що_вийде, енергія: 200 }
+        // ПРІОРИТЕТ 1: Декомпресія (розклад) RESOURCE_PURIFIER -> 500 RESOURCE_CATALYST (X)
+        // Вимагає: 1 PURIFIER + 200 energy
+        if (factory.store[RESOURCE_PURIFIER] >= 1 && factory.store[RESOURCE_ENERGY] >= 200) {
+            if (factory.store.getFreeCapacity(RESOURCE_CATALYST) >= 500) {
+                let result = factory.produce(RESOURCE_CATALYST);
+                if (result == OK) {
+                    factory.room.visual.text('🧪⚙️ ' + RESOURCE_CATALYST, factory.pos.x, factory.pos.y, {size: 0.4, opacity: 0.8});
+                    return; // Зупиняємо виконання на цьому тіку
+                }
+            }
+        }
+
+        // ПРІОРИТЕТ 2: Стиснення сирих мінералів (Keanium, Catalyst, Oxygen)
+        // Структура: { ingredient: сировина, product: що_вийде }
         const mineralRecipes = [
             // { ingredient: RESOURCE_OXYGEN, product: RESOURCE_OXIDANT },
             // { ingredient: RESOURCE_CATALYST, product: RESOURCE_PURIFIER },
@@ -28,7 +40,7 @@ var industry = {
             }
         }
 
-        // ПРІОРИТЕТ 2: Якщо мінералів немає, плавимо надлишки енергії в батарейки
+        // ПРІОРИТЕТ 3: Якщо мінералів/завдань немає, плавимо надлишки енергії в батарейки
         if (factory.store[RESOURCE_ENERGY] >= 11000 && factory.store.getFreeCapacity(RESOURCE_BATTERY) > 500) {
             let result = factory.produce(RESOURCE_BATTERY);
             if (result == OK) {

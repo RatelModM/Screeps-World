@@ -2,7 +2,7 @@ var marketManager = {
     // Базові налаштування ринку
     config: {
         ENABLE_MANAGE_ORDERS: true,       // true = створювати власні ордери, false = повністю вимкнути
-        MANAGE_ORDERS_FREQUENCY: 10,     // запускати Етап 4 раз на 100 тіків (приблизно кожні 5 хв)
+        // MANAGE_ORDERS_FREQUENCY: 25,     // запускати Етап 4 раз на 100 тіків (приблизно кожні 5 хв)
 
         TERMINAL_ENERGY_BUFFER: 40000, // Скільки енергії тримати в терміналі для відправок / оплати доставки
         TRADE_AMOUNT: 4000,            // Розмір однієї партії для продажу/пересилки/закупівлі
@@ -13,7 +13,7 @@ var marketManager = {
             [RESOURCE_LEMERGIUM_BAR]: 5000,  // Бари продаємо, якщо накопичилось більше 6к
             [RESOURCE_KEANIUM_BAR]: 45000,
             [RESOURCE_OXIDANT]: 25000,
-            [RESOURCE_PURIFIER]: 25000,
+            // [RESOURCE_PURIFIER]: 25000,
             
             // // Базові мінерали (наприклад, продаємо тільки надлишки вище 20к)
             [RESOURCE_HYDROGEN]: 20000,
@@ -22,14 +22,14 @@ var marketManager = {
             // [RESOURCE_LEMERGIUM]: 25000,     // Захист: продаємо лише якщо вище 25к (для фабрики)
             // [RESOURCE_KEANIUM]: 20000,
             // [RESOURCE_ZYNTHIUM]: 20000,
-            [RESOURCE_CATALYST]: 75000
+            [RESOURCE_CATALYST]: 4000
         },
         // Мінімальні ціни продажу (Запобіжник: ціна SELL-ордера ніколи не впаде нижче цих значень)
         MIN_PRICES: {
             [RESOURCE_POWER]: 400,
             [RESOURCE_BATTERY]: 450,
             // [RESOURCE_OXIDANT]: 2200.5,
-            [RESOURCE_PURIFIER]: 4500.05,
+            // [RESOURCE_PURIFIER]: 4500.05,
             // [RESOURCE_KEANIUM_BAR]: 700,
             [RESOURCE_KEANIUM]: 100,
             [RESOURCE_OXYGEN]: 500,
@@ -61,9 +61,16 @@ var marketManager = {
             },
             [RESOURCE_LEMERGIUM_BAR]: {
                 maxAmount: 2000,  
-                maxPrice: 2900,   
+                maxPrice: 3000,   
                 sellThreshold: 2500  
-            }
+            },
+            [RESOURCE_PURIFIER]: {
+                maxAmount: 4000,     // Нам потрібно .... для фабрики
+                maxPrice: 3500,        // Купуємо не дорожче ніж ...
+                TRADE_AMOUNT: 2000,
+                sellThreshold: 30000  // Продаємо лише якщо накопичилось більше... (захист від зациклення)
+            },
+            
         }
     },
 

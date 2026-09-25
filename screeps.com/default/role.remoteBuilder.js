@@ -89,13 +89,13 @@ var roleRemoteBuilder = {
                 let source = null;
 
                 // Перевіряємо чи є Storage І чи є в ньому енергія
-                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 50000) {
+                if (creep.room.storage && creep.room.storage.store[RESOURCE_ENERGY] > 4000) {
                     source = creep.room.storage;
                 } else {
                     // Якщо Storage порожній або його немає — шукаємо найближчий контейнер
                     source = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                         filter: (s) => s.structureType == STRUCTURE_CONTAINER && 
-                                    s.store[RESOURCE_ENERGY] > 800 
+                                    s.store[RESOURCE_ENERGY] > 500 
                     });
                 }
 

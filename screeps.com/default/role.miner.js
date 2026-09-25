@@ -4,45 +4,62 @@ var roleMiner = {
         var targetId = creep.memory.targetSourceId;
         
         if(!targetId) {
-            creep.say('No ID in Mem');
+            creep.say('No ID');
             return;
         }
 
         var source = Game.getObjectById(targetId);
 
         if(source) {
-            // --- ЛОГІКА ПОШУКУ ЛІНКА ---
+            // --- КЕШУВАННЯ ТА ПОШУК ЛІНКА ---
+            // Шукаємо лінк раз на 50 тіків, якщо його ще немає в пам'яті
+            if (!creep.memory.linkId && Game.time % 50 === 0) {
+                let foundLink = source.pos.findInRange(FIND_STRUCTURES, 2, {
+                    filter: (s) => s.structureType == STRUCTURE_LINK
+                })[0];
+                if (foundLink) creep.memory.linkId = foundLink.id;
+            }
+
             let link = null;
             if (creep.memory.linkId) {
                 link = Game.getObjectById(creep.memory.linkId);
-            } else {
-                // Якщо ID не вказано в пам'яті, шукаємо лінк в радіусі 2 клітин від джерела
-                link = source.pos.findInRange(FIND_STRUCTURES, 2, {
-                    filter: (s) => s.structureType == STRUCTURE_LINK
-                })[0];
+                // Якщо лінк було знищено, видаляємо його з пам'яті
+                if (!link) delete creep.memory.linkId; 
             }
 
-            // Шукаємо контейнер
-            var container = source.pos.findInRange(FIND_STRUCTURES, 1, {
-                filter: (s) => s.structureType == STRUCTURE_CONTAINER
-            })[0];
+            // --- КЕШУВАННЯ ТА ПОШУК КОНТЕЙНЕРА ---
+            // Шукаємо контейнер раз на 50 тіків, якщо його немає в пам'яті
+            if (!creep.memory.containerId && Game.time % 50 === 0) {
+                let foundContainer = source.pos.findInRange(FIND_STRUCTURES, 1, {
+                    filter: (s) => s.structureType == STRUCTURE_CONTAINER
+                })[0];
+                if (foundContainer) creep.memory.containerId = foundContainer.id;
+            }
 
-            // Визначаємо ідеальну позицію (на контейнер або впритул до джерела)
+            let container = null;
+            if (creep.memory.containerId) {
+                container = Game.getObjectById(creep.memory.containerId);
+                // Якщо контейнер було знищено, видаляємо з пам'яті
+                if (!container) delete creep.memory.containerId; 
+            }
+
+            // Визначаємо ідеальну позицію
             let targetPos = container ? container.pos : source.pos;
             let requiredRange = container ? 0 : 1;
 
             // Рух до позиції видобутку
             if (creep.pos.getRangeTo(targetPos) > requiredRange) {
                 creep.say('🛵' + (link ? '🔗' : '⛏️'));
-                creep.moveTo(targetPos, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 5});
+                creep.moveTo(targetPos, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 10});
             } else {
-                // Ми на місці! Видобуваємо енергію кожен тік
+                // Ми на місці! Видобуваємо енергію
                 creep.harvest(source);
-                creep.say('⛏️');
+                
+                // Візуалізація (щоб не спамити кожен тік, можна вимкнути, якщо заважає)
+                if(Game.time % 5 === 0) creep.say('⛏️');
 
-                // Одночасно перевіряємо: якщо є лінк і в кріпа є енергія в кишені
+                // Якщо є лінк і в кріпа є енергія
                 if (link && creep.store[RESOURCE_ENERGY] > 0) {
-                    // Перевіряємо, чи є в лінку вільне місце
                     if (link.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
                         creep.transfer(link, RESOURCE_ENERGY);
                     }

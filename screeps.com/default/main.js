@@ -129,16 +129,17 @@ module.exports.loop = function () {
                 // Шукаємо пошкоджені дороги/контейнери
                 urgentRepair = room.find(FIND_STRUCTURES, {
                     filter: (s) => (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER) &&
-                                s.hits < s.hitsMax * 0.8
+                                s.hits < s.hitsMax * 0.9
                 })[0];
 
                 // Якщо доріг немає — шукаємо стіни/рампарти
                 if (!urgentRepair) {
-                    defensiveRepair = room.find(FIND_STRUCTURES, {
-                        filter: (s) => (s.structureType === STRUCTURE_WALL || s.structureType === STRUCTURE_RAMPART) &&
-                                    s.hits < 350000
-                    })[0];
-                }
+                defensiveRepair = room.find(FIND_STRUCTURES, {
+                    filter: (s) => s.structureType === STRUCTURE_RAMPART && s.hits < 350000
+                })[0] || room.find(FIND_STRUCTURES, {
+                    filter: (s) => s.structureType === STRUCTURE_WALL && s.hits < 350000
+                })[0];
+            }
             }
 
             // 4. Виконуємо дії для всіх веж кімнати
@@ -172,7 +173,7 @@ module.exports.loop = function () {
         }
 
         // marketManager
-        if (Game.time % 10 === 0) {
+        if (Game.time % 5 === 0) {
             marketManager.run();
         }
 

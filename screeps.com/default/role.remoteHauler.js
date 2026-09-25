@@ -1,25 +1,24 @@
 var roleRemoteHauler = {
     run: function(creep) {
-        
+       
         // --- АВТОМАТИЧНЕ САМОЛІКУВАННЯ ---
-        // Якщо у кріпа є модуль HEAL і він поранений — лікує себе щотику
         if (creep.hits < creep.hitsMax) {
             creep.heal(creep);
         }
-        
+       
         // --- АНТИ-ЗАСТРЯГАТОР & ОЧИЩЕННЯ ШЛЯХУ ---
         if (creep.memory.lastRoom && creep.room.name !== creep.memory.lastRoom) {
-            delete creep.memory._move; // Скидаємо старий кеш шляху з іншої кімнати
+            delete creep.memory._move;
         }
         creep.memory.lastRoom = creep.room.name;
 
-        // РОЗУМНЕ ШТОВХАННЯ НА ПЕРЕХОДАХ: робимо чіткий 1 крок всередину кімнати
+        // РОЗУМНЕ ШТОВХАННЯ НА ПЕРЕХОДАХ
         if (creep.pos.x === 0 || creep.pos.x === 49 || creep.pos.y === 0 || creep.pos.y === 49) {
             let stepX = creep.pos.x === 0 ? 1 : (creep.pos.x === 49 ? 48 : creep.pos.x);
             let stepY = creep.pos.y === 0 ? 1 : (creep.pos.y === 49 ? 48 : creep.pos.y);
-            
+           
             creep.moveTo(stepX, stepY, { maxRooms: 1 });
-            return; // Перериваємо тік, щоб кріп гарантовано злетів з порталу
+            return;
         }
 
         // 1. ПЕРЕМИКАННЯ СТАНІВ
@@ -35,76 +34,92 @@ var roleRemoteHauler = {
         // 2. ЛОГІКА ДОСТАВКИ (ДОДОМУ)
         if (creep.memory.delivering) {
 
-            // ПЕРЕВІРКА КІМНАТИ (Йдемо додому)
+            // Перевірка кімнати
             if (creep.room.name !== creep.memory.homeRoom) {
                 let exitDir = creep.room.findExitTo(creep.memory.homeRoom);
-                let exitTile = creep.pos.findClosestByPath(exitDir); 
-                
+                let exitTile = creep.pos.findClosestByPath(exitDir);
+               
                 if (exitTile) {
                     creep.moveTo(exitTile, {reusePath: 50, visualizePathStyle: {stroke: '#00ff00'}});
                 }
-                return; 
+                return;
             }
 
-            // --- ВИБІР ЦІЛІ ВДОМА ---
+            // --- ПОШУК ЦІЛІ ВДОМА ---
             let target = null;
-            
-            // Якщо в пам'яті жорстко прописана ціль і там є місце
-            if (creep.memory.deliveryId) {
-                let deliveryTarget = Game.getObjectById(creep.memory.deliveryId);
-                if (deliveryTarget && deliveryTarget.store.getFreeCapacity(RESOURCE_ENERGY) > 100) {
-                    target = deliveryTarget;
+           
+            // КРОК A: Перевірка конкретного Link (із linkId або deliveryId)
+            let specificId = creep.memory.linkId || creep.memory.deliveryId;
+            if (specificId) {
+                let obj = Game.getObjectById(specificId);
+                // Перевіряємо, що об'єкт є саме Лінком і в ньому є вільне місце
+                if (obj && obj.structureType === STRUCTURE_LINK && obj.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                    target = obj;
                 }
             }
-            
-            // Якщо головної цілі немає або вона забита — шукаємо Сховище або Контейнер
+           
+            // КРОК B: Авто-пошук БУДЬ-ЯКОГО вільного Лінка в кімнаті (якщо перший заповнений або це не Лінк)
             if (!target) {
                 target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) &&
+                    filter: (s) => s.structureType === STRUCTURE_LINK &&
                                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 });
             }
-            
-            // Віддаємо енергію знайденому об'єкту
+
+            // КРОК C: Авто-пошук Контейнера
+            if (!target) {
+                target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: (s) => s.structureType === STRUCTURE_CONTAINER &&
+                                   s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                });
+            }
+
+            // КРОК D: Storage (запасний варіант, якщо Лінки і Контейнери заповнені)
+            if (!target && creep.room.storage && creep.room.storage.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
+                target = creep.room.storage;
+            }
+           
+            // Передача енергії
             if (target) {
+                // Індикація над головою кріпа для відладки
+                if (target.structureType === STRUCTURE_LINK) creep.say('🔗 Link');
+                else if (target.structureType === STRUCTURE_STORAGE) creep.say('📦 Storage');
+
                 if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#00ff00'}, reusePath: 50});
                 }
             } else {
-                creep.say('💤'); 
+                creep.say('💤 Full!');
             }
-        } 
-        
+        }
+       
         // 3. ЛОГІКА ЗБОРУ (В ЦІЛЬОВІЙ КІМНАТІ)
         else {
-            // КРОК 1: ПЕРЕВІРКА КІМНАТИ (Йдемо в шахту)
             if (creep.room.name !== creep.memory.targetRoom) {
                 let exitDir = creep.room.findExitTo(creep.memory.targetRoom);
-                let exitTile = creep.pos.findClosestByPath(exitDir); 
-                
+                let exitTile = creep.pos.findClosestByPath(exitDir);
+               
                 if (exitTile) {
                     creep.moveTo(exitTile, {reusePath: 70, visualizePathStyle: {stroke: '#ffaa00'}});
                 }
-                return; 
+                return;
             }
 
-            // КРОК 2: ПОШУК КАНДИДАТІВ З ПАМ'ЯТІ
             let containerIds = creep.memory.containerIds || [];
             let candidates = [];
-            
+           
             for (let id of containerIds) {
                 let obj = Game.getObjectById(id);
-                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) >= 800) { 
+                if (obj && obj.store.getUsedCapacity(RESOURCE_ENERGY) >= 800) {
                     candidates.push(obj);
                 }
             }
 
-            // КРОК 3: СОРТУВАННЯ ТА ЗАБРАННЯ ЕНЕРГІЇ
             if (candidates.length > 0) {
                 candidates.sort((a, b) => {
                     let energyA = a.store.getUsedCapacity(RESOURCE_ENERGY);
                     let energyB = b.store.getUsedCapacity(RESOURCE_ENERGY);
-                    if (energyB !== energyA) return energyB - energyA; 
+                    if (energyB !== energyA) return energyB - energyA;
                     return creep.pos.getRangeTo(a) - creep.pos.getRangeTo(b);
                 });
 
@@ -112,9 +127,8 @@ var roleRemoteHauler = {
                 if (creep.withdraw(pickupTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(pickupTarget, {visualizePathStyle: {stroke: '#ffaa00'}, reusePath: 70});
                 }
-            } 
+            }
             else {
-                // Якщо контейнери порожні, шукаємо підняту (dropped) енергію
                 let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
                     filter: r => r.resourceType == RESOURCE_ENERGY && r.amount > 500
                 });
@@ -124,11 +138,7 @@ var roleRemoteHauler = {
                         creep.moveTo(dropped, {visualizePathStyle: {stroke: '#ffffff'}, reusePath: 70});
                     }
                 } else {
-                    // Якщо роботи немає — стаємо ближче до центру кімнати, щоб не блокувати виходи
                     creep.say('💤');
-                    // if (!creep.pos.isNearTo(25, 25)) {
-                    //     creep.moveTo(25, 25, {range: 3});
-                    // }
                 }
             }
         }

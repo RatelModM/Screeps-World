@@ -44,7 +44,7 @@ var roleHarvester = {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                             structure.structureType == STRUCTURE_SPAWN||
                             structure.structureType == STRUCTURE_TOWER) &&
-                            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                            structure.store.getFreeCapacity(RESOURCE_ENERGY) >0;
                 }
             });
 
@@ -70,7 +70,7 @@ var roleHarvester = {
         else {
             // Пріоритет 1: Ресурси на підлозі
             let dropped = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
-                filter: (r) => r.resourceType == RESOURCE_ENERGY && r.amount > 50
+                filter: (r) => r.resourceType == RESOURCE_ENERGY && r.amount > 150
             });
 
             if (dropped) {
@@ -82,7 +82,7 @@ var roleHarvester = {
                 // Пріоритет 2: Контейнери/Сховища
                 let container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) &&
-                                    s.store[RESOURCE_ENERGY] > 50
+                                    s.store[RESOURCE_ENERGY] > 150
                 });
 
                 if (container) {

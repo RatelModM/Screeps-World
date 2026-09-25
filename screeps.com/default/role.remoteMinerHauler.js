@@ -1,71 +1,67 @@
+// Конфігурація руху між кімнатами (закешована поза функцією = 0 CPU overhead)
+const TRAVEL_OPTIONS = {
+    reusePath: 50,         // Кешуємо шлях на 50 тіків між кімнатами
+    plainCost: 2,
+    swampCost: 10,
+    range: 20,             // КРИТИЧНО: зупиняємось при вході в кімнату (не шукаємо exact 25,25)
+    ignoreCreeps: true     // Ігноруємо інших кріпів під час далекої дороги
+};
+
+// Конфігурація руху всередині кімнати
+const IN_ROOM_OPTIONS = {
+    reusePath: 15,
+    plainCost: 2,
+    swampCost: 10
+};
+
 var roleRemoteMinerHauler = {
     /** @param {Creep} creep **/
     run: function(creep) {
         
-        // ==========================================
-        // НАЛАШТУВАННЯ РУХУ (Рух по дорогах + економія CPU)
-        // ==========================================
-        const moveOptions = {
-            plainCost: 2,    // Звичайна земля тепер коштує 2 (дорога коштує 1)
-            swampCost: 10,   // Болото коштує 10
-            reusePath: 15,   // Кріп запам'ятовує шлях на 15 тіків, щоб не навантажувати CPU
-            visualizePathStyle: { 
-                stroke: creep.memory.harvesting ? '#ffaa00' : '#ffffff',
-                lineStyle: 'dashed'
-            }
-        };
-
-        // Перемикання станів: копаємо (true) або веземо до лінка (false)
+        // 1. ПЕРЕМИКАННЯ СТАНІВ
         if (creep.memory.harvesting && creep.store.getFreeCapacity() === 0) {
             creep.memory.harvesting = false;
-            creep.room.visual.circle(creep.pos, {fill: 'transparent', radius: 0.55, stroke: '#red'});
-            creep.say('⚡ лінк');
         }
         if (!creep.memory.harvesting && creep.store[RESOURCE_ENERGY] === 0) {
             creep.memory.harvesting = true;
-            creep.say('🔄 руда');
         }
 
-        // ==========================================
-        // КРИТИЧНЕ ВИПРАВЛЕННЯ ЗАСТРЯГАННЯ (Anti-Bounce)
-        // ==========================================
-        // Якщо кріп стоїть на СЕКТОРІ ПЕРЕХОДУ (самі краї карти: 0 або 49)
+        // 2. ЗАХИСТ ВІД ЗАСТРЯГАННЯ НА МЕЖІ КІМНАТ (Anti-Bounce)
         if (creep.pos.x === 0 || creep.pos.x === 49 || creep.pos.y === 0 || creep.pos.y === 49) {
-            // Змушуємо його негайно зробити крок УСЕРЕДИНУ тієї кімнати, де він зараз опинився
-            creep.moveTo(new RoomPosition(25, 25, creep.room.name), moveOptions);
-            return; // Перериваємо цей тік, чекаємо поки він зійде з лінії порталу
+            creep.moveTo(new RoomPosition(25, 25, creep.room.name), { range: 20, reusePath: 10 });
+            return; // Перериваємо execution для цього тіка
         }
 
-        // ==========================================
-        // ГОЛОВНА ЛОГІКА
-        // ==========================================
+        // 3. ЕТАП 1: ВИДОБУТОК (Рух до віддаленої кімнати / копання)
         if (creep.memory.harvesting) {
-            // 1. ЕТАП ВИДОБУТКУ
             if (creep.room.name !== creep.memory.remoteRoom) {
-                // ВИПРАВЛЕНО: Замість пошуку виходу вручну, просто відправляємо moveTo 
-                // на пусту точку (25,25) в чужій кімнаті. Вбудований двигун гри сам знайде дорогу.
-                creep.moveTo(new RoomPosition(25, 25, creep.memory.remoteRoom), moveOptions);
-            } else {
-                // Ми на місці. Шукаємо джерело
-                let source = Game.getObjectById(creep.memory.sourceId);
-                if (source) {
-                    if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(source, moveOptions);
-                    }
+                // Долаємо шлях між кімнатами з range: 20 (не шукає стіни на 25,25)
+                creep.moveTo(new RoomPosition(25, 25, creep.memory.remoteRoom), TRAVEL_OPTIONS);
+                return; // Заощаджуємо CPU: не виконуємо внутрішньокімнатні перевірки
+            }
+
+            // Ми у віддаленій кімнаті
+            let source = Game.getObjectById(creep.memory.sourceId);
+            if (source) {
+                if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source, IN_ROOM_OPTIONS);
                 }
             }
-        } else {
-            // 2. ЕТАП ДОСТАВКИ
+        } 
+        
+        // 4. ЕТАП 2: ДОСТАВКА (Рух до домашньої кімнати / розвантаження)
+        else {
             if (creep.room.name !== creep.memory.homeRoom) {
-                // Повертаємось додому так само через пряме вказання кімнати
-                creep.moveTo(new RoomPosition(25, 25, creep.memory.homeRoom), moveOptions);
-            } else {
-                // Ми вдома. Шукаємо лінк
-                let targetLink = Game.getObjectById(creep.memory.linkId);
-                if (targetLink) {
-                    if (creep.transfer(targetLink, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                        creep.moveTo(targetLink, moveOptions);
-                    }
+                // Долаємо шлях додому
+                creep.moveTo(new RoomPosition(25, 25, creep.memory.homeRoom), TRAVEL_OPTIONS);
+                return; // Заощаджуємо CPU
+            }
+
+            // Ми вдома
+            let targetLink = Game.getObjectById(creep.memory.linkId);
+            if (targetLink) {
+                if (creep.transfer(targetLink, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targetLink, IN_ROOM_OPTIONS);
                 }
             }
         }

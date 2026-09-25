@@ -30,7 +30,7 @@ var roleUpgrader = {
             
             else if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller, {
-                    reusePath: 50,
+                    reusePath: 20,
                     visualizePathStyle: {stroke: '#ffffff'}
                 });
             }
@@ -42,7 +42,7 @@ var roleUpgrader = {
             // Пріоритет 1: Конкретний лінк за ID з пам'яті кріпа
             if (creep.memory.linkId) {
                 let specificLink = Game.getObjectById(creep.memory.linkId);
-                if (specificLink && specificLink.store[RESOURCE_ENERGY] > 400) {
+                if (specificLink && specificLink.store[RESOURCE_ENERGY] > 5000) {
                     target = specificLink;
                 }
             }
