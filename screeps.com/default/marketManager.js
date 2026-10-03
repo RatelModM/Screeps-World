@@ -2,7 +2,7 @@ var marketManager = {
     // Базові налаштування ринку
     config: {
         ENABLE_MANAGE_ORDERS: true,       // true = створювати власні ордери, false = повністю вимкнути
-        // MANAGE_ORDERS_FREQUENCY: 25,     // запускати Етап 4 раз на 100 тіків (приблизно кожні 5 хв)
+        MANAGE_ORDERS_FREQUENCY: 25,     // запускати Етап 4 раз на 100 тіків (приблизно кожні 5 хв)
 
         TERMINAL_ENERGY_BUFFER: 40000, // Скільки енергії тримати в терміналі для відправок / оплати доставки
         TRADE_AMOUNT: 4000,            // Розмір однієї партії для продажу/пересилки/закупівлі
@@ -22,7 +22,7 @@ var marketManager = {
             // [RESOURCE_LEMERGIUM]: 25000,     // Захист: продаємо лише якщо вище 25к (для фабрики)
             // [RESOURCE_KEANIUM]: 20000,
             // [RESOURCE_ZYNTHIUM]: 20000,
-            [RESOURCE_CATALYST]: 4000
+            [RESOURCE_CATALYST]: 10000
         },
         // Мінімальні ціни продажу (Запобіжник: ціна SELL-ордера ніколи не впаде нижче цих значень)
         MIN_PRICES: {
@@ -46,6 +46,7 @@ var marketManager = {
             [RESOURCE_LEMERGIUM]: {
                 maxAmount: 35000,     // Нам потрібно .... для фабрики
                 maxPrice: 450,        // Купуємо не дорожче ніж ...
+                TRADE_AMOUNT: 10000,
                 sellThreshold: 15000  // Продаємо лише якщо накопичилось більше... (захист від зациклення)
             },
              [RESOURCE_POWER]: {

@@ -101,14 +101,14 @@ var roleRemoteBuilder = {
 
                 if(source) {
                     if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(source, { reusePath: 50, maxRooms: 1 });
+                        creep.moveTo(source, { reusePath: 10, maxRooms: 1 });
                     }
                 }
                 else {
                         let activeSource = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
                         if (activeSource) {
                             if (creep.harvest(activeSource) == ERR_NOT_IN_RANGE) {
-                                creep.moveTo(activeSource, { reusePath: 20, maxRooms: 1, visualizePathStyle: {stroke: '#ffaa00'} });
+                                creep.moveTo(activeSource, { reusePath: 10, maxRooms: 1, visualizePathStyle: {stroke: '#ffaa00'} });
                             }
                         }
                     } 

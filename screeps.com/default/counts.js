@@ -14,7 +14,7 @@ module.exports = function() {
         remoteMiners1_1: [], remoteMiners1_2: [], remoteMiners2_1: [], remoteMiners2_2: [], remoteMiners2_3: [], remoteMiners2_4: [],
         remoteMiners3_1: [], remoteMiners3_2: [], remoteMiners4_3: [], remoteMiners4_4: [], remoteMiners4_1: [], remoteMiners4_2: [], remoteMiners5_1: [],
         remoteMinerHauler2_1: [], remoteMinerHauler3_1: [], remoteMinerHauler4_1: [], remoteMinerHauler4_2: [],remoteMinerHauler6: [],remoteMinerHauler9: [],
-        MineralMiner_1: [], MineralMiner_2: [], MineralMiner_3: [], MineralMiner_4: [], MineralMiner_5: [], MineralMiner_6: [],MineralMiner_7: [],MineralMiner_8: [],
+        MineralMiner_1: [], MineralMiner_2: [], MineralMiner_3: [], MineralMiner_4: [], MineralMiner_5: [], MineralMiner_6: [],MineralMiner_7: [],MineralMiner_8: [],MineralMiner_9: [],
         remoteHaulers1_1: [], remoteHaulers2_1: [], remoteHaulers2_2: [], remoteHaulers3_1: [], remoteHaulers4_1: [], remoteHaulers5_1: [], remoteHaulers6_1: [],
         LinkerStorage1: [], LinkerStorage2: [], LinkerStorage3: [], LinkerStorage4: [], LinkerStorage5: [], LinkerStorage6: [], LinkerStorage7: [],LinkerStorage8: [],LinkerStorage9: [],
         Claimer: [],
@@ -168,6 +168,7 @@ module.exports = function() {
                 else if (mem.targetRoom === 'W27S28') counts.MineralMiner_6.push(creep);
                 else if (mem.targetRoom === 'W28S26') counts.MineralMiner_7.push(creep);
                 else if (mem.targetRoom === 'W28S27') counts.MineralMiner_8.push(creep);
+                else if (mem.targetRoom === 'W23S29') counts.MineralMiner_9.push(creep);
                 break;
 
             case 'remoteHauler':
