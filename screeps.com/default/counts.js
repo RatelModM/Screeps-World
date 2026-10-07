@@ -47,7 +47,8 @@ module.exports = function() {
                 else if (mem.targetRoom === "W27S28") counts.upgraderS6.push(creep);
                 else if (mem.targetRoom === "W28S26") counts.upgraderS7.push(creep);
                 else if (mem.targetRoom === "W28S27") counts.upgraderS8.push(creep);
-                else if (mem.targetRoom === "W23S29") counts.upgraderS9.push(creep);
+                // else if (mem.targetRoom === "W23S29") counts.upgraderS9.push(creep);
+                else if (mem.targetRoom === "W23S29" && (creep.spawning || creep.ticksToLive > 160)) {counts.upgraderS9.push(creep);}
                 break;
 
             case 'builder':
@@ -190,7 +191,7 @@ module.exports = function() {
                 else if (mem.linkId === '6a420a4ae4e7cf835ecb98e2') counts.LinkerStorage6.push(creep);
                 else if (mem.linkId === '6a6efc3a6ada3760776043e3') counts.LinkerStorage7.push(creep);
                 else if (mem.linkId === '6a954b8348a56f1bb906a194') counts.LinkerStorage8.push(creep);
-                else if (mem.linkId === '6ab410e400d0166ee859332b') counts.LinkerStorage9.push(creep);
+                else if (mem.linkId === '6ab410e400d0166ee859332b' && (creep.spawning || creep.ticksToLive > 45)) {counts.LinkerStorage9.push(creep);}
                 break;
 
             case 'claimer':
